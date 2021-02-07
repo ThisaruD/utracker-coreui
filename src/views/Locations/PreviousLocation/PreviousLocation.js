@@ -1,68 +1,32 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
 
-class PreviousLocation extends Component {
+const PreviousLocation = () => {
 
-  constructor(props) {
-    super(props);
-    this.onChangeVehicleNumber = this.onChangeVehicleNumber.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.onChangeTime = this.onChangeTime.bind(this);
-    this.submitFunc = this.submitFunc.bind(this);
+  const [vehicleNumber,setVehicleNumber] = useState('');
+  const [date,setDate] = useState('');
+  const [time,setTime] = useState('');
 
-
-    this.state = {
-      vehicleNumber:"",
-      date:"",
-      time:""
-    }
-  }
-
-  onChangeVehicleNumber(e){
-    this.setState({
-      vehicleNumber:e.target.value
-    });
-  }
-
-  onChangeDate(e){
-    this.setState({
-      date:e.target.value
-    });
-  }
-
-  onChangeTime(e){
-    this.setState({
-      time:e.target.value
-    });
-  }
-
-
-  submitFunc(e){
+  const submitFunc = (e) => {
     e.preventDefault();
 
-    const obj = {
-      vehicleNumber: this.state.vehicleNumber,
-      date: this.state.date,
-      time:this.state.time
-    }
+    const obj = {vehicleNumber, date, time}
     console.log(obj);
 
-   // this.setState({
-   //   vehicleNumber:"",
-   //   date:"",
-   //   time:""
-   // });
+    setTime('');
+    setDate('');
+    setVehicleNumber('');
 
   }
 
 
-  render() {
+
     return (
       <div>
-        <h1>This is previous location tab</h1>
+        <h1>This is previous location tab hello world</h1>
         <Row>
           <Col xs="12" lg="6">
-
+            <h1>USe this colom for google map</h1>
           </Col>
           <Col xs="12" lg="6">
             <Card>
@@ -71,7 +35,7 @@ class PreviousLocation extends Component {
                 <small> For Daily running report</small>
               </CardHeader>
               <CardBody>
-                <Form onSubmit={this.submitFunc}>
+                <Form onSubmit={submitFunc}>
                   <Row>
                     <Col xs="12">
 
@@ -80,14 +44,14 @@ class PreviousLocation extends Component {
                   <Row>
                     <Col xs="12">
                       <FormGroup>
-                        <Label htmlFor="ccnumber">Vehicle Number</Label>
+                        <Label htmlFor="vehicleNumber">Vehicle Number</Label>
                         <Input
                           type="text"
-                          id="ccnumber"
+                          name="ccc"
                           placeholder="NM-2345"
                           required
-                          onChange={this.onChangeVehicleNumber}
-                          value={this.state.vehicleNumber}
+                          onChange={(e)=>setVehicleNumber(e.target.value)}
+                          value={vehicleNumber}
                         />
                       </FormGroup>
                     </Col>
@@ -95,25 +59,21 @@ class PreviousLocation extends Component {
                   <Row>
                     <Col xs="6">
                       <FormGroup>
-                        <Label htmlFor="ccmonth">Date</Label>
+                        <Label htmlFor="date">Date</Label>
                         <Input
                           type="date"
-                          name="ccmonth"
-                          id="ccmonth"
-                          onChange={this.onChangeDate}
-                          value={this.state.date}
+                          onChange={(e)=>setDate(e.target.value)}
+                          value={date}
                         />
                       </FormGroup>
                     </Col>
                     <Col xs="4">
                       <FormGroup>
-                        <Label htmlFor="ccmonth">Time</Label>
+                        <Label htmlFor="time">Time</Label>
                         <Input
                           type="time"
-                          name="ccmonth"
-                          id="ccmonth"
-                          onChange={this.onChangeTime}
-                          value={this.state.time}
+                          onChange={(e)=>setTime(e.target.value)}
+                          value={time}
                         />
                       </FormGroup>
                     </Col>
@@ -121,24 +81,17 @@ class PreviousLocation extends Component {
 
                     </Col>
                   </Row>
-
-
                   <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                    <Button block color="primary" className="btn-pill">Get Location</Button>
+                    <Button block color="primary" className="btn-pill" type="submit">Get Location</Button>
                   </Col>
-
                 </Form>
               </CardBody>
             </Card>
-
           </Col>
         </Row>
-
-
-
       </div>
     );
-  }
+
 }
 
 export default PreviousLocation;

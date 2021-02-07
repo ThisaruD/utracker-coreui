@@ -1,9 +1,28 @@
-import React, {Component} from 'react';
-import {Row,Card,CardHeader,Table,CardBody,PaginationLink,PaginationItem,Badge,Pagination,Col,FormGroup,Input,Label,Form,Button} from 'reactstrap';
+import React, { useState} from 'react';
+import {Row,Card,CardHeader,Table,CardBody,PaginationLink,PaginationItem,Badge,
+        Pagination,Col,FormGroup,Input,Label,Form,Button} from 'reactstrap';
 
-class MonthlyReport extends Component {
 
-  render() {
+const MonthlyReport= ()=>{
+
+  const [vehicleNumber, setVehicleNumber] = useState('');
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
+
+  const submitFunc = (e) =>{
+    e.preventDefault();
+    const obj = {vehicleNumber, month, year}
+    console.log(obj);
+
+    setVehicleNumber('');
+    setMonth('');
+    setYear('');
+  }
+
+
+
+
+
     return (
       <div>
 
@@ -70,7 +89,7 @@ class MonthlyReport extends Component {
                <small> For Monthly running report</small>
              </CardHeader>
              <CardBody>
-               <Form>
+               <Form onSubmit={submitFunc}>
                <Row>
                  <Col xs="12">
                    {/*<FormGroup>*/}
@@ -83,7 +102,14 @@ class MonthlyReport extends Component {
                  <Col xs="12">
                    <FormGroup>
                      <Label htmlFor="ccnumber">Vehicle Number</Label>
-                     <Input type="text" id="ccnumber" placeholder="NM-2345" required />
+                     <Input type="text"
+                            id="vehicle-number"
+                            name="vehicle-number"
+                            placeholder="NM-2345"
+                            value={vehicleNumber}
+                            onChange={(e) => {setVehicleNumber(e.target.value)}}
+                            required
+                     />
                    </FormGroup>
                  </Col>
                </Row>
@@ -91,7 +117,12 @@ class MonthlyReport extends Component {
                  <Col xs="4">
                    <FormGroup>
                      <Label htmlFor="ccmonth">Month</Label>
-                     <Input type="select" name="ccmonth" id="ccmonth">
+                     <Input type="select"
+                            name="month"
+                            id="month"
+                            value={month}
+                            onChange={(e) => {setMonth(e.target.value)}}
+                     >
                        <option value="1">1</option>
                        <option value="2">2</option>
                        <option value="3">3</option>
@@ -110,7 +141,12 @@ class MonthlyReport extends Component {
                  <Col xs="4">
                    <FormGroup>
                      <Label htmlFor="ccyear">Year</Label>
-                     <Input type="select" name="ccyear" id="ccyear">
+                     <Input type="select"
+                            name="year"
+                            id="year"
+                            value={year}
+                            onChange={(e) => {setYear(e.target.value)} }
+                     >
                        <option>2017</option>
                        <option>2018</option>
                        <option>2019</option>
@@ -134,7 +170,7 @@ class MonthlyReport extends Component {
 
 
                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                     <Button block color="primary" className="btn-pill">Get Report</Button>
+                     <Button block color="primary" className="btn-pill" type="submit">Get Report</Button>
                    </Col>
 
                </Form>
@@ -150,7 +186,8 @@ class MonthlyReport extends Component {
 
       </div>
     );
-  }
+
 }
 
 export default MonthlyReport;
+

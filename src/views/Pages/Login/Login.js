@@ -50,6 +50,7 @@ class Login extends Component {
         localStorage.setItem('user', JSON.stringify({
           token: res.data.token
         }));
+
         if (res.data.success == true) {
           alert('User logged succesfuly')
           this.props.history.push('/home')

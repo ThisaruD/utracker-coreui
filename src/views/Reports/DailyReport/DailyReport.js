@@ -1,19 +1,24 @@
-import React, {Component} from 'react';
-import {
-  Badge, Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Col, Form, FormGroup, Input, Label,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Row,
-  Table
-} from "reactstrap";
+import React, { useState} from 'react';
+import {Badge, Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Pagination,
+  PaginationItem, PaginationLink, Row, Table} from "reactstrap";
 
-class DailyReport extends Component {
-  render() {
+
+  const DailyReport = () =>{
+
+    const [vehicleNumber, setVehicleNumber] = useState('');
+    const [date,setDate] = useState('');
+
+    const submitFunc = (e) =>{
+      e.preventDefault();
+const obj ={vehicleNumber, date}
+console.log(obj);
+
+setVehicleNumber('');
+setDate('');
+    }
+
+
+
     return (
       <div>
         <Row>
@@ -78,7 +83,7 @@ class DailyReport extends Component {
                 <small> For Daily running report</small>
               </CardHeader>
               <CardBody>
-                <Form>
+                <Form onSubmit={submitFunc}>
                   <Row>
                     <Col xs="12">
 
@@ -87,16 +92,28 @@ class DailyReport extends Component {
                   <Row>
                     <Col xs="12">
                       <FormGroup>
-                        <Label htmlFor="ccnumber">Vehicle Number</Label>
-                        <Input type="text" id="ccnumber" placeholder="NM-2345" required />
+                        <Label htmlFor="vehicle-number">Vehicle Number</Label>
+                        <Input type="text"
+                               id="vehicle-number"
+                               name="vehicle-number"
+                               placeholder="NM-2345"
+                               required
+                               value={vehicleNumber}
+                               onChange={(e) => {setVehicleNumber(e.target.value)}}
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
                     <Col xs="6">
                       <FormGroup>
-                        <Label htmlFor="ccmonth">Date</Label>
-                        <Input type="date" name="ccmonth" id="ccmonth">
+                        <Label htmlFor="date">Date</Label>
+                        <Input type="date"
+                               name="date"
+                               id="date"
+                               value={date}
+                               onChange={(e) =>{setDate(e.target.value)}}
+                        >
 
                         </Input>
                       </FormGroup>
@@ -111,7 +128,7 @@ class DailyReport extends Component {
 
 
                   <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                    <Button block color="primary" className="btn-pill">Get Report</Button>
+                    <Button block color="primary" className="btn-pill" type="submit">Get Report</Button>
                   </Col>
 
                 </Form>
@@ -126,7 +143,9 @@ class DailyReport extends Component {
 
       </div>
     );
-  }
+
 }
 
 export default DailyReport;
+
+

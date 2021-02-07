@@ -5,6 +5,7 @@ import axios from 'axios';
 class Register extends Component {
 
   constructor(props) {
+
     super(props);
     this.onChangeFirstName = this.onChangeFirstName.bind(this);
     this.onChangeLastName = this.onChangeLastName.bind(this);
@@ -17,8 +18,8 @@ class Register extends Component {
       firstname:"",
       lastname:"",
       email: "",
-      password: "",
-      redirect:false,
+      password: ""
+
     }
 
   }
@@ -71,10 +72,27 @@ class Register extends Component {
     };
 
     console.log(obj);
-    axios.post('http://localhost:8000/api/user/register', obj)
+    axios.post('http://127.0.0.1:8000/api/user/register', obj)
       .then((res) => { console.log(res.data)})
       .then(alert('User added succesfuly'))
-      .then( this.props.history.push('/home'));
+     .then( this.props.history.push('.views/dashboard'));
+
+
+    // axios.post('http://127.0.0.1:8000/api/user/register', obj)
+    //   .then((res) => {
+    //     console.log(res.data);
+    //     localStorage.setItem('user', JSON.stringify({
+    //       token: res.data.token
+    //     }));
+    //
+    //     if (res.data.success == true) {
+    //       alert('User logged succesfuly')
+    //       this.props.history.push('/home')
+    //     } else {
+    //       alert("User not register")
+    //     }
+    //   });
+
 
 
 
@@ -83,8 +101,8 @@ class Register extends Component {
       firstname:'',
       lastname:'',
       email: '',
-      password: '',
-      redirect:true
+      password: ''
+
     });
     //this.renderRedirect();
   }
@@ -146,7 +164,13 @@ class Register extends Component {
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Email" autoComplete="email" />
+                      <Input type="email"
+                             placeholder="Email"
+                             autoComplete="email"
+                             required
+                             onChange={this.onChangeEmail}
+                             value={this.state.email}
+                      />
                     </InputGroup>
 
                     <InputGroup className="mb-3">
