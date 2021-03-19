@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+import { Link, NavLink,Route ,useHistory} from 'react-router-dom';
+import {
+  Badge,
+  UncontrolledDropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Nav,
+  NavItem,
+  Button
+} from 'reactstrap';
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
@@ -14,10 +23,17 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+
   render() {
 
     // eslint-disable-next-line
     const { children, ...attributes } = this.props;
+
 
     return (
       <React.Fragment>
@@ -43,16 +59,20 @@ class DefaultHeader extends Component {
         {/*  </NavItem>*/}
         </Nav>
         <Nav className="ml-auto" navbar>
-          {/*<NavItem className="d-md-down-none">*/}
-          {/*  <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>*/}
-          {/*</NavItem>*/}
+
+          <NavItem className="d-md-down-none">
+            <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
+          </NavItem>
+
           {/*<NavItem className="d-md-down-none">*/}
           {/*  <NavLink to="#" className="nav-link"><i className="icon-list"></i></NavLink>*/}
           {/*</NavItem>*/}
+
           <NavItem className="d-md-down-none">
             {/*<NavLink to="#" className="nav-link"><i className="icon-location-pin"></i></NavLink>*/}
             <NavLink to="/login" className="nav-link">Login<i className=""></i></NavLink>
           </NavItem>
+
 
           <NavItem>
             <NavLink to="/register" className="nav-link">Register<i className=""></i></NavLink>
@@ -65,26 +85,30 @@ class DefaultHeader extends Component {
           {/*<NavLink to="register" className="nav-link">SignUp<i className="icon-location-pin"></i></NavLink>*/}
 
 
-        {/*  <UncontrolledDropdown nav direction="down">*/}
-        {/*    <DropdownToggle nav>*/}
-        {/*      <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />*/}
-        {/*    </DropdownToggle>*/}
-        {/*    <DropdownMenu right>*/}
-        {/*      <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-wrench"></i> Settings</DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>*/}
-        {/*      <DropdownItem divider />*/}
-        {/*      <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>*/}
-        {/*      <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
-        {/*    </DropdownMenu>*/}
-        {/*/!*  </UncontrolledDropdown>*!/*/}
+          <UncontrolledDropdown nav direction="down">
+            <DropdownToggle nav>
+              <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+            </DropdownToggle>
+            <DropdownMenu right>
+              {/*<DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>*/}
+              {/*<DropdownItem><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>*/}
+              {/*<DropdownItem><i className="fa fa-envelope-o"></i> Messages<Badge color="success">42</Badge></DropdownItem>*/}
+              {/*<DropdownItem><i className="fa fa-tasks"></i> Tasks<Badge color="danger">42</Badge></DropdownItem>*/}
+              {/*<DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>*/}
+              <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
+
+              <DropdownItem><i className="fa fa-user"></i><Link to='/profile'>Profile</Link> </DropdownItem>
+
+              <DropdownItem ><i className="fa fa-wrench"></i><Link to='/setting'>Setting</Link></DropdownItem>
+              {/*onClick={()=>{this.transition('/setting')}}*/}
+
+              {/*<DropdownItem><i className="fa fa-usd"></i> Payments<Badge color="secondary">42</Badge></DropdownItem>*/}
+              {/*<DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>*/}
+              <DropdownItem divider />
+              {/*<DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>*/}
+              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+            </DropdownMenu>
+          </UncontrolledDropdown>
 
 
         </Nav>

@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, { useState} from 'react';
 import {Badge, Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label,
         Pagination, PaginationItem, PaginationLink, Row, Table} from "reactstrap";
 

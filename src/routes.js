@@ -48,11 +48,21 @@ const PreviousPaths =React.lazy(()=> import('./views/Locations/PreviousPaths/Pre
 const AddDevice =React.lazy(()=> import('./views/Devices/AddDevice/AddDevice'));
 const EditDevice =React.lazy(()=> import('./views/Devices/EditDevice/EditDevice'));
 const ViewDevice =React.lazy(()=> import('./views/Devices/ViewDevice/ViewDevice'));
+const About = React.lazy(()=>import('./views/About/About'));
+const Contact = React.lazy(()=>import('./views/Contact/Contact'));
+const Setting = React.lazy(()=>import('./views/Setting/Setting'));
+const Profile = React.lazy(()=>import('./views/Profile/Profile'));
+const ProfileEdit = React.lazy(()=>import('./views/Profile/ProfileEdit'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  { path: '/about', name: 'About', component: About},
+  { path: '/contact', name: 'Contact', component: Contact },
+  {path: '/setting', name: 'Setting', component:Setting},
+  {path: '/profile', name: 'Profile', component:Profile},
+  {path: '/profileedit', name: 'ProfileEdit', component:ProfileEdit},
   // { path: '/theme', exact: true, name: 'Theme', component: Colors },
   // { path: '/theme/colors', name: 'Colors', component: Colors },
   // { path: '/theme/typography', name: 'Typography', component: Typography },

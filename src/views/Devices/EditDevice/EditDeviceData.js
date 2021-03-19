@@ -1,60 +1,23 @@
-import React, { useState } from "react";
+import React from 'react';
 import {
-  CardHeader,
+  Badge,
+  Button,
   Card,
   CardBody,
+  CardFooter,
+  CardHeader,
+  Col,
   Form,
   FormGroup,
-  Col,
-  Label,
-  Input,
   FormText,
-  CardFooter,
-  Button,
-  Badge,
+  Input,
+  Label
 } from "reactstrap";
 
-import axios from 'axios';
 
-const AddDevice = () => {
-  const [vehicleNumber, setVehicleNumber] = useState("");
-  const [type, setType] = useState("");
-  const [brandName, setBrandName] = useState("");
-  const [driverName, setDriverName] = useState("");
-  const [driverContactNumber, setDriverContactNumber] = useState("");
-  const [ownerName, setOwnerName] = useState("");
-  const [ownerContactNumber, setOwnerContactNumber] = useState("");
-  const [date, setDate] = useState("");
-  const [unitPerKm, setUnitPerKm] = useState("");
+const EditDeviceData = (props) =>{
 
-  const submitFunc = (e) => {
-    e.preventDefault();
-    const vehicleDetails = {
-      vehicleNumber,
-      type,
-      brandName,
-      driverName,
-      driverContactNumber,
-      ownerName,
-      ownerContactNumber,
-      date,
-      unitPerKm,
-    };
-    console.log(vehicleDetails);
-
-   axios.post('add url',vehicleDetails)
-     .then(res=>{
-       //handling success part
-       console.log(res.data);
-     })
-     .catch(err=>{
-       //handling error part
-       console.log(err);
-     })
-
-  };
-
-  return (
+  return(
 
     <div>
       <Card>
@@ -67,7 +30,7 @@ const AddDevice = () => {
             method="post"
             encType="multipart/form-data"
             className="form-horizontal"
-            onSubmit={submitFunc}
+            onSubmit={}
           >
             <FormGroup row>
               {/*space for empty row  */}
@@ -89,8 +52,8 @@ const AddDevice = () => {
                   id="vehicle-number"
                   name="vehicle-number"
                   placeholder="Vehicle Number"
-                  value={vehicleNumber}
-                  onChange={(e) => setVehicleNumber(e.target.value)}
+                  value={}
+                  onChange={}
                 />
                 <FormText color="muted">Please enter vehicle number</FormText>
               </Col>
@@ -103,8 +66,8 @@ const AddDevice = () => {
                   type="select"
                   name="type"
                   id="type"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
+                  value={}
+                  onChange={}
                 >
                   <option value="0">Please select type</option>
                   <option value="1">Van</option>
@@ -120,8 +83,8 @@ const AddDevice = () => {
                   id="brand-name"
                   name="brand-Name"
                   placeholder="Vehicle brand name"
-                  value={brandName}
-                  onChange={(e) => setBrandName(e.target.value)}
+                  value={}
+                  onChange={}
                 />
               </Col>
             </FormGroup>
@@ -136,8 +99,8 @@ const AddDevice = () => {
                   id="driver-name"
                   name="driver-name"
                   placeholder="Driver Name"
-                  value={driverName}
-                  onChange={(e) => setDriverName(e.target.value)}
+                  value={}
+                  onChange={}
                 />
                 <FormText className="help-block">Enter driver name</FormText>
               </Col>
@@ -154,8 +117,8 @@ const AddDevice = () => {
                   name="driver-contact-number"
                   placeholder="Driver Contact Number"
                   // autoComplete="text"
-                  value={driverContactNumber}
-                  onChange={(e) => setDriverContactNumber(e.target.value)}
+                  value={}
+                  onChange={}
                 />
                 <FormText className="help-block">
                   Enter driver contact number
@@ -173,7 +136,7 @@ const AddDevice = () => {
                   id="owner-name"
                   name="owner-name"
                   placeholder="Owner Name"
-                  onChange={(e) => setOwnerName(e.target.value)}
+                  onChange={}
                 />
                 <FormText className="help-block">Enter owner name</FormText>
               </Col>
@@ -189,8 +152,8 @@ const AddDevice = () => {
                   id="owner-contact-number"
                   name="owner-contact-number"
                   placeholder="Owner Contact Number"
-                  value={ownerContactNumber}
-                  onChange={(e) => setOwnerContactNumber(e.target.value)}
+                  value={}
+                  onChange={}
                 />
                 <FormText className="help-block">
                   Enter owner contact number
@@ -210,8 +173,8 @@ const AddDevice = () => {
                   id="date-added"
                   name="date-added"
                   placeholder="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  value={}
+                  onChange={}
                 />
               </Col>
             </FormGroup>
@@ -225,8 +188,8 @@ const AddDevice = () => {
                   type="select"
                   name="unit-per-km"
                   id="unit-per-km"
-                  value={unitPerKm}
-                  onChange={(e) => setUnitPerKm(e.target.value)}
+                  value={}
+                  onChange={}
                 >
                   <option value="0">Please select</option>
                   <option value="1">Rs:100</option>
@@ -248,6 +211,6 @@ const AddDevice = () => {
       </Card>
     </div>
   );
-};
+}
 
-export default AddDevice;
+export default EditDeviceData;
