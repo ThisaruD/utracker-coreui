@@ -1,38 +1,46 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import axios from 'axios';
-
-
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardGroup,
+  Col,
+  Container,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row,
+} from "reactstrap";
+import axios from "axios";
 
 class Login extends Component {
-
-
   constructor(props) {
     super(props);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.submitFunc = this.submitFunc.bind(this);
 
-
     this.state = {
       email: "",
       password: "",
-      token:"",
-      res:[]
-    }
+      token: "",
+      res: [],
+    };
   }
 
   onChangeEmail(e) {
     this.setState({
-      email: e.target.value
+      email: e.target.value,
     });
   }
 
   onChangePassword(e) {
     this.setState({
-      password: e.target.value
-    })
+      password: e.target.value,
+    });
   }
 
   submitFunc(e) {
@@ -40,40 +48,36 @@ class Login extends Component {
 
     const obj = {
       email: this.state.email,
-      password: this.state.password
+      password: this.state.password,
     };
 
     console.log(obj);
-    axios.post('http://127.0.0.1:8000/api/user/login', obj)
-      .then((res) => {
-        console.log(res.data);
-        localStorage.setItem('user', JSON.stringify({
-          token: res.data.token
-        }));
+    axios.post("http://127.0.0.1:8000/api/user/login", obj).then((res) => {
+      console.log(res.data);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: res.data.token,
+        })
+      );
 
-        if (res.data.success == true) {
-          alert('User logged succesfuly')
-          this.props.history.push('/home')
-        } else {
-          alert("User not register")
-        }
-      });
+      if (res.data.success == true) {
+        alert("User logged succesfuly");
+        this.props.history.push("/home");
+      } else {
+        alert("User not register");
+      }
+    });
     // .then(alert('User logged succesfuly'));
     //.then( this.props.history.push('/home'));
 
-
     this.setState({
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     });
-
   }
 
-
-
-
-
-    render() {
+  render() {
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -82,7 +86,6 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-
                     <Form onSubmit={this.submitFunc}>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
@@ -91,12 +94,14 @@ class Login extends Component {
                         <InputGroupAddon addonType="prepend">
                           <InputGroupText>@</InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text"
-                               required
-                               onChange={this.onChangeEmail}
-                               placeholder="Email"
-                               autoComplete="username"
-                               value={this.state.email}/>
+                        <Input
+                          type="text"
+                          required
+                          onChange={this.onChangeEmail}
+                          placeholder="Email"
+                          autoComplete="username"
+                          value={this.state.email}
+                        />
                       </InputGroup>
 
                       <InputGroup className="mb-4">
@@ -111,21 +116,25 @@ class Login extends Component {
                           required
                           placeholder="Password"
                           autoComplete="current-password"
-                          value={this.state.password}/>
+                          value={this.state.password}
+                        />
                       </InputGroup>
 
                       <Row>
                         <Col xs="6">
-                          <Button color="primary" className="px-4">Login</Button>
+                          <Button color="primary" className="px-4">
+                            Login
+                          </Button>
                         </Col>
                         <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Button color="link" className="px-0">
+                            <Link to="ForgotPassword">ForgotPassword</Link>
+                          </Button>
                         </Col>
                       </Row>
                     </Form>
                   </CardBody>
                 </Card>
-
               </CardGroup>
             </Col>
           </Row>
