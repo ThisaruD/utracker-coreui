@@ -37,13 +37,32 @@ class Dashboard extends Component {
 
   render() {
 
+    const user = JSON.parse(localStorage.getItem('user'));
+//console.log(user.role_id);
+
+if(user.role_id==1){
+  return (
+    <div className="animated fadeIn">
+      <h1>Hello Super admin </h1>
+    </div>
+  );
+}else if(user.role_id==2){
+  return (
+    <div className="animated fadeIn">
+      <h1>Hello manager </h1>
+    </div>
+  );
+}else{
+
+  return (
+    <div className="animated fadeIn">
+      <h1>Hello Staff member</h1>
+    </div>
+  );
+
+    }
 
 
-      return (
-        <div className="animated fadeIn">
-          <h1>Hello  </h1>
-        </div>
-      );
 
   }
 }

@@ -169,9 +169,9 @@ const MonthlyReport= ()=>{
                </Row>
 
 
-                   <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                   {/*<Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">*/}
                      <Button block color="primary" className="btn-pill" type="submit">Get Report</Button>
-                   </Col>
+                   {/*</Col>*/}
 
                </Form>
              </CardBody>

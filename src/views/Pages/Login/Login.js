@@ -1,19 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import {
-  Button,
-  Card,
-  CardBody,
-  CardGroup,
-  Col,
-  Container,
-  Form,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Row,
-} from "reactstrap";
+import {Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row,} from "reactstrap";
 import axios from "axios";
 
 class Login extends Component {
@@ -54,12 +41,16 @@ class Login extends Component {
     console.log(obj);
     axios.post("http://127.0.0.1:8000/api/user/login", obj).then((res) => {
       console.log(res.data);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
+      localStorage.setItem("user", JSON.stringify({
           token: res.data.token,
+        role_id:res.data.user_role_id,
         })
       );
+      // localStorage.setItem("user_role",
+      //   "role_id:res.data.user_role_id"
+      // );
+
+
 
       if (res.data.success == true) {
         alert("User logged succesfuly");
@@ -68,7 +59,7 @@ class Login extends Component {
         alert("User not register");
       }
     });
-    // .then(alert('User logged succesfuly'));
+    //.then(alert('User logged succesfuly'));
     //.then( this.props.history.push('/home'));
 
     this.setState({

@@ -22,17 +22,17 @@ export default {
       icon: 'icon-puzzle',
       children: [
         {
-          name:'DailyReport',
+          name:'Daily Report',
           url:'/reports/daily-reports',
           icon:'icon-puzzle',
         },
         {
-          name:'WeeklyReport',
+          name:'Weekly Report',
           url:'/reports/weekly-reports',
           icon:'icon-puzzle',
         },
         {
-          name:'MonthlyReport',
+          name:'Monthly Report',
           url:'/reports/monthly-reports',
           icon:'icon-puzzle',
         },
@@ -45,17 +45,17 @@ export default {
       icon: 'icon-puzzle',
       children: [
         {
-          name:'LiveLocation',
+          name:'Live Location',
           url:'/locations/live-location',
           icon:'icon-puzzle',
         },
         {
-          name:'PreviousLocation',
+          name:'Previous Location',
           url:'/locations/previous-location',
           icon:'icon-puzzle',
         },
         {
-          name:'PreviousPaths',
+          name:'Previous Paths',
           url:'/locations/previous-paths',
           icon:'icon-puzzle',
         }
@@ -63,28 +63,50 @@ export default {
     },
 
     {
-      name: 'Devices',
-      url: '/devices',
+      name: 'Vehicles',
+      url: '/vehicles',
       icon: 'icon-puzzle',
       children: [
         {
-          name:'AddDevice',
-          url:'/devices/add-device',
+          name:'Add Vehicle',
+          url:'/vehicles/add-vehicle',
           icon:'icon-puzzle',
         },
         {
-          name:'EditDevice',
-          url:'/devices/edit-device',
+          name:'Edit vehicle',
+          url:'/vehicles/edit-vehicle',
           icon:'icon-puzzle',
         },
         {
-          name:'ViewDevice',
-          url:'/devices/view-device',
+          name:'View vehicles',
+          url:'/vehicles/view-vehicle',
           icon:'icon-puzzle',
         }
       ]
     },
 
+    {
+      name: 'Company',
+      url:'/company/',
+      icon: 'icon-puzzle',
+      children: [
+        {
+          name:'Add Company',
+          url:'/company/add-company',
+          icon:'icon-puzzle'
+        },
+        {
+          name:'View Company Details',
+          url:'/company/view-company',
+          icon:'icon-puzzle',
+        },
+        {
+          name:'Edit Company Details',
+          url:'/company/edit-company',
+          icon:'icon-puzzle',
+        }
+        ]
+    },
     {
       name: 'Data',
       url: '/data',
@@ -113,6 +135,11 @@ export default {
       name: 'Logout',
       url: '/logout',
       icon: 'icon-puzzle',
+    },
+    {
+      name: 'Required pages',
+      url: '',
+      icon:'icon-puzzle'
     }
     ],
 };

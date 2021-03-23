@@ -2,7 +2,7 @@ import React from 'react';
 import {Col, FormGroup, Input, Label} from "reactstrap";
 
 
-  const ViewDevice = () =>{
+  const ViewVehicle = () =>{
 
     return (
       // <div>
@@ -29,4 +29,4 @@ import {Col, FormGroup, Input, Label} from "reactstrap";
 
 }
 
-export default ViewDevice;
+export default ViewVehicle;

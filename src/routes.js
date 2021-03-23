@@ -45,14 +45,25 @@ const WeeklyReport = React.lazy(()=> import('./views/Reports/WeeklyReport/Weekly
 const LiveLocation =React.lazy(()=> import('./views/Locations/LiveLocation/LiveLocation'));
 const PreviousLocation =React.lazy(()=> import('./views/Locations/PreviousLocation/PreviousLocation'));
 const PreviousPaths =React.lazy(()=> import('./views/Locations/PreviousPaths/PreviousPaths'));
-const AddDevice =React.lazy(()=> import('./views/Devices/AddDevice/AddDevice'));
-const EditDevice =React.lazy(()=> import('./views/Devices/EditDevice/EditDevice'));
-const ViewDevice =React.lazy(()=> import('./views/Devices/ViewDevice/ViewDevice'));
+const AddVehicle =React.lazy(()=> import('./views/Vehicles/AddVehicle/AddVehicle'));
+const EditVehicle =React.lazy(()=> import('./views/Vehicles/EditVehicle/EditVehicle'));
+const ViewVehicle =React.lazy(()=> import('./views/Vehicles/ViewVehicle/ViewVehicle'));
+const EditVehicleDetails = React.lazy(()=>import('./views/Vehicles/EditVehicle/EditVehicleData'));
 const About = React.lazy(()=>import('./views/About/About'));
 const Contact = React.lazy(()=>import('./views/Contact/Contact'));
 const Setting = React.lazy(()=>import('./views/Setting/Setting'));
 const Profile = React.lazy(()=>import('./views/Profile/Profile'));
 const ProfileEdit = React.lazy(()=>import('./views/Profile/ProfileEdit'));
+const ViewCompany = React.lazy(()=>import('./views/Company/ViewCompany/ViewCompany'));
+const EditCompany = React.lazy(()=>import('./views/Company/EditCompany/EditCompany'));
+const EditCompanyDetails = React.lazy(()=>import('./views/Company/EditCompany/EditCompanyDetails'));
+const AddCompany = React.lazy(()=>import('./views/Company/AddCompany/AddCompany'));
+
+////////////////////////////Required Sample Pages///////////////////////
+// const Company
+
+
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -62,7 +73,7 @@ const routes = [
   { path: '/contact', name: 'Contact', component: Contact },
   {path: '/setting', name: 'Setting', component:Setting},
   {path: '/profile', name: 'Profile', component:Profile},
-  {path: '/profileedit', name: 'ProfileEdit', component:ProfileEdit},
+  {path: '/profile-edit', name: 'ProfileEdit', component:ProfileEdit},
   // { path: '/theme', exact: true, name: 'Theme', component: Colors },
   // { path: '/theme/colors', name: 'Colors', component: Colors },
   // { path: '/theme/typography', name: 'Typography', component: Typography },
@@ -81,12 +92,18 @@ const routes = [
   { path: '/locations/live-location', name: 'LiveLocation', component: LiveLocation },
   { path: '/locations/previous-location', name: 'PreviousLocation', component: PreviousLocation },
   { path: '/locations/previous-paths', name: 'PreviousPaths', component: PreviousPaths },
-  { path: '/devices/add-device', name: 'AddDevice', component: AddDevice},
-  { path: '/devices/edit-device', name: 'EditDevice', component: EditDevice},
-  { path: '/devices/view-device', name: 'ViewDevice', component: ViewDevice},
+
+  { path: '/vehicles/add-vehicle', name: 'AddVehicle', component: AddVehicle},
+  { path: '/vehicles/edit-vehicle', name: 'EditVehicle', component: EditVehicle},
+  { path: '/vehicles/view-vehicle', name: 'ViewVehicle', component: ViewVehicle},
+  {path: '/vehicles/details', name: 'EditVehicleDetails', component:EditVehicleDetails},
+
+  { path: '/company/edit-company', name:'EditCompany', component: EditCompany},
+  { path: '/company/view-company', name:'ViewCompany', component: ViewCompany},
+  { path: '/company/add-company', name:'AddCompany', component: AddCompany},
+  { path: '/company/details', name:'EditCompanyDetails', component: EditCompanyDetails},
   // { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
   // { path: '/base/carousels', name: 'Carousel', component: Carousels },
-
   // { path: '/buttons', exact: true, name: 'Buttons', component: Buttons },
   // { path: '/buttons/buttons', name: 'Buttons', component: Buttons },
   // { path: '/buttons/button-dropdowns', name: 'Button Dropdowns', component: ButtonDropdowns },
@@ -105,6 +122,11 @@ const routes = [
   // { path: '/charts', name: 'Charts', component: Charts },
   // { path: '/users', exact: true,  name: 'Users', component: Users },
   // { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  ////////////////sample Required Pages//////////////////////////////////
+
+
+
+
 ];
 
 export default routes;

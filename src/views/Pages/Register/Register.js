@@ -12,17 +12,48 @@ class Register extends Component {
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.submitFunc = this.submitFunc.bind(this);
-
+    this.getAddUserData =  this.getAddUserData.bind(this);
 
     this.state = {
-      firstname:"",
-      lastname:"",
+      firstname: "",
+      lastname: "",
       email: "",
-      password: ""
-
+      password: "",
+      type: "",
+      companyNames:[]
     }
 
   }
+
+
+  getAddUserData(){
+    axios.get('https://run.mocky.io/v3/535d0e80-1eae-4404-bc8c-52d252fb9069')
+      .then((res)=>{
+        console.log(res.data);
+        this.setState({
+          companyNames:res.data.companies
+        });
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  }
+
+
+  optionRow() {
+    return (
+      <div>
+        <option></option>
+      </div>
+    );
+  }
+
+
+
+  componentDidMount() {
+    this.getAddUserData();
+  }
+
 
   onChangeFirstName(e) {
     this.setState({
@@ -124,7 +155,8 @@ class Register extends Component {
 
                 <CardBody className="p-4">
                   <Form onSubmit={this.submitFunc}>
-                    <h1>Register</h1>
+                    <h1>Add User</h1>
+                    <h1>{this.state.companyNames[0]}</h1>
                     <p className="text-muted">Create your account</p>
 
                     <InputGroup className="mb-3">
@@ -188,6 +220,41 @@ class Register extends Component {
                       />
                     </InputGroup>
 
+
+
+                    <InputGroup className="mb-3">
+                      <Input
+                        type="select"
+                        name="type"
+                        id="type"
+
+                        // value={type}
+                        // onChange={(e) => setType(e.target.value)}
+                      >
+                        <option value="0">Select Company Name</option>
+                        {this.state.companyNames.map((company)=>(
+                          <option values={company}>{company}</option>
+                        ))}
+
+
+                      </Input>
+                    </InputGroup>
+
+
+                    <InputGroup className="mb-3">
+                      <Input
+                        type="select"
+                        name="type"
+                        id="type"
+                        // value={type}
+                        // onChange={(e) => setType(e.target.value)}
+                      >
+                        <option value="null">Select User Type</option>
+                        <option value="1">Transport Manager</option>
+                        <option value="2">Staff</option>
+
+                      </Input>
+                    </InputGroup>
 
 
 
