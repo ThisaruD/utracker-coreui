@@ -58,7 +58,7 @@ const ViewCompany = React.lazy(()=>import('./views/Company/ViewCompany/ViewCompa
 const EditCompany = React.lazy(()=>import('./views/Company/EditCompany/EditCompany'));
 const EditCompanyDetails = React.lazy(()=>import('./views/Company/EditCompany/EditCompanyDetails'));
 const AddCompany = React.lazy(()=>import('./views/Company/AddCompany/AddCompany'));
-
+const ViewVehicleData = React.lazy(()=>import('./views/Vehicles/ViewVehicle/ViewVehicleData'));
 ////////////////////////////Required Sample Pages///////////////////////
 // const Company
 
@@ -96,12 +96,15 @@ const routes = [
   { path: '/vehicles/add-vehicle', name: 'AddVehicle', component: AddVehicle},
   { path: '/vehicles/edit-vehicle', name: 'EditVehicle', component: EditVehicle},
   { path: '/vehicles/view-vehicle', name: 'ViewVehicle', component: ViewVehicle},
-  {path: '/vehicles/details', name: 'EditVehicleDetails', component:EditVehicleDetails},
+  {path: '/vehicles/details/:id', name: 'EditVehicleDetails', component:EditVehicleDetails},
+  {path: '/vehicles/details2/:id', name: 'ViewVehicleData', component:ViewVehicleData},
 
   { path: '/company/edit-company', name:'EditCompany', component: EditCompany},
   { path: '/company/view-company', name:'ViewCompany', component: ViewCompany},
   { path: '/company/add-company', name:'AddCompany', component: AddCompany},
-  { path: '/company/details', name:'EditCompanyDetails', component: EditCompanyDetails},
+  { path: '/company/details/:id', name:'EditCompanyDetails', component: EditCompanyDetails},
+
+
   // { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },
   // { path: '/base/carousels', name: 'Carousel', component: Carousels },
   // { path: '/buttons', exact: true, name: 'Buttons', component: Buttons },

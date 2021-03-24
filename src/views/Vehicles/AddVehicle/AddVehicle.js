@@ -19,10 +19,10 @@ import axios from 'axios';
 const AddVehicle = () => {
   const [vehicleNumber, setVehicleNumber] = useState("");
   const [type, setType] = useState("");
-  const [brandName, setBrandName] = useState("");
+  // const [brandName, setBrandName] = useState("");
   const [driverName, setDriverName] = useState("");
   const [driverContactNumber, setDriverContactNumber] = useState("");
-  const [ownerName, setOwnerName] = useState("");
+  const [owner_name, setOwner_name] = useState("");
   const [ownerContactNumber, setOwnerContactNumber] = useState("");
   const [date, setDate] = useState("");
   const [unitPerKm, setUnitPerKm] = useState("");
@@ -32,17 +32,17 @@ const AddVehicle = () => {
     const vehicleDetails = {
       vehicleNumber,
       type,
-      brandName,
+
       driverName,
       driverContactNumber,
-      ownerName,
+      owner_name,
       ownerContactNumber,
-      date,
+
       unitPerKm,
     };
     console.log(vehicleDetails);
 
-   axios.post('add url',vehicleDetails)
+   axios.post('http://localhost:8000/api/user/savevehicledetails',vehicleDetails)
      .then(res=>{
        //handling success part
        console.log(res.data);
@@ -58,7 +58,10 @@ const AddVehicle = () => {
   const user = JSON.parse(localStorage.getItem('user'));
 
 
-  if(user.role_id==1 |user.role_id==2){
+
+
+
+
     return (
 
       <div>
@@ -119,15 +122,15 @@ const AddVehicle = () => {
                   </Input>
                 </Col>
                 <Col md="6">
-                  <Label>Brand Name</Label>
-                  <Input
-                    type="text"
-                    id="brand-name"
-                    name="brand-Name"
-                    placeholder="Vehicle brand name"
-                    value={brandName}
-                    onChange={(e) => setBrandName(e.target.value)}
-                  />
+                  {/*<Label>Brand Name</Label>*/}
+                  {/*<Input*/}
+                  {/*  type="text"*/}
+                  {/*  id="brand-name"*/}
+                  {/*  name="brand-Name"*/}
+                  {/*  placeholder="Vehicle brand name"*/}
+                  {/*  value={brandName}*/}
+                  {/*  onChange={(e) => setBrandName(e.target.value)}*/}
+                  {/*/>*/}
                 </Col>
               </FormGroup>
 
@@ -178,7 +181,7 @@ const AddVehicle = () => {
                     id="owner-name"
                     name="owner-name"
                     placeholder="Owner Name"
-                    onChange={(e) => setOwnerName(e.target.value)}
+                    onChange={(e) => setOwner_name(e.target.value)}
                   />
                   <FormText className="help-block">Enter owner name</FormText>
                 </Col>
@@ -253,13 +256,7 @@ const AddVehicle = () => {
         </Card>
       </div>
     );
-  }else{
-    return(
-      <div>
-        <h1>you havent access</h1>
-      </div>
-    );
-  }
+
 
 
 

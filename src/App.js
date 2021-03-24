@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
-// import { renderRoutes } from 'react-router-config';
+ import { renderRoutes } from 'react-router-config';
 import "./App.scss";
 
 const loading = () => (
@@ -17,6 +17,9 @@ const Page404 = React.lazy(() => import("./views/Pages/Page404"));
 const Page500 = React.lazy(() => import("./views/Pages/Page500"));
 const ForgotPassword = React.lazy(() => import("./views/Pages/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("./views/Pages/ResetPassword"));
+const AccessDenied = React.lazy(() => import('./views/Pages/AccessDenied/AccessDenied'));
+
+
 
 class App extends Component {
   render() {
@@ -30,18 +33,32 @@ class App extends Component {
               name="Forgot Password Page"
               render={(props) => <ForgotPassword {...props} />}
             />
+
+
+
             <Route
               exact
               path="/ResetPassword"
               name="Reset Password Page"
               render={(props) => <ResetPassword {...props} />}
             />
+
+
+
+
             <Route
               exact
               path="/login"
               name="Login Page"
               render={(props) => <Login {...props} />}
             />
+
+            {/*<Route*/}
+            {/*  path="/access-denied"*/}
+            {/*  name="Access Denied"*/}
+            {/*  render={(props) =><AccessDenied {...props} />}*/}
+            {/*/>*/}
+
             <Route
               exact
               path="/register"
@@ -67,6 +84,9 @@ class App extends Component {
               name="Home"
               render={(props) => <DefaultLayout {...props} />}
             />
+
+
+
           </Switch>
         </React.Suspense>
       </HashRouter>

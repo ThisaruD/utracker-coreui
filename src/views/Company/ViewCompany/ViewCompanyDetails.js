@@ -1,10 +1,26 @@
-import React from 'react';
-
-import {Button, Card, CardBody, CardHeader, Col, FormGroup, Input, Jumbotron, Label} from "reactstrap";
+import React, {useState,useEffect} from 'react';
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, FormText, Input, Jumbotron, Label} from "reactstrap";
+import axios from "axios";
 
 
 const ViewCompanyDetails = () =>{
 
+  const [companyName,setCompanyName] = useState('');
+  const [companyLocation,setCompanyLocation] = useState('');
+  const [companyAddress,setCompanyAddress] = useState('');
+
+const [company_name,setCompany_name] = useState('travelX');
+//const obj = {company_name};
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/api/user/getcompanydetails',{params:{company_name}})
+      .then((res)=>{
+        console.log(res.data);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  });
 
 
 
@@ -12,25 +28,92 @@ const ViewCompanyDetails = () =>{
     <div>
       <Card>
         <CardHeader>
-          <i className="fa fa-align-justify"></i><strong>Jumbotron</strong>
-          <div className="card-header-actions">
-            <a href="https://reactstrap.github.io/components/jumbotron/" rel="noreferrer noopener" target="_blank" className="card-header-action">
-              <small className="text-muted">docs</small>
-            </a>
-          </div>
+          <strong>Edit Company Details</strong>
         </CardHeader>
+
         <CardBody>
-          <Jumbotron>
-            <h1 className="display-3">Hello, world!</h1>
-            <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra
-              attention to featured content or information.</p>
-            <hr className="my-2" />
-            <p>It uses utility classes for typgraphy and spacing to space content out within the larger container.</p>
-            <p className="lead">
-              <Button color="primary">Learn More</Button>
-            </p>
-          </Jumbotron>
+          <Form
+
+            encType="multipart/form-data"
+            className="form-horizontal"
+            // onSubmit={submitFunc}
+          >
+            <FormGroup row>
+              {/*space for empty row  */}
+              <Col md="3">
+                <Label></Label>
+              </Col>
+              <Col xs="12" md="9">
+                <p className="form-control-static">-</p>
+              </Col>
+            </FormGroup>
+
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Name</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-name"
+                  name="company-name"
+                  placeholder="Company Name"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                />
+
+                <FormText color="muted">Please Enter Company Name </FormText>
+              </Col>
+            </FormGroup>
+
+
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Location</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-location"
+                  name="company-location"
+                  placeholder="company-location"
+                  value={companyLocation}
+                  onChange={(e) => setCompanyLocation(e.target.value)}
+                />
+
+                {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
+              </Col>
+            </FormGroup>
+
+
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Address</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-address"
+                  name="company-address"
+                  placeholder="company-address"
+                  value={companyAddress}
+                  onChange={(e) => setCompanyAddress(e.target.value)}
+                />
+
+                {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
+              </Col>
+            </FormGroup>
+
+
+            <Button type="submit" size="sm" color="primary">
+              <i className="fa fa-dot-circle-o" /> Submit
+            </Button>
+            <Button type="reset" size="sm" color="danger">
+              <i className="fa fa-ban" /> Reset
+            </Button>
+          </Form>
         </CardBody>
+        <CardFooter></CardFooter>
       </Card>
     </div>
   );
