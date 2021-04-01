@@ -1,9 +1,10 @@
 import React, {useState,useEffect} from 'react';
 import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, FormText, Input, Jumbotron, Label} from "reactstrap";
 import axios from "axios";
+import {Link} from "react-router-dom";
 
 
-const ViewCompanyDetails = () =>{
+const ViewCompanyDetails = (props) =>{
 
   const [companyName,setCompanyName] = useState('');
   const [companyLocation,setCompanyLocation] = useState('');
@@ -13,9 +14,12 @@ const [company_name,setCompany_name] = useState('travelX');
 //const obj = {company_name};
 
   useEffect(()=>{
-    axios.get('http://localhost:8000/api/user/getcompanydetails',{params:{company_name}})
+    axios.get('http://localhost:8000/api/getcompanydetails',{params:{company_name:props.match.params.id}})
       .then((res)=>{
         console.log(res.data);
+        setCompanyName(res.data.company_name);
+        setCompanyLocation(res.data.company_location);
+        setCompanyAddress(res.data.company_address);
       })
       .catch((err)=>{
         console.log(err);
@@ -28,7 +32,7 @@ const [company_name,setCompany_name] = useState('travelX');
     <div>
       <Card>
         <CardHeader>
-          <strong>Edit Company Details</strong>
+          <strong>View Company Details</strong>
         </CardHeader>
 
         <CardBody>
@@ -59,7 +63,8 @@ const [company_name,setCompany_name] = useState('travelX');
                   name="company-name"
                   placeholder="Company Name"
                   value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  disabled
+                  // onChange={(e) => setCompanyName(e.target.value)}
                 />
 
                 <FormText color="muted">Please Enter Company Name </FormText>
@@ -78,7 +83,8 @@ const [company_name,setCompany_name] = useState('travelX');
                   name="company-location"
                   placeholder="company-location"
                   value={companyLocation}
-                  onChange={(e) => setCompanyLocation(e.target.value)}
+                  disabled
+                  // onChange={(e) => setCompanyLocation(e.target.value)}
                 />
 
                 {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
@@ -97,7 +103,8 @@ const [company_name,setCompany_name] = useState('travelX');
                   name="company-address"
                   placeholder="company-address"
                   value={companyAddress}
-                  onChange={(e) => setCompanyAddress(e.target.value)}
+                  disabled
+                  // onChange={(e) => setCompanyAddress(e.target.value)}
                 />
 
                 {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
@@ -105,12 +112,19 @@ const [company_name,setCompany_name] = useState('travelX');
             </FormGroup>
 
 
-            <Button type="submit" size="sm" color="primary">
-              <i className="fa fa-dot-circle-o" /> Submit
+            <Link>
+            <Button
+              type="submit"
+              size="sm"
+              color="primary"
+            ><i className="fa fa-dot-circle-o" /> Back
             </Button>
-            <Button type="reset" size="sm" color="danger">
-              <i className="fa fa-ban" /> Reset
-            </Button>
+            </Link>
+
+
+            {/*<Button type="reset" size="sm" color="danger">*/}
+            {/*  <i className="fa fa-ban" /> Reset*/}
+            {/*</Button>*/}
           </Form>
         </CardBody>
         <CardFooter></CardFooter>

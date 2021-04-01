@@ -1,148 +1,58 @@
-import React, { Component } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import axios from 'axios';
 
-class Register extends Component {
-
-  constructor(props) {
-
-    super(props);
-    this.onChangeFirstName = this.onChangeFirstName.bind(this);
-    this.onChangeLastName = this.onChangeLastName.bind(this);
-    this.onChangeEmail = this.onChangeEmail.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.submitFunc = this.submitFunc.bind(this);
-    this.getAddUserData =  this.getAddUserData.bind(this);
-
-    this.state = {
-      firstname: "",
-      lastname: "",
-      email: "",
-      password: "",
-      type: "",
-      companyNames:[]
-    }
-
-  }
+const Register = (props) => {
 
 
-  getAddUserData(){
-    axios.get('https://run.mocky.io/v3/535d0e80-1eae-4404-bc8c-52d252fb9069')
+  const [first_name, setFirst_name] = useState('');
+  const [last_name, setLast_name] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [companyNames, setCompanyNames] = useState([]);
+  const [company_name, setCompany_name] = useState('');
+  const [user_role_id,SetUser_role_id ] = useState('');
+
+
+
+useEffect(()=>{
+    axios.get('http://localhost:8000/api/getallcompanies')
       .then((res)=>{
         console.log(res.data);
-        this.setState({
-          companyNames:res.data.companies
-        });
+        setCompanyNames(res.data.companies);
       })
       .catch((err)=>{
         console.log(err);
       })
-  }
+  },[]);
 
 
-  optionRow() {
-    return (
-      <div>
-        <option></option>
-      </div>
-    );
-  }
+const submitFunc = (e) => {
+  e.preventDefault();
+  const registerDetails = {first_name, last_name, email, password, company_name,user_role_id};
+  console.log(registerDetails);
 
+ // const headers = {'Content-Type': 'application/json'}
 
-
-  componentDidMount() {
-    this.getAddUserData();
-  }
-
-
-  onChangeFirstName(e) {
-    this.setState({
-
-      firstname: e.target.value
+  axios.post('http://localhost:8000/api/register', registerDetails )
+    .then((res) => {
+      console.log(res.data);
+      localStorage.setItem('user', JSON.stringify({
+        token: res.data.token
+      }));
+      setCompany_name('');
+      setFirst_name('');
+      setLast_name('');
+      setEmail('');
+      setPassword('');
+      SetUser_role_id('');
     });
-  }
-
-  onChangeLastName(e) {
-    this.setState({
-
-      lastname: e.target.value
-    });
-  }
-
-
-  onChangeEmail(e) {
-    this.setState({
-
-      email: e.target.value
-    });
-  }
-
-  onChangePassword(e) {
-    this.setState({
-      password: e.target.value
-    })
-  }
-
-  // renderRedirect = () => {
-  //     if (this.props.redirect) {
-  //         //return <Redirect to='/dashboard' component={Dashboard} />
-  //         this.props.history.push('/dashboard');
-  //     }
-  // }
-
-
-
-  submitFunc(e) {
-    e.preventDefault();
-
-    const obj = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      email: this.state.email,
-      password: this.state.password
-    };
-
-    console.log(obj);
-    axios.post('http://127.0.0.1:8000/api/user/register', obj)
-      .then((res) => { console.log(res.data)})
-      .then(alert('User added succesfuly'))
-     .then( this.props.history.push('.views/dashboard'));
-
-
-    // axios.post('http://127.0.0.1:8000/api/user/register', obj)
-    //   .then((res) => {
-    //     console.log(res.data);
-    //     localStorage.setItem('user', JSON.stringify({
-    //       token: res.data.token
-    //     }));
-    //
-    //     if (res.data.success == true) {
-    //       alert('User logged succesfuly')
-    //       this.props.history.push('/home')
-    //     } else {
-    //       alert("User not register")
-    //     }
-    //   });
+}
 
 
 
 
-
-    this.setState({
-      firstname:'',
-      lastname:'',
-      email: '',
-      password: ''
-
-    });
-    //this.renderRedirect();
-  }
-
-
-
-
-  render() {
-    return (
+return (
       <div className="app flex-row align-items-center">
 
         <Container>
@@ -154,9 +64,9 @@ class Register extends Component {
               <Card className="mx-4">
 
                 <CardBody className="p-4">
-                  <Form onSubmit={this.submitFunc}>
+                  <Form onSubmit={submitFunc}>
                     <h1>Add User</h1>
-                    <h1>{this.state.companyNames[0]}</h1>
+                    {/*<h1>{this.state.companyNames[0]}</h1>*/}
                     <p className="text-muted">Create your account</p>
 
                     <InputGroup className="mb-3">
@@ -170,8 +80,8 @@ class Register extends Component {
                         placeholder="firstname"
                         autoComplete="username"
                         required
-                        onChange={this.onChangeFirstName}
-                        value={this.state.firstname}
+                        onChange={(e) => setFirst_name(e.target.value)}
+                        value={first_name}
                       />
                     </InputGroup>
 
@@ -186,8 +96,8 @@ class Register extends Component {
                              placeholder="lastname"
                              autoComplete="username"
                              required
-                             onChange={this.onChangeLastName}
-                             value={this.state.lastname}
+                             onChange={(e) => setLast_name(e.target.value)}
+                             value={last_name}
                       />
                     </InputGroup>
 
@@ -200,8 +110,8 @@ class Register extends Component {
                              placeholder="Email"
                              autoComplete="email"
                              required
-                             onChange={this.onChangeEmail}
-                             value={this.state.email}
+                             onChange={(e) => setEmail(e.target.value)}
+                             value={email}
                       />
                     </InputGroup>
 
@@ -215,8 +125,8 @@ class Register extends Component {
                              placeholder="Password"
                              autoComplete="new-password"
                              required
-                             onChange={this.onChangePassword}
-                             value={this.state.password}
+                             onChange={(e) => setPassword(e.target.value)}
+                             value={password}
                       />
                     </InputGroup>
 
@@ -227,13 +137,15 @@ class Register extends Component {
                         type="select"
                         name="type"
                         id="type"
-
-                        // value={type}
-                        // onChange={(e) => setType(e.target.value)}
+                         value={company_name}
+                        onChange={(e)=>{setCompany_name(e.target.value)}}
+                        //onChange={(e) => setType(e.target.value)}
                       >
                         <option value="0">Select Company Name</option>
-                        {this.state.companyNames.map((company)=>(
-                          <option values={company}>{company}</option>
+                        {companyNames.map((company)=>(
+                          <option values={company}
+                           onChange={(e)=>{setCompany_name(e.target.value)}}
+                          >{company}</option>
                         ))}
 
 
@@ -246,18 +158,15 @@ class Register extends Component {
                         type="select"
                         name="type"
                         id="type"
-                        // value={type}
-                        // onChange={(e) => setType(e.target.value)}
+                        onChange={(e)=>{SetUser_role_id(e.target.value)}}
+                        // value={this.state.userType}
                       >
                         <option value="null">Select User Type</option>
-                        <option value="1">Transport Manager</option>
-                        <option value="2">Staff</option>
+                        <option value="2">Transport Manager</option>
+                        <option value="3">Staff</option>
 
                       </Input>
                     </InputGroup>
-
-
-
                     <Button color="success" block>Create Account</Button>
                   </Form>
 
@@ -278,7 +187,7 @@ class Register extends Component {
         </Container>
       </div>
     );
-  }
+
 }
 
 export default Register;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, NavLink,Route ,useHistory} from 'react-router-dom';
+import { Link, NavLink} from 'react-router-dom';
 import {
   Badge,
   UncontrolledDropdown,
@@ -46,7 +46,7 @@ class DefaultHeader extends Component {
           <AppSidebarToggler className="d-lg-none" display="md" mobile />
           <AppNavbarBrand/>
           <h1>U-tracker</h1>
-          <h7>TRANSPORT MANAGEMENT SYSTEM</h7>
+          <h6>TRANSPORT MANAGEMENT SYSTEM</h6>
           <AppSidebarToggler className="d-md-down-none" display="lg" />
 
           <Nav className="d-md-down-none" navbar></Nav>
@@ -75,9 +75,9 @@ class DefaultHeader extends Component {
                 {/*<DropdownItem><i className="fa fa-comments"></i> Comments<Badge color="warning">42</Badge></DropdownItem>*/}
                 <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
 
-                <DropdownItem ><i className="fa fa-user" ></i><a href='/profile'> View Profile</a></DropdownItem>
+                <DropdownItem ><i className="fa fa-user" ></i><Link to='/profile'> View Profile</Link></DropdownItem>
 
-                <DropdownItem><i className="fa fa-wrench"></i><Link to='/profile'> Edit Profile</Link> </DropdownItem>
+                <DropdownItem><i className="fa fa-wrench"></i><Link to='/profile-edit'> Edit Profile</Link> </DropdownItem>
 
                 <DropdownItem ><i className="fa fa-wrench"></i><Link to='/setting'>Setting</Link></DropdownItem>
 

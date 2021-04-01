@@ -1,77 +1,197 @@
-import React from 'react'
-import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, FormText, Input, Label,} from 'reactstrap';
-import {Link} from "react-router-dom";
+import React,{useState,useEffect} from "react";
+import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, InputGroupText, InputGroupAddon, InputGroup} from "reactstrap";
+import axios from "axios";
+
+
+const Profile = (props) => {
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [nicNumber, setNicNumber] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [user_id,setUser_id] =useState('1');
+
+  useEffect(()=>{
+    axios.get('http://localhost:8000/api/getuserdetails/'+user_id)
+      .then((res)=>{
+        console.log(res.data);
+        setFirstName(res.data.user[0].first_name);
+        setLastName(res.data.user[0].last_name);
+        setEmail(res.data.user[0].email);
+        setNicNumber(res.data.user[0].nic);
+        setContactNumber(res.data.user[0].contact_no);
+
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  },[]);
+
+
+
+  const submitFunc = (e) => {
+    e.preventDefault();
+    const profileDetails = {
+      firstName,
+      lastName,
+      email,
+      nicNumber,
+      contactNumber,
+      password,
+    };
+    console.log(profileDetails);
+
+
+    fetch('http://localhost:8000/api/getuserdetails/'+user_id,{
+      method:'POST',
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(profileDetails)
+    }).then((res)=>{
+      console.log(res.data);
+    }).catch((err)=>{
+      console.log(err);
+    })
 
 
 
 
-const Profile = () =>{
+  }
 
-  return(
+  return (
     <div>
-      <Card>
-
-        <CardHeader>
+      <Card className="NewClass">
+        <CardHeader className="NewClass_h">
           <strong>User Profile</strong> information
         </CardHeader>
-
-        <CardBody>
-          <Form action="" method="post" encType="multipart/form-data" className="form-horizontal">
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Static</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <p className="form-control-static">Username</p>
-              </Col>
+        <CardBody className="NewBody">
+          <Form action="" method="post" onSubmit={submitFunc}>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-user"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="text"
+                  id="firstName"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={firstName}
+                  // onChange={(e) => setFirstName(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-user"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="text"
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={lastName}
+                  // onChange={(e) => setLastName(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-envelope"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="email"
+                  id="email1"
+                  name="email1"
+                  placeholder="Email"
+                  value={email}
+                  // onChange={(e) => setEmail(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-id-card-o"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="text"
+                  id="nicNumber"
+                  name="nicNumber"
+                  placeholder="NIC Number"
+                  value={nicNumber}
+                  // onChange={(e) => setNicNumber(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
+            </FormGroup>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-phone"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="text"
+                  id="contactNumber"
+                  name="contactNumber"
+                  placeholder="Contact Number"
+                  value={contactNumber}
+                  // onChange={(e) => setContactNumber(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
             </FormGroup>
 
-            <FormGroup row>
-              <Col md="3">
-                <Label htmlFor="text-input">Text Input</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input type="text" id="text-input" name="text-input" placeholder="Text" />
-                <FormText color="muted">This is a help text</FormText>
-              </Col>
-            </FormGroup>
 
-            <FormGroup row>
-              <Col md="3">
-                <Label htmlFor="email-input">Email Input</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input type="email" id="email-input" name="email-input" placeholder="Enter Email" autoComplete="email"/>
-                <FormText className="help-block">Please enter your email</FormText>
-              </Col>
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-asterisk"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  type="password"
+                  id="password1"
+                  name="password1"
+                  placeholder="Password"
+                  value={password}
+                  // onChange={(e) => setPassword(e.target.value)}
+                  disabled
+                />
+              </InputGroup>
             </FormGroup>
+            <FormGroup className="form-actions">
+              <Button
+                type="submit"
+                size="sm"
+                color="success"
+                className="profBut"
+              >
+                Save Details
+              </Button>
 
-            <FormGroup row>
-              <Col md="3">
-                <Label htmlFor="password-input">Password</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input type="password" id="password-input" name="password-input" placeholder="Password" autoComplete="new-password" />
-                <FormText className="help-block">Please enter a complex password</FormText>
-              </Col>
+
             </FormGroup>
-
           </Form>
         </CardBody>
-
-        <CardFooter>
-
-          <Button type="reset" size="sm" color="danger"><i className="cui-arrow-left"></i> Back</Button>
-          <Button
-            type="submit"
-            size="sm"
-            color="primary"
-          ><i className="fa fa-dot-circle-o"></i>Edit Profile</Button>
-
-
-        </CardFooter>
-
       </Card>
     </div>
   );

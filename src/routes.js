@@ -59,6 +59,11 @@ const EditCompany = React.lazy(()=>import('./views/Company/EditCompany/EditCompa
 const EditCompanyDetails = React.lazy(()=>import('./views/Company/EditCompany/EditCompanyDetails'));
 const AddCompany = React.lazy(()=>import('./views/Company/AddCompany/AddCompany'));
 const ViewVehicleData = React.lazy(()=>import('./views/Vehicles/ViewVehicle/ViewVehicleData'));
+const ViewCompanyDetails = React.lazy(()=>import('./views/Company/ViewCompany/ViewCompanyDetails'));
+
+const StaffHome = React.lazy(()=>import('./views/Home/StaffHome/StaffHome'));
+const SuperAdminHome = React.lazy(()=>import('./views/Home/SuperAdminHome/SuperAdminHome'));
+const TransportManagerHome = React.lazy(()=>import('./views/Home/TransportManegerHome/TransportManagerHome'));
 ////////////////////////////Required Sample Pages///////////////////////
 // const Company
 
@@ -69,6 +74,9 @@ const ViewVehicleData = React.lazy(()=>import('./views/Vehicles/ViewVehicle/View
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  {path: '/staff-home', name:'StaffHome', component:StaffHome},
+  {path:'/super-admin-home', name:'SuperAdminHome', component:SuperAdminHome},
+  {path:'/transport-manager-home', name:'TransportManagerHome', component:TransportManagerHome},
   { path: '/about', name: 'About', component: About},
   { path: '/contact', name: 'Contact', component: Contact },
   {path: '/setting', name: 'Setting', component:Setting},
@@ -103,6 +111,9 @@ const routes = [
   { path: '/company/view-company', name:'ViewCompany', component: ViewCompany},
   { path: '/company/add-company', name:'AddCompany', component: AddCompany},
   { path: '/company/details/:id', name:'EditCompanyDetails', component: EditCompanyDetails},
+  { path:'/company/details2/:id', name:'ViewCompanyDetails', component:ViewCompanyDetails},
+
+
 
 
   // { path: '/base/breadcrumbs', name: 'Breadcrumbs', component: Breadcrumbs },

@@ -8,10 +8,10 @@ const EditCompanyDetails = (props) => {
   const[companyName,setCompanyName] = useState('');
   const[companyLocation,setCompanyLocation] = useState('');
   const[companyAddress,setCompanyAddress] = useState('');
+  const[companyId, setCompanyId] = useState('props.match.params.id');
 
-
-useEffect(()=>{
-  axios.get('http://localhost:8000/api/user/getcompanydetails',{params:{company_name:props.match.params.id}})
+useEffect(() => {
+  axios.get('http://localhost:8000/api/getcompanydetails',{params:{company_name:props.match.params.id}})
     .then((res)=>{
       console.log(res.data);
       setCompanyName(res.data.company_name);
@@ -21,11 +21,24 @@ useEffect(()=>{
     .catch((err)=>{
       console.log(err);
     })
-})
+},[]);
 
 
   const submitFunc = (e) =>{
 e.preventDefault();
+
+const companyDetails = {companyName,companyLocation, companyAddress,companyId};
+
+axios.put('http://localhost:8000/api/updatecompanydetails',{companyDetails})
+  .then((res)=>{
+    console.log(res.data);
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
+
+
+
 
   }
 
@@ -48,6 +61,7 @@ e.preventDefault();
         </CardHeader>
 
         <CardBody>
+
           <Form
 
             encType="multipart/form-data"
@@ -122,10 +136,10 @@ e.preventDefault();
 
 
             <Button type="submit" size="sm" color="primary">
-              <i className="fa fa-dot-circle-o" /> Submit
+              <i className="fa fa-dot-circle-o" /> Save
             </Button>
             <Button type="reset" size="sm" color="danger">
-              <i className="fa fa-ban" /> Reset
+              <i className="fa fa-ban" /> Delete
             </Button>
           </Form>
         </CardBody>

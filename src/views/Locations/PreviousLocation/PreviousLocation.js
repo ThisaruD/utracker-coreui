@@ -1,41 +1,35 @@
 import React, { Component,useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
+import axios from "axios";
 
 
 
 class PreviousLocation extends Component{
 
-  // const [vehicleNumber,setVehicleNumber] = useState('');
-  // const [date,setDate] = useState('');
-  // const [time,setTime] = useState('');
-
-  // const submitFunc = (e) => {
-  //   e.preventDefault();
-  //
-  //   const obj = {vehicleNumber, date, time}
-  //   console.log(obj);
-  //
-  //   //get backend
-  //
-  //   setTime('');
-  //   setDate('');
-  //   setVehicleNumber('');
-  //
-  // }
   constructor(props) {
     super(props);
     this.state = {
       date:"",
       time:"",
-      vehicleNumber:"'"
+      vehicleNumber:"",
+      vehicleList:[]
     }
   }
 
+  componentDidMount() {
+    axios.get('http://localhost:8000/api/user/allvehiclenumbers')
+      .then((res)=>{
+        console.log(res.data);
+        this.state.vehicleList(res.data.vehicles);
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+  }
 
 
-render(){
-
+  render(){
     return (
       <div>
         <h1>This is previous location tab hello world</h1>
@@ -73,14 +67,20 @@ render(){
                     <Col xs="12">
                       <FormGroup>
                         <Label htmlFor="vehicleNumber">Vehicle Number</Label>
-                        <Input
-                          type="text"
-                          name="ccc"
-                          placeholder="NM-2345"
-                          required
-                          // onChange={(e)=>setVehicleNumber(e.target.value)}
-                          // value={vehicleNumber}
-                        />
+                        <Input type="select"
+                               name="select"
+                               id="select"
+                               onChange={(e)=>this.state.vehicleNumber(e.target.value)}
+                        >
+                          <option value="0">Please select</option>
+                          {this.state.vehicleList.map((vehicle)=>(
+                            <option
+                              value={vehicle}
+
+                            > {vehicle}</option>
+
+                          ))}
+                        </Input>
                       </FormGroup>
                     </Col>
                   </Row>
@@ -110,7 +110,9 @@ render(){
                     </Col>
                   </Row>
                   <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+
                     <Button block color="primary" className="btn-pill" type="submit">Get Location</Button>
+
                   </Col>
                 </Form>
               </CardBody>

@@ -14,32 +14,57 @@ import {
   Label
 } from "reactstrap";
 import axios from "axios";
-
+import csrf from 'csrf';
 
 
 const AddCompany = (props) =>{
 
-  //const user = JSON.parse(localStorage.getItem('user'));
 
+  const user = JSON.parse(localStorage.getItem('user'));
+//console.log(user.role_id);
 
-  const[companyName,setCompanyName] = useState('');
-  const[companyLocation,setCompanyLocation] = useState('');
-  const[companyAddress,setCompanyAddress] = useState('');
+  const[company_name,setCompany_name] = useState('');
+  const[company_location,setCompany_location] = useState('');
+  const[company_address,setCompany_address] = useState('');
 
  const submitFunc=(e)=>{
    e.preventDefault();
-   const companyDetails = {companyName,companyLocation,companyAddress};
-   console.log(companyDetails);
-
-   axios.post('http://localhost:8000/api/user/savecompanydetails',companyDetails)
-     .then((res)=>{
-       console.log(res);
-     })
-     .catch((err)=>{
-       console.log(err);
-     })
+    const companyDetails = {company_name,company_location,company_address};
+    console.log(companyDetails);
 
 
+// const config ={
+//   headers:{
+//     'Content_Type':'application/json'
+//   }
+// }
+//    const body = {
+//      company_name:'wso2',
+//      company_location:'jaffna',
+//      company_address:'no5555'
+//    }
+   // axios.post("http://localhost:8000/api/savecompanydetails",JSON.stringify(companyDetails),config)
+   //   .then((res)=>{
+   //     console.log(res.data);
+   //   })
+   //   .catch((err)=>{
+   //     console.log(err);
+   //   });
+
+fetch('http://localhost:8000/api/savecompanydetails',{
+  method:'POST',
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify(companyDetails)
+}).then((res)=>{
+  console.log(res.data.reply);
+}).catch((err)=>{
+  console.log(err);
+})
+
+
+    setCompany_name('');
+    setCompany_address('');
+    setCompany_location('');
   }
 
 
@@ -78,8 +103,8 @@ const AddCompany = (props) =>{
                     id="company-name"
                     name="company-name"
                     placeholder="Company Name"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
+                    value={company_name}
+                    onChange={(e) => setCompany_name(e.target.value)}
                   />
 
                   <FormText color="muted">Please Enter Company Name </FormText>
@@ -97,8 +122,8 @@ const AddCompany = (props) =>{
                     id="company-location"
                     name="company-location"
                     placeholder="company-location"
-                    value={companyLocation}
-                    onChange={(e) => setCompanyLocation(e.target.value)}
+                    value={company_location}
+                    onChange={(e) => setCompany_location(e.target.value)}
                   />
 
                   {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
@@ -116,8 +141,8 @@ const AddCompany = (props) =>{
                     id="company-address"
                     name="company-address"
                     placeholder="company-address"
-                    value={companyAddress}
-                    onChange={(e) => setCompanyAddress(e.target.value)}
+                    value={company_address}
+                    onChange={(e) => setCompany_address(e.target.value)}
                   />
 
                   {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}

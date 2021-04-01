@@ -39,25 +39,40 @@ class Login extends Component {
     };
 
     console.log(obj);
-    axios.post("http://127.0.0.1:8000/api/user/login", obj).then((res) => {
+    axios.post("http://127.0.0.1:8000/api/login", obj)
+      .then((res) => {
       console.log(res.data);
       localStorage.setItem("user", JSON.stringify({
-          token: res.data.token,
-        role_id:res.data.user_role_id,
+          token: res.data.access_token,
+        user_id:res.data.user.id,
+        company_id:res.data.user.user.companies_company_id,
+        role_id:res.data.user.user_roles_role_id,
+        first_name:res.data.user.first_name,
+
         })
       );
-      // localStorage.setItem("user_role",
-      //   "role_id:res.data.user_role_id"
-      // );
 
 
 
-      if (res.data.success == true) {
-        alert("User logged succesfuly");
-        this.props.history.push("/home");
-      } else {
-        alert("User not register");
-      }
+
+      // if (res.data.success == true) {
+      //   alert("User logged succesfuly");
+      //   // this.props.history.push("/transport-manager-home");
+      // } else {
+      //   alert("User not register");
+      // }
+
+
+      // if(user.role_id===1){
+      //   this.props.history.push("/super-admin-home");
+      // }else if (user.role_id===2){
+      //   this.props.history.push("/transport-manager-home");
+      // }else{
+      //   this.props.history.push("/staff-home");
+      // }
+
+
+
     });
     //.then(alert('User logged succesfuly'));
     //.then( this.props.history.push('/home'));
@@ -86,7 +101,7 @@ class Login extends Component {
                           <InputGroupText>@</InputGroupText>
                         </InputGroupAddon>
                         <Input
-                          type="text"
+                          type="email"
                           required
                           onChange={this.onChangeEmail}
                           placeholder="Email"
