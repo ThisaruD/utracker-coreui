@@ -16,6 +16,9 @@ const Register = (props) => {
 
 
 useEffect(()=>{
+
+
+
     axios.get('http://localhost:8000/api/getallcompanies')
       .then((res)=>{
         console.log(res.data);
@@ -37,9 +40,9 @@ const submitFunc = (e) => {
   axios.post('http://localhost:8000/api/register', registerDetails )
     .then((res) => {
       console.log(res.data);
-      localStorage.setItem('user', JSON.stringify({
-        token: res.data.token
-      }));
+      // localStorage.setItem('user', JSON.stringify({
+      //   token: res.data.token
+      // }));
       setCompany_name('');
       setFirst_name('');
       setLast_name('');

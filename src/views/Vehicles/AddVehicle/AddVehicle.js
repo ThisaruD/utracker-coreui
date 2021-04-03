@@ -16,8 +16,8 @@ const AddVehicle = (props) => {
   const [serial_number,setSerial_number] = useState('');
   const [status,setStatus] = useState('');
 
-
-  const [user_id,setUser_id] = useState('1');
+//========================should get this data from local storage====================
+  const [user_id,setUser_id] = useState('2');
   const [companies_company_id,setCompanies_company_id] = useState('2');
 
  // const user = JSON.parse(localStorage.getItem('user'));
@@ -43,7 +43,7 @@ const AddVehicle = (props) => {
    axios.post('http://localhost:8000/api/savevehicledetails/'+user_id,vehicleDetails,{
      headers:{
        "content-type":"application/json",
-       // Authorization:"Bearer" + localStorage.getItem('token'),
+        Authorization:"Bearer" + localStorage.getItem('token'),
      },
     })
      .then(res=>{
@@ -124,6 +124,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="vehicle-number"
                     name="vehicle-number"
@@ -139,6 +140,7 @@ const AddVehicle = (props) => {
                 <Col md="6">
                   <Label htmlFor="text-input">Type</Label>
                   <Input
+                    required
                     type="select"
                     name="type"
                     id="type"
@@ -171,6 +173,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="driver-name"
                     name="driver-name"
@@ -188,6 +191,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="driver-contact-number"
                     name="driver-contact-number"
@@ -208,6 +212,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="owner-name"
                     name="owner-name"
@@ -225,6 +230,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="owner-contact-number"
                     name="owner-contact-number"
@@ -246,6 +252,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="date"
                     id="date-added"
                     name="date-added"
@@ -262,6 +269,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="select"
                     name="unit-per-km"
                     id="unit-per-km"
@@ -283,6 +291,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="device-serial-number"
                     name="device-serial-number"
@@ -301,6 +310,7 @@ const AddVehicle = (props) => {
                 </Col>
                 <Col xs="12" md="9">
                   <Input
+                    required
                     type="text"
                     id="device-status"
                     name="device-status"

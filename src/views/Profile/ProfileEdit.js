@@ -16,24 +16,25 @@ import axios from "axios";
 
 const ProfileEdit = (props) => {
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [first_name, setFirst_name] = useState("");
+  const [last_name, setLast_name] = useState("");
   const [email, setEmail] = useState("");
-  const [nicNumber, setNicNumber] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
+  const [nic, setNic] = useState("");
+  const [contact_no, setContact_no] = useState("");
   const [password, setPassword] = useState("");
 
-  const [user_id,setUser_id] =useState('1');
+  const [user_id,setUser_id] =useState('5');
 
   useEffect(()=>{
     axios.get('http://localhost:8000/api/getuserdetails/'+user_id)
       .then((res)=>{
         console.log(res.data);
-        setFirstName(res.data.user[0].first_name);
-        setLastName(res.data.user[0].last_name);
+        setFirst_name(res.data.user[0].first_name);
+        setLast_name(res.data.user[0].last_name);
         setEmail(res.data.user[0].email);
-        setNicNumber(res.data.user[0].nic);
-        setContactNumber(res.data.user[0].contact_no);
+        setNic(res.data.user[0].nic);
+        setContact_no(res.data.user[0].contact_no);
+        //setPassword(res.data.user[0].password)
 
       })
       .catch((err)=>{
@@ -45,14 +46,28 @@ const ProfileEdit = (props) => {
   const submitFunc = (e) => {
     e.preventDefault();
     const profileDetails = {
-      firstName,
-      lastName,
+      first_name,
+      last_name,
       email,
-      nicNumber,
-      contactNumber,
-      password,
+      nic,
+      contact_no,
+      password
     };
     console.log(profileDetails);
+
+axios.put('http://localhost:8000/api/updateuserdetails/'+user_id,profileDetails,{
+  headers:{
+    "Content_type":"application/json",
+    Authorization:"Bearer"+ localStorage.getItem("token")
+  },
+})
+  .then((res)=>{
+    console.log(res.data);
+    alert(res.data.message1)
+  })
+  .catch((err)=>{
+    console.log(err);
+  })
 
 
 
@@ -65,7 +80,7 @@ const ProfileEdit = (props) => {
 
    axios.delete('')
      .then((res)=>{
-       console.log(res.data);
+       console.log(res.data.message1);
      })
      .catch((err)=>{
        console.log(err);
@@ -73,7 +88,6 @@ const ProfileEdit = (props) => {
 
 
   }
-
 
 
     // fetch('',{
@@ -108,12 +122,13 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="text"
                   id="firstName"
                   name="firstName"
                   placeholder="First Name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={first_name}
+                  onChange={(e) => setFirst_name(e.target.value)}
                 />
               </InputGroup>
             </FormGroup>
@@ -125,12 +140,13 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="text"
                   id="lastName"
                   name="lastName"
                   placeholder="Last Name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={last_name}
+                  onChange={(e) => setLast_name(e.target.value)}
                 />
               </InputGroup>
             </FormGroup>
@@ -142,6 +158,7 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="email"
                   id="email1"
                   name="email1"
@@ -159,12 +176,13 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="text"
                   id="nicNumber"
                   name="nicNumber"
                   placeholder="NIC Number"
-                  value={nicNumber}
-                  onChange={(e) => setNicNumber(e.target.value)}
+                  value={nic}
+                  onChange={(e) => setNic(e.target.value)}
                 />
               </InputGroup>
             </FormGroup>
@@ -176,12 +194,13 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="text"
                   id="contactNumber"
                   name="contactNumber"
                   placeholder="Contact Number"
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
+                  value={contact_no}
+                  onChange={(e) => setContact_no(e.target.value)}
                 />
               </InputGroup>
             </FormGroup>
@@ -195,11 +214,13 @@ const ProfileEdit = (props) => {
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
+                  required
                   type="password"
                   id="password1"
                   name="password1"
                   placeholder="Password"
                   value={password}
+                  required
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </InputGroup>
@@ -212,6 +233,7 @@ const ProfileEdit = (props) => {
                     size="sm"
                     color="success"
                     className="profBut"
+                    onClick={submitFunc}
                   >
                     Save Details
                   </Button>

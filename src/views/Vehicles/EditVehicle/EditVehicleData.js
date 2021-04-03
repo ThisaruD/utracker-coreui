@@ -10,13 +10,14 @@ const EditVehicleData = (props) =>{
   const [type,setType] = useState('');
   const [unit_per_1km, setUnit_per_1km] = useState('');
   const [driver_name, setDriver_name] = useState('');
-  const [driver_contact_number, setDriver_contact_number] = useState("");
-  const [owner_name, setOwner_name] = useState("");
-  const [owner_contact_number, setOwner_contact_number] = useState("");
+  const [driver_contact_number, setDriver_contact_number] = useState('');
+  const [owner_name, setOwner_name] = useState('');
+  const [owner_contact_number, setOwner_contact_number] = useState('');
   const [serial_number,setSerial_number] = useState('');
   const [status,setStatus] = useState('');
 
-  const [date, setDate] = useState("");
+
+  const [date, setDate] = useState('');
   const [user_id,setUser_id] = useState('1');
 
 
@@ -26,14 +27,14 @@ const EditVehicleData = (props) =>{
       .then((res)=>{
         // setVehicle_number();
         setVehicle_number(res.data.vehicle_num);
-        setType(res.data.type);
+        setType(res.data.type1);
         setUnit_per_1km(res.data.unit_per_1km);
         setDriver_name(res.data.driver_name);
-        setDriver_contact_number(res.data.driver_contact_number);
+        setDriver_contact_number(res.data.driver_contact_no);
         setOwner_name(res.data.owner_name);
-        setOwner_contact_number(res.data.owner_contact_number);
+        setOwner_contact_number(res.data.owner_contact_no);
         setSerial_number(res.data.serial_number);
-        setStatus(res.data.status);
+        setStatus(res.data.status1);
 
          console.log(res.data);
       })
@@ -83,6 +84,7 @@ const EditVehicleData = (props) =>{
         <Card>
           <CardHeader>
             <strong>Vehicle Details</strong>
+            <h2>{props.match.params.id}</h2>
           </CardHeader>
           <CardBody>
             <Form
@@ -105,52 +107,28 @@ const EditVehicleData = (props) =>{
                 </Col>
               </FormGroup>
 
-              {/*<FormGroup row>*/}
-              {/*  <Col md="6">*/}
-              {/*    <Label htmlFor="text-input">Vehicle Number</Label>*/}
-              {/*  </Col>*/}
-              {/*  <Col xs="12" md="9">*/}
-              {/*    <Input*/}
-              {/*      type="text"*/}
-              {/*      id="vehicle-number"*/}
-              {/*      name="vehicle-number"*/}
-              {/*      placeholder="Vehicle Number"*/}
-              {/*      value={}*/}
-              {/*      onChange={(e) => setVehicle_number(e.target.value)}*/}
-              {/*    />*/}
-              {/*    <FormText color="muted">Please enter vehicle number</FormText>*/}
-              {/*  </Col>*/}
-              {/*</FormGroup>*/}
+
 
               <FormGroup row>
-                <Col md="6">
-                  <Label htmlFor="text-input">Type</Label>
+                <Col md="3">
+                  <Label>Type</Label>
+                </Col>
+                <Col xs="12" md="9">
                   <Input
-                    type="select"
-                    name="type"
+                    type="text"
                     id="type"
+                    name="type"
+                    placeholder="type"
                     value={type}
                     onChange={(e) => setType(e.target.value)}
-                  >
-                    <option value="0">Please select type</option>
-                    <option value="van">Van</option>
-                    <option value="car">Car</option>
-                    <option value="bus">Bus</option>
-                    <option value="truck">Truck</option>
-                  </Input>
-                </Col>
-                <Col md="6">
-                  {/*<Label>Brand Name</Label>*/}
-                  {/*<Input*/}
-                  {/*  type="text"*/}
-                  {/*  id="brand-name"*/}
-                  {/*  name="brand-Name"*/}
-                  {/*  placeholder="Vehicle brand name"*/}
-                  {/*  value={brandName}*/}
-                  {/*  onChange={(e) => setBrandName(e.target.value)}*/}
-                  {/*/>*/}
+                    disabled
+                  />
+                  <FormText className="help-block">Enter driver name</FormText>
                 </Col>
               </FormGroup>
+
+
+
 
               <FormGroup row>
                 <Col md="3">
@@ -163,7 +141,8 @@ const EditVehicleData = (props) =>{
                     name="driver-name"
                     placeholder="Driver Name"
                     value={driver_name}
-                    onChange={(e) => setDriver_name(e.target.value)}
+                    // onChange={(e) => setDriver_name(e.target.value)}
+
                   />
                   <FormText className="help-block">Enter driver name</FormText>
                 </Col>
@@ -199,7 +178,7 @@ const EditVehicleData = (props) =>{
                     id="owner-name"
                     name="owner-name"
                     placeholder="Owner Name"
-                    onChnge={owner_name}
+                    value={owner_name}
                     onChange={(e) => setOwner_name(e.target.value)}
                   />
                   <FormText className="help-block">Enter owner name</FormText>
@@ -225,23 +204,24 @@ const EditVehicleData = (props) =>{
                 </Col>
               </FormGroup>
 
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    Date Input <Badge>NEW</Badge>
-                  </Label>
-                </Col>
-                <Col xs="12" md="9">
-                  <Input
-                    type="date"
-                    id="date-added"
-                    name="date-added"
-                    placeholder="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                  />
-                </Col>
-              </FormGroup>
+              {/*<FormGroup row>*/}
+              {/*  <Col md="3">*/}
+              {/*    <Label>*/}
+              {/*      Date Input <Badge>NEW</Badge>*/}
+              {/*    </Label>*/}
+              {/*  </Col>*/}
+              {/*  <Col xs="12" md="9">*/}
+              {/*    <Input*/}
+              {/*      type="date"*/}
+              {/*      id="date-added"*/}
+              {/*      name="date-added"*/}
+              {/*      placeholder="date"*/}
+              {/*      value={date}*/}
+              {/*      onChange={(e) => setDate(e.target.value)}*/}
+              {/*    />*/}
+              {/*  </Col>*/}
+              {/*</FormGroup>*/}
+
 
               <FormGroup row>
                 <Col md="3">

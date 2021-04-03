@@ -13,19 +13,34 @@ class PreviousLocation extends Component{
       date:"",
       time:"",
       vehicleNumber:"",
-      vehicleList:[]
+      vehicleList:[],
+      user_id:'3',
+      vehicles:[]
     }
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/user/allvehiclenumbers')
-      .then((res)=>{
+    // axios.get('http://localhost:8000/api/user/allvehiclenumbers')
+    //   .then((res)=>{
+    //     console.log(res.data);
+    //     this.state.vehicleList(res.data.vehicles);
+    //   })
+    //   .catch((err)=>{
+    //     console.log(err);
+    //   })
+
+    axios.get('http://localhost:8000/api/allvehiclenumbers/'+this.state.user_id)
+      .then(res => {
+        //handle response data
         console.log(res.data);
-        this.state.vehicleList(res.data.vehicles);
+        this.setState({vehicles:res.data.vehicles})
+
       })
-      .catch((err)=>{
+      .catch((err) => {
+        //handle error
         console.log(err);
       })
+
   }
 
 
@@ -37,6 +52,8 @@ class PreviousLocation extends Component{
           <Col xs="12" lg="6">
             {/*<h1>USe this column for google map</h1>*/}
             <div>
+
+
               <Map
                 google={this.props.google} zoom={9}
                 initialCenter={{
@@ -47,13 +64,16 @@ class PreviousLocation extends Component{
                 <Marker onClick={this.onMarkerClick}
                         name={'Current location'} />
               </Map>
+
+
+
             </div>
           </Col>
           <Col xs="12" lg="6">
             <Card>
               <CardHeader>
                 <strong>Enter Details</strong>
-                <small> For Daily running report</small>
+                <small>For Previous Location</small>
               </CardHeader>
               <CardBody>
                 <Form >
@@ -65,23 +85,32 @@ class PreviousLocation extends Component{
                   </Row>
                   <Row>
                     <Col xs="12">
-                      <FormGroup>
-                        <Label htmlFor="vehicleNumber">Vehicle Number</Label>
-                        <Input type="select"
-                               name="select"
-                               id="select"
-                               onChange={(e)=>this.state.vehicleNumber(e.target.value)}
-                        >
-                          <option value="0">Please select</option>
-                          {this.state.vehicleList.map((vehicle)=>(
-                            <option
-                              value={vehicle}
 
-                            > {vehicle}</option>
 
-                          ))}
-                        </Input>
+
+                      <FormGroup row>
+                        <Col md="3">
+                          <Label htmlFor="select">Select Vehicle Number</Label>
+                        </Col>
+                        <Col xs="12" md="9">
+                          <Input type="select"
+                                 name="select"
+                                 id="select"
+                                 onChange={(e) => this.setState({vehicle_number:e.target.value})}
+                          >
+                            <option value="0">Please select</option>
+                            {this.state.vehicles.map((vehicle) => (
+                              <option
+                                values={vehicle}
+                              > {vehicle}</option>
+
+                            ))}
+                          </Input>
+                        </Col>
                       </FormGroup>
+
+
+
                     </Col>
                   </Row>
                   <Row>

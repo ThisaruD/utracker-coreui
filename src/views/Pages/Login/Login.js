@@ -42,38 +42,47 @@ class Login extends Component {
     axios.post("http://127.0.0.1:8000/api/login", obj)
       .then((res) => {
       console.log(res.data);
-      localStorage.setItem("user", JSON.stringify({
-          token: res.data.access_token,
-        user_id:res.data.user.id,
-        company_id:res.data.user.user.companies_company_id,
-        role_id:res.data.user.user_roles_role_id,
-        first_name:res.data.user.first_name,
 
+    if(res.data.message=='success'){
+      localStorage.setItem('user', JSON.stringify({
+          token: res.data.access_token,
+          u_id:res.data.user.id,
+          role_id:res.data.user.user_roles_role_id,
+          f_name:res.data.user.first_name,
+          l_name:res.data.user.last_name
         })
       );
 
 
 
-
-      // if (res.data.success == true) {
-      //   alert("User logged succesfuly");
-      //   // this.props.history.push("/transport-manager-home");
-      // } else {
-      //   alert("User not register");
-      // }
-
-
-      // if(user.role_id===1){
-      //   this.props.history.push("/super-admin-home");
-      // }else if (user.role_id===2){
-      //   this.props.history.push("/transport-manager-home");
-      // }else{
-      //   this.props.history.push("/staff-home");
-      // }
+      if(res.data.user.user_roles_role_id===1){
+        alert("User logged successfully");
+        this.props.history.push('/super-admin-home');
+      }else if(res.data.user.user_roles_role_id===2){
+        alert("User logged successfully");
+        this.props.history.push('/transport-manager-home');
+      }else if(res.data.user.user_roles_role_id===3){
+        alert("User logged successfully");
+        this.props.history.push('/staff-home');
+      }else if(res.data.user.user_roles_role_id==undefined){
+        alert("User Not registerd");
+      }
 
 
 
-    });
+
+
+    }else{
+      alert(res.data.message);
+    }
+
+
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
+
+
     //.then(alert('User logged succesfuly'));
     //.then( this.props.history.push('/home'));
 
@@ -82,6 +91,8 @@ class Login extends Component {
       password: "",
     });
   }
+
+
 
   render() {
     return (

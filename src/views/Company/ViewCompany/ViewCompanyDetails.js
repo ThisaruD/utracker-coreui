@@ -26,6 +26,9 @@ const [company_name,setCompany_name] = useState('travelX');
       })
   });
 
+  const goBack = () =>{
+    props.history.push('/dashboard');
+  }
 
 
   return(
@@ -117,6 +120,7 @@ const [company_name,setCompany_name] = useState('travelX');
               type="submit"
               size="sm"
               color="primary"
+              onClick={goBack}
             ><i className="fa fa-dot-circle-o" /> Back
             </Button>
             </Link>

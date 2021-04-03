@@ -1,144 +1,255 @@
-import React, { useState} from 'react';
+import React, {Component} from 'react';
 import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
-
-const PreviousPaths = ()=>  {
-
+import axios from "axios";
 
 
-  const [vehicleNumber,setVehicleNumber] = useState('');
-  const [date1,setDate1] = useState('');
-  const [time1,setTime1] = useState('');
-  const [date2,setDate2] = useState('');
-  const [time2,setTime2] = useState('');
+class PreviousPaths extends Component{
 
 
-  const submitFunc = (e) =>{
+  constructor(props) {
+    super(props);
+    this.submitFunc = this.submitFunc.bind(this);
+
+    this.state = {
+      vehicleNumber:'',
+      from_date:'',
+      from_time:'',
+      to_date:'',
+      to_time:'',
+      user_id:'3',
+      vehicles:[]
+    }
+  }
+
+
+  componentDidMount() {
+
+    axios.get('http://localhost:8000/api/allvehiclenumbers/'+this.state.user_id)
+      .then(res => {
+        //handle response data
+        console.log(res);
+        //setVehicles(res.data.vehicles);
+        this.setState({vehicles:res.data.vehicles})
+
+      })
+      .catch((err) => {
+        //handle error
+        console.log(err);
+      })
+
+  }
+
+//replace(/-/g,"/")
+
+  submitFunc (e){
     e.preventDefault();
-    const obj ={vehicleNumber, date1, time1, date2, time2}
-    console.log(obj);
 
-  setVehicleNumber('');
-  setDate1('');
-  setTime1('');
-  setDate2('');
-  setTime2('');
+    const obj = {
+    vehicle_number: this.state.vehicle_number,
+    from_date:  this.state.from_date,
+      from_time:this.state.from_time,
+      to_date: this.state.to_date,
+      to_time:this.state.to_time
+    }
+
+console.log(obj);
+    axios.get('http://localhost:8000/api/getvehiclepath',obj)
+      .then((res)=>{
+        console.log(res.data);
+      })
+      .catch((err)=>{
+console.log(err);
+      })
+
+    this.setState({
+      vehicle_number:'',
+      from_date:'',
+      from_time:'',
+      to_date:'',
+      to_time:''
+    })
+
+
 
   }
 
 
 
 
+  // const submitFunc = (e) =>{
+  //   e.preventDefault();
+  //   const obj ={vehicleNumber, date1, time1, date2, time2}
+  //   console.log(obj);
+  //
+  // setVehicleNumber('');
+  // setDate1('');
+  // setTime1('');
+  // setDate2('');
+  // setTime2('');
+  //
+  // }
 
+
+render() {
     return (
-      <div>
-        <h1>This is previous paths tab</h1>
-        <Row>
-          <Col xs="12" lg="6">
+    <div>
+      <h1>This is previous paths tab</h1>
+      <Row>
+        <Col xs="12" lg="6">
 
-          </Col>
-          <Col xs="12" lg="6">
-            <Card>
-              <CardHeader>
-                <strong>Enter Details</strong>
-                <small> For vehicles previous path </small>
-              </CardHeader>
-              <CardBody>
-                <Form onSubmit={submitFunc}>
-                  <Row>
-                    <Col xs="12">
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col xs="12">
-                      <FormGroup>
-                        <Label htmlFor="ccnumber">Vehicle Number</Label>
-                        <Input
-                          type="text"
-                          id="ccnumber"
-                          placeholder="NM-2345"
-                          required
-                          value={vehicleNumber}
-                          onChange={(e)=>{setVehicleNumber(e.target.value)}}
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <p>From</p>
-                  </Row>
-                  <Row>
-                    <Col xs="6">
-                      <FormGroup>
-                        <Label htmlFor="date1">Date</Label>
-                        <Input
-                          type="date"
-                          name="date1"
-                          id="date1"
-                          value={date1}
-                          onChange={(e)=>{setDate1(e.target.value)}}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="4">
-                      <FormGroup>
-                        <Label htmlFor="time1">Time</Label>
-                        <Input
-                          type="time"
-                          name="time1"
-                          id="time1"
-                          value={time1}
-                          onChange={(e)=>{setTime1(e.target.value)}}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="4">
-                    </Col>
-                  </Row>
-                  <Row>
-                    <p>To</p>
-                  </Row>
-                  <Row>
-                    <Col xs="6">
-                      <FormGroup>
-                        <Label htmlFor="ccmonth">Date</Label>
-                        <Input
-                          type="date"
-                          name="date2"
-                          id="date2"
-                          value={date2}
-                          onChange={(e)=>{setDate2(e.target.value)}}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="4">
-                      <FormGroup>
-                        <Label htmlFor="time2">Time</Label>
-                        <Input
-                          type="time"
-                          name="time2"
-                          id="time2"
-                          value={time2}
-                          onChange={(e)=>{setTime2(e.target.value)}}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col xs="4">
-                    </Col>
-                  </Row>
-                  <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                    <Button block color="primary" className="btn-pill" type="submit">Get Path</Button>
+        </Col>
+        <Col xs="12" lg="6">
+          <Card>
+            <CardHeader>
+              <strong>Enter Details</strong>
+              <small> For vehicles previous path </small>
+            </CardHeader>
+            <CardBody>
+              <Form
+                onSubmit={this.submitFunc}
+              >
+                <Row>
+                  <Col xs="12">
                   </Col>
-                </Form>
-              </CardBody>
-            </Card>
-
-          </Col>
-        </Row>
+                </Row>
+                <Row>
+                  <Col xs="12">
 
 
-      </div>
-    );
+
+                    {/*<FormGroup>*/}
+                    {/*  <Label htmlFor="ccnumber">Vehicle Number</Label>*/}
+                    {/*  <Input*/}
+                    {/*    type="text"*/}
+                    {/*    id="ccnumber"*/}
+                    {/*    placeholder="NM-2345"*/}
+                    {/*    required*/}
+                    {/*    value={this.state.vehicle_number}*/}
+                    {/*    onChange={(e) => {*/}
+                    {/*      this.setState({vehicle_number:e.target.value})*/}
+                    {/*    }}*/}
+                    {/*  />*/}
+                    {/*</FormGroup>*/}
+                    <FormGroup row>
+                      <Col md="3">
+                        <Label htmlFor="select">Select Vehicle Number</Label>
+                      </Col>
+                      <Col xs="12" md="9">
+                        <Input type="select"
+                               name="select"
+                               id="select"
+                               onChange={(e) => this.setState({vehicle_number:e.target.value})}
+                        >
+                          <option value="0">Please select</option>
+                          {this.state.vehicles.map((vehicle) => (
+                            <option
+                              values={this.state.vehicle}
+                            > {vehicle}</option>
+
+                          ))}
+                        </Input>
+                      </Col>
+                    </FormGroup>
+
+
+
+
+
+
+
+
+
+
+
+                  </Col>
+                </Row>
+
+                <Row>
+                  <p>From</p>
+                </Row>
+                <Row>
+                  <Col xs="6">
+                    <FormGroup>
+                      <Label htmlFor="date1">Date</Label>
+                      <Input
+                        type="date"
+                        format="YYYY/MM/DD"
+                        name="date1"
+                        id="date1"
+                        value={this.state.from_date}
+
+                        onChange={(e) => {
+                          this.setState({from_date:e.target.value})
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="4">
+                    <FormGroup>
+                      <Label htmlFor="time1">Time</Label>
+                      <Input
+                        type="time"
+                        name="time1"
+                        id="time1"
+                        value={this.state.from_time}
+                        onChange={(e) => {
+                          this.setState({from_time:e.target.value})
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="4">
+                  </Col>
+                </Row>
+                <Row>
+                  <p>To</p>
+                </Row>
+                <Row>
+                  <Col xs="6">
+                    <FormGroup>
+                      <Label htmlFor="ccmonth">Date</Label>
+                      <Input
+                        type="date"
+                        name="date2"
+                        id="date2"
+                        value={this.state.to_date}
+                        onChange={(e) => {
+                          this.setState({to_date:e.target.value})
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="4">
+                    <FormGroup>
+                      <Label htmlFor="time2">Time</Label>
+                      <Input
+                        type="time"
+                        name="time2"
+                        id="time2"
+                        value={this.state.to_time}
+                        onChange={(e) => {
+                          this.setState({to_time:e.target.value})
+                        }}
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col xs="4">
+                  </Col>
+                </Row>
+                <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                  <Button block color="primary" className="btn-pill" type="submit">Get Path</Button>
+                </Col>
+              </Form>
+            </CardBody>
+          </Card>
+
+        </Col>
+      </Row>
+
+
+    </div>
+  );
+}
 
 }
 
