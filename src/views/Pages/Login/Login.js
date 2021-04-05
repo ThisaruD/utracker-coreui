@@ -44,29 +44,29 @@ class Login extends Component {
       console.log(res.data);
 
     if(res.data.message=='success'){
-      localStorage.setItem('user', JSON.stringify({
-          token: res.data.access_token,
-          u_id:res.data.user.id,
-          role_id:res.data.user.user_roles_role_id,
-          f_name:res.data.user.first_name,
-          l_name:res.data.user.last_name
-        })
-      );
+      console.log(res.data.user.id);
+      localStorage["token"]=res.data.access_token;
+      localStorage["user_id"]=res.data.user.id;
+      localStorage["companies_company_id"]=res.data.user.companies_company_id;
+      //localStorage["user_role_id"]=res.data.user.user_roles_role_id;
+      // localStorage.setItem('u_id',JSON.stringify({res.data.user.id}));
 
 
 
-      if(res.data.user.user_roles_role_id===1){
-        alert("User logged successfully");
-        this.props.history.push('/super-admin-home');
-      }else if(res.data.user.user_roles_role_id===2){
-        alert("User logged successfully");
-        this.props.history.push('/transport-manager-home');
-      }else if(res.data.user.user_roles_role_id===3){
-        alert("User logged successfully");
-        this.props.history.push('/staff-home');
-      }else if(res.data.user.user_roles_role_id==undefined){
-        alert("User Not registerd");
-      }
+      this.props.history.push('/home'+res.data.user.user_roles_role_id);
+
+      // if(res.data.user.user_roles_role_id===1){
+      //   alert("User logged successfully");
+      //   this.props.history.push('/home/1');
+      // }else if(res.data.user.user_roles_role_id===2){
+      //   alert("User logged successfully");
+      //   this.props.history.push('/home/2');
+      // }else if(res.data.user.user_roles_role_id===3){
+      //   alert("User logged successfully");
+      //   this.props.history.push('/home/3');
+      // }else if(res.data.user.user_roles_role_id==undefined){
+      //   alert("User Not registerd");
+      // }
 
 
 

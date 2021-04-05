@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react';
-import {Button, Col, Form, FormGroup, Input, InputGroup, Label, Row} from "reactstrap";
+import {Button, Card, CardBody, Col, Form, FormGroup, Input, InputGroup, Label, Row} from "reactstrap";
 import axios from "axios";
 import {Redirect,Link} from 'react-router-dom';
 import EditCompanyDetails from "./EditCompanyDetails";
@@ -10,28 +10,46 @@ const EditCompany = (props) => {
   const [companyNames, setCompanyNames] = useState([]);
   const [companyName, setCompanyName] = useState('');
 
+  const[isLoggedIn,setIsLoggedIn] = useState(true);
+  const[userId, setUserId] = useState('');
+
+
+
   const clickHandler = () => {
     props.history.push('/company/details/' + companyName);
     console.log(companyName);
   }
 
+  const backToLogin = () =>{props.history.push('/login');}
+
 //https://run.mocky.io/v3/535d0e80-1eae-4404-bc8c-52d252fb9069 - run moky api
   useEffect(() => {
-    axios.get('http://localhost:8000/api/getallcompanies')
-      .then((res) => {
-        console.log(res.data);
-        setCompanyNames(res.data.companies);
-      })
 
-      .catch((err) => {
-        console.log(err);
-      })
-  }, [])
+    const user = localStorage.getItem("user_id");
+    setUserId(user);
 
-  const user = JSON.parse(localStorage.getItem('user'));
+    if(user==undefined){
+
+      console.log('hi');
+      setIsLoggedIn(false);
+    }else{
+
+      axios.get('http://localhost:8000/api/getallcompanies')
+        .then((res) => {
+          console.log(res.data);
+          setCompanyNames(res.data.companies);
+        })
+
+        .catch((err) => {
+          console.log(err);
+        })
+    }
+    }, [])
+
+  //const user = JSON.parse(localStorage.getItem('user'));
 
 
-  // if (user.role_id == 1 || user.role_id == 2) {
+  if(isLoggedIn===true){
     return (
       <di>
         <h1>This edit company details page</h1>
@@ -74,13 +92,40 @@ const EditCompany = (props) => {
         </Form>
       </di>
     );
-  // } else {
-  //   return (
-  //     <div>
-  //       <h1>Not permission to edit device</h1>
-  //     </div>
-  //   );
-  // }
+  }else if(isLoggedIn===false){
+    return (
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >Login</Button>
+
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+
+
+
+
 
 }
 

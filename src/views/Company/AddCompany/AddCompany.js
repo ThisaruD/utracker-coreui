@@ -1,4 +1,4 @@
-import React,{useState}  from 'react';
+import React,{useState,useEffect}  from 'react';
 import {
   Badge,
   Button,
@@ -11,7 +11,7 @@ import {
   FormGroup,
   FormText,
   Input,
-  Label
+  Label, Row
 } from "reactstrap";
 import axios from "axios";
 import csrf from 'csrf';
@@ -26,6 +26,25 @@ const AddCompany = (props) =>{
   const[company_name,setCompany_name] = useState('');
   const[company_location,setCompany_location] = useState('');
   const[company_address,setCompany_address] = useState('');
+
+  const[isLoggedIn,setIsLoggedIn] = useState(true);
+  const[userId, setUserId] = useState('');
+
+
+  useEffect(()=>{
+    const user = localStorage.getItem("user_id");
+    setUserId(user);
+
+    if(user==undefined){
+      console.log('hi');
+      setIsLoggedIn(false);
+    }
+
+
+    })
+
+
+
 
  const submitFunc=(e)=>{
    e.preventDefault();
@@ -67,8 +86,11 @@ fetch('http://localhost:8000/api/savecompanydetails',{
     setCompany_location('');
   }
 
+  const backToLogin = () =>{props.history.push('/login');}
 
 
+
+  if(isLoggedIn===true){
     return (
       <div>
         <Card>
@@ -81,7 +103,7 @@ fetch('http://localhost:8000/api/savecompanydetails',{
 
               encType="multipart/form-data"
               className="form-horizontal"
-             onSubmit={submitFunc}
+              onSubmit={submitFunc}
             >
               <FormGroup row>
                 {/*space for empty row  */}
@@ -162,6 +184,38 @@ fetch('http://localhost:8000/api/savecompanydetails',{
         </Card>
       </div>
     );
+
+  }else if(isLoggedIn===false){
+    return (
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >Login</Button>
+
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+
 
 
 

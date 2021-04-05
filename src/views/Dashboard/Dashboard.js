@@ -1,4 +1,4 @@
-import React, { Component, lazy, Suspense } from 'react';
+import React, { Component, lazy, Suspense,useState,useEffect } from 'react';
 import axios from 'axios';
 import {
   Col,
@@ -12,7 +12,9 @@ import {
 
 
 
-class Dashboard extends Component {
+//class Dashboard extends Component {
+const Dashboard = () =>{
+
 
 
 
@@ -33,12 +35,15 @@ class Dashboard extends Component {
 // }
 
 
- loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  render() {
+
+
+ const loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
+
+
 
     const user = JSON.parse(localStorage.getItem('user'));
-//console.log(user.role_id);
+;
 
 
   return (
@@ -51,7 +56,7 @@ class Dashboard extends Component {
 
 
 
-  }
+
 }
 
 export default Dashboard;

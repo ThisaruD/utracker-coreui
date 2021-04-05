@@ -74,9 +74,9 @@ const TransportManagerHome = React.lazy(()=>import('./views/Home/TransportManege
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  {path: '/staff-home', name:'StaffHome', component:StaffHome},
-  {path:'/super-admin-home', name:'SuperAdminHome', component:SuperAdminHome},
-  {path:'/transport-manager-home', name:'TransportManagerHome', component:TransportManagerHome},
+  {path: '/home/:3', name:'StaffHome', component:StaffHome},
+  {path:'/home/:1', name:'SuperAdminHome', component:SuperAdminHome},
+  {path:'/home/:2', name:'TransportManagerHome', component:TransportManagerHome},
   { path: '/about', name: 'About', component: About},
   { path: '/contact', name: 'Contact', component: Contact },
   {path: '/setting', name: 'Setting', component:Setting},

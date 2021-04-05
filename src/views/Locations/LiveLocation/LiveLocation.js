@@ -15,6 +15,10 @@ const mapStyles = {
 class LiveLocation extends Component{
 
 
+
+
+
+
   // static defaultProps = {
   //   center: {
   //     lat: 59.95,
@@ -27,11 +31,12 @@ class LiveLocation extends Component{
 
   constructor(props) {
     super(props);
+    this.showMarkers = this.showMarkers.bind(this);
     this.state = {
       isLoading:true,
       date:[],
       name:[],
-      company_id:"1",
+      company_id:"2",
       vehicleNumber:[],
       vehiclesLongLat:[],
       cords: [
@@ -61,49 +66,7 @@ class LiveLocation extends Component{
 
 
 
-  // static getDerivedStateFromProps(props, state) {
-  //   // return {favoritecolor: props.favcol };
-  //
-  //     axios.get('http://localhost:8000/api/getuniquedata',{
-  //       params:{
-  //         company_id:props.company_id
-  //       }
-  //     })
-  //       .then((res)=>{
-  //         //console.log(res.data);
-  //         //   for(let i=0;i<res.data.GPS_DATA.length;i++){
-  //         //     for(let j=0;j<2;j++){
-  //         //       //this.state.vehiclesLongLat=res.data;
-  //         //       this.state.vehiclesLongLat.lat=res.data;
-  //         //     }
-  //         //   }
-  //         // console.log(res.data);
-  //         let x= res.data.GPS_DATA.length;
-  //         let i,j,k,l;
-  //         for(i=0,k=0,l=0,j=1;  k<x,l<x,i<x,j<=x;  k++,l++, i+=2, j+=2){
-  //           props.vehicleNumber[k]=res.data.GPS_DATA[i];
-  //           let coordinate = {
-  //             lat : res.data.GPS_DATA[j][0].lat * 1,
-  //             lng: res.data.GPS_DATA[j][0].lng * 1
-  //           }
-  //           props.vehiclesLongLat.push(coordinate);
-  //           /* before code */
-  //           //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
-  //           //this.state.lat = this.state.vehiclesLongLat[l].lat;
-  //
-  //         }
-  //
-  //       })
-  //       .then(()=>{
-  //         console.log(props.vehicleNumber);
-  //         console.log(props.vehiclesLongLat);
-  //         props.isLoading = false;
-  //
-  //       })
-  //       .catch((err)=>{
-  //         console.log(err);
-  //       })
-  //   }
+
 
 
 
@@ -112,7 +75,12 @@ class LiveLocation extends Component{
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-  componentWillMount() {
+  componentDidMount() {
+
+
+
+
+
 
     axios.get('http://localhost:8000/api/getuniquedata',{
       params:{
@@ -125,14 +93,7 @@ class LiveLocation extends Component{
       }
     })
       .then((res)=>{
-        //console.log(res.data);
-        //   for(let i=0;i<res.data.GPS_DATA.length;i++){
-        //     for(let j=0;j<2;j++){
-        //       //this.state.vehiclesLongLat=res.data;
-        //       this.state.vehiclesLongLat.lat=res.data;
-        //     }
-        //   }
-        // console.log(res.data);
+
         let x= res.data.GPS_DATA.length;
         let i,j,k,l;
         for(i=0,k=0,l=0,j=1;  k<x,l<x,i<x,j<=x;  k++,l++, i+=2, j+=2){
@@ -150,8 +111,9 @@ class LiveLocation extends Component{
 
       })
       .then(()=>{
-        console.log(this.state.vehicleNumber);
+        //console.log(this.state.vehicleNumber);
         console.log(this.state.vehiclesLongLat);
+        // this.showMarkers();
         this.state.isLoading = false;
 
       })
@@ -162,7 +124,7 @@ class LiveLocation extends Component{
 
     //this.state.vehiclesLongLat = JSON.stringify(this.state.vehiclesLongLat);
   }
-  //////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -175,19 +137,15 @@ class LiveLocation extends Component{
 
 
 
-  // showMarkers = () => {
-  //
-  //
-  //     console.log("hello" + this.state.vehiclesLongLat);
-  //     this.state.vehiclesLongLat.map((store) => {
-  //       return <Marker position={{
-  //         lat: store.lat,
-  //         lng: store.lng
-  //       }}
-  //                      onClick={() => console.log("Clicked")}/>
-  //     })
-  //
-  // }
+  showMarkers  () {
+    return this.state.cords.map((store, index) => {
+      return <Marker key={index} id={index} position={{
+        lat: store.lat,
+        lng: store.lng
+      }}
+                     onClick={() => console.log("Clicked")} />
+    })
+  }
 
 
 
@@ -195,32 +153,26 @@ class LiveLocation extends Component{
   render(){
 
     return(
-      <div
-        style={{ height: '100vh', width: '100%' }}
-      >
+
+      <Map
+        google={this.props.google}
+        zoom={9}
+        style={mapStyles}
+        initialCenter={{
+          lat: 7.0042083,
+          lng: 79.9530489
+
+        }}>
 
 
-          <Map
-            google={this.props.google}
-            zoom={8}
-            style={mapStyles}
-            initialCenter={{
-              lat: 6.9271,
-              lng: 79.8612
-            }}>
-            {this.state.coords.map((val)=>(
-              <Marker
-              position={{lat:val.lat, lng:val.lng}}
-              />
-            ))}
+{this.showMarkers()}
 
 
 
 
+      </Map>
 
-          </Map>
-        {/*}*/}
-      </div>
+
     );
 
   }

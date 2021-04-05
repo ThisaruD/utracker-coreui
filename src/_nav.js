@@ -12,7 +12,7 @@ export default {
 
     {
       name: 'Home',
-      url: '/home',
+      url: '/home:id',
       icon: 'icon-puzzle',
     },
 

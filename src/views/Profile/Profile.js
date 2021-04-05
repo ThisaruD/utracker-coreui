@@ -1,5 +1,17 @@
 import React,{useState,useEffect} from "react";
-import {Button, Card, CardBody, CardHeader, Form, FormGroup, Input, InputGroupText, InputGroupAddon, InputGroup} from "reactstrap";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Form,
+  FormGroup,
+  Input,
+  InputGroupText,
+  InputGroupAddon,
+  InputGroup,
+  Row, Col
+} from "reactstrap";
 import axios from "axios";
 
 
@@ -12,27 +24,37 @@ const Profile = (props) => {
   const [contactNumber, setContactNumber] = useState('');
   const [password, setPassword] = useState('');
 
-  const [user_id,setUser_id] =useState('');
-  const [isLoggedIn,setIsLoggedIn] = useState(true);
 
+  const [isLoggedIn,setIsLoggedIn] = useState(true);
+  const [userId,setUserId] = useState("");
 
 
 
 
   useEffect(()=>{
 
-    const user1 = (localStorage.getItem('user'));
+    const user = localStorage.getItem("user_id");
+    //console.log(user);
+    //setUserId(JSON.parse(localStorage.getItem("user_id")));
+    //setUserId(parseInt());
+    //console.log(userId);
+    //return user  ? JSON.parse(user) : [];
 
-    if(user1==undefined){
-      console.log('hi');
-      setIsLoggedIn(false);
-    }else {
-      console.log('hello');
-      setUser_id(user1.u_id);
-      console.log(user_id);
-      //setUser_id(user.u_id);
 
-      axios.get('http://localhost:8000/api/getuserdetails/'+user_id)
+   if(user==undefined){
+
+       console.log('hi');
+       setIsLoggedIn(false);
+   }else{
+
+
+
+      //console.log('hello');
+      //console.log(userId);
+
+
+
+      axios.get('http://localhost:8000/api/getuserdetails/'+localStorage.getItem("user_id"))
         .then((res) => {
           console.log(res.data);
           setFirstName(res.data.user[0].first_name);
@@ -67,7 +89,7 @@ const Profile = (props) => {
     console.log(profileDetails);
 
 
-    fetch('http://localhost:8000/api/updateuserdetails/'+user_id,{
+    fetch('http://localhost:8000/api/updateuserdetails/'+userId,{
       method:'PUT',
        headers:{"Content-Type":"application/json"},
       body:JSON.stringify(profileDetails)
@@ -80,7 +102,7 @@ const Profile = (props) => {
 
 
   const goBack = () => { props.history.push('/dashboard'); }
-
+  const backToLogin = () =>{props.history.push('/login');}
 
 
   if(isLoggedIn==true){
@@ -224,8 +246,34 @@ const Profile = (props) => {
     );
   }else if(isLoggedIn==false){
     return (
-      <div>
-        <h1>Please login first</h1>
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login first
+              </p>
+              <p className="text-muted float-left">
+               Please login first
+              </p>
+
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >Login</Button>
+
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
       </div>
     );
   }
