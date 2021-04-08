@@ -38,7 +38,7 @@ export default function ViewVehicle (props) {
     }else {
 
 
-      axios.get('http://localhost:8000/api/allvehiclenumbers/' + user_id)
+      axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"))
         .then(res => {
           //handle response data
           console.log(res);

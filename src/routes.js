@@ -64,6 +64,8 @@ const ViewCompanyDetails = React.lazy(()=>import('./views/Company/ViewCompany/Vi
 const StaffHome = React.lazy(()=>import('./views/Home/StaffHome/StaffHome'));
 const SuperAdminHome = React.lazy(()=>import('./views/Home/SuperAdminHome/SuperAdminHome'));
 const TransportManagerHome = React.lazy(()=>import('./views/Home/TransportManegerHome/TransportManagerHome'));
+
+const Logout = React.lazy(()=>import('./views/Pages/Logout/Logout'));
 ////////////////////////////Required Sample Pages///////////////////////
 // const Company
 
@@ -74,6 +76,7 @@ const TransportManagerHome = React.lazy(()=>import('./views/Home/TransportManege
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
+  {path:'/logout', name: 'Logout', component: Logout},
   {path: '/home/:3', name:'StaffHome', component:StaffHome},
   {path:'/home/:1', name:'SuperAdminHome', component:SuperAdminHome},
   {path:'/home/:2', name:'TransportManagerHome', component:TransportManagerHome},

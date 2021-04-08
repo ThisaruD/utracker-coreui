@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
 import GoogleMapReact from 'google-maps-react';
+import {Button, Card, CardBody, Col, Row} from "reactstrap";
 
 
 const mapStyles = {
@@ -14,11 +15,6 @@ const mapStyles = {
 
 class LiveLocation extends Component{
 
-
-
-
-
-
   // static defaultProps = {
   //   center: {
   //     lat: 59.95,
@@ -27,16 +23,15 @@ class LiveLocation extends Component{
   //   zoom: 11
   // };
 
-
-
   constructor(props) {
     super(props);
     this.showMarkers = this.showMarkers.bind(this);
+    this.backToLogin = this.backToLogin.bind(this);
     this.state = {
       isLoading:true,
       date:[],
       name:[],
-      company_id:"2",
+      company_id:"1",
       vehicleNumber:[],
       vehiclesLongLat:[],
       cords: [
@@ -52,24 +47,10 @@ class LiveLocation extends Component{
     ],
 
       markerList:[],
-
-
+      isLoggedIn:true,
+      userId:'',
     }
   }
-
-  // static getDerivedStateFromProps(props,state){
-  //
-  //
-  //
-  //
-  // }
-
-
-
-
-
-
-
 
 
 
@@ -78,56 +59,75 @@ class LiveLocation extends Component{
   componentDidMount() {
 
 
+    // const user = localStorage.getItem("user_id");
+    // this.setState({
+    //   userId:user
+    // });
 
+    // if(user==undefined){
+    //   console.log('hi');
+    //   this.setState({
+    //     isLoggedIn:false
+    //   });
+    //  // setIsLoggedIn(false);
+    //
+    // }else {
+    let user = localStorage.getItem("user_id");
 
+    if(user==undefined){
+      this.setState({
+        isLoggedIn:false
+      });
+    }else{
 
-
-    axios.get('http://localhost:8000/api/getuniquedata',{
-      params:{
-        company_id:this.state.company_id
-      }
-    },{
-      headers:{
-        "Content-type":"application/json",
-        Authorization: "Bearer" + localStorage.getItem("token"),
-      }
-    })
-      .then((res)=>{
-
-        let x= res.data.GPS_DATA.length;
-        let i,j,k,l;
-        for(i=0,k=0,l=0,j=1;  k<x,l<x,i<x,j<=x;  k++,l++, i+=2, j+=2){
-          this.state.vehicleNumber[k]=res.data.GPS_DATA[i];
-          let coordinate = {
-            lat : res.data.GPS_DATA[j][0].lat * 1,
-            lng: res.data.GPS_DATA[j][0].lng * 1
-          }
-          this.state.vehiclesLongLat.push(coordinate);
-          /* before code */
-          //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
-          //this.state.lat = this.state.vehiclesLongLat[l].lat;
-
+      axios.get('http://localhost:8000/api/getuniquedata', {
+        params: {
+          company_id: this.state.company_id
         }
-
+      }, {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer" + localStorage.getItem("token"),
+        }
       })
-      .then(()=>{
-        //console.log(this.state.vehicleNumber);
-        console.log(this.state.vehiclesLongLat);
-        // this.showMarkers();
-        this.state.isLoading = false;
+        .then((res) => {
 
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
+          let x = res.data.GPS_DATA.length;
+          let i, j, k, l;
+          for (i = 0, k = 0, l = 0, j = 1; k < x, l < x, i < x, j <= x; k++, l++, i += 2, j += 2) {
+            this.state.vehicleNumber[k] = res.data.GPS_DATA[i];
+            let coordinate = {
+              lat: res.data.GPS_DATA[j][0].lat * 1,
+              lng: res.data.GPS_DATA[j][0].lng * 1
+            }
+            this.state.vehiclesLongLat.push(coordinate);
+            /* before code */
+            //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
+            //this.state.lat = this.state.vehiclesLongLat[l].lat;
 
+          }
 
+        })
+        .then(() => {
+          //console.log(this.state.vehicleNumber);
+          console.log(this.state.vehiclesLongLat);
+          // this.showMarkers();
+          this.state.isLoading = false;
+
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+    }
     //this.state.vehiclesLongLat = JSON.stringify(this.state.vehiclesLongLat);
   }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+ backToLogin ()  {
+    this.props.history.push('/login');
+}
 
 
 
@@ -152,32 +152,95 @@ class LiveLocation extends Component{
 
   render(){
 
-    return(
 
-      <Map
-        google={this.props.google}
-        zoom={9}
-        style={mapStyles}
-        initialCenter={{
-          lat: 7.0042083,
-          lng: 79.9530489
+    // if(this.state.isLoggedIn===true){
+    if(this.state.isLoggedIn==true){
+      return(
+        <Map
+          google={this.props.google}
+          zoom={9}
+          style={mapStyles}
+          initialCenter={{
+            lat: 7.0042083,
+            lng: 79.9530489
+          }}>
+          {this.showMarkers()}
+        </Map>
+      );
 
-        }}>
+    }else if(this.state.isLoggedIn==false){
+      return(
+        <div className="access_denied">
+          <Card className="text-white bg-primary ">
+            <CardBody>
+              <div className="clearfix">
+                {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+                <h4 className="pt-3">Please login First</h4>
+                <p className="text-muted float-left">
+                  You don't have permission to access requested page. Please login first
+                </p>
+                <p className="text-muted float-left">
+                  Please login first
+                </p>
+
+                <Row>
+                  <Col md="4"></Col>
+                  <Col md="4">
+                    <Button
+                      block color="dark"
+                      className="btn-pill"
+                      onClick={this.backToLogin}
+                    >Login</Button>
+
+                  </Col>
+                  <Col md="4"></Col>
+                </Row>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      );
+    }
 
 
-{this.showMarkers()}
+
+    // }else if(this.state.isLoggedIn===false){
+    //   return (
+    //     <div className="access_denied">
+    //       <Card className="text-white bg-primary ">
+    //         <CardBody>
+    //           <div className="clearfix">
+    //             {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+    //             <h4 className="pt-3">Please login First</h4>
+    //             <p className="text-muted float-left">
+    //               You don't have permission to access requested page. Please login first
+    //             </p>
+    //             <Row>
+    //               <Col md="4"></Col>
+    //               <Col md="4">
+    //                 <Button
+    //                   block color="dark"
+    //                   className="btn-pill"
+    //                   //onClick={this.goBack()}
+    //                 >Login</Button>
+    //
+    //               </Col>
+    //               <Col md="4"></Col>
+    //             </Row>
+    //           </div>
+    //         </CardBody>
+    //       </Card>
+    //     </div>
+    //   );
 
 
 
 
-      </Map>
 
 
-    );
+
 
   }
-
-
 }
 
 

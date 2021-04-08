@@ -92,7 +92,7 @@ axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("u
 
   const deleteFunc = () =>{
 
-   axios.delete('')
+   axios.delete('http://localhost:8000/api/deleteuserdetails',{params:localStorage.getItem('user_id')})
      .then((res)=>{
        console.log(res.data.message1);
      })
@@ -145,6 +145,8 @@ if(isLoggedIn===true){
               </InputGroup>
             </FormGroup>
             <FormGroup>
+
+
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
@@ -162,6 +164,8 @@ if(isLoggedIn===true){
                 />
               </InputGroup>
             </FormGroup>
+
+
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -180,6 +184,8 @@ if(isLoggedIn===true){
                 />
               </InputGroup>
             </FormGroup>
+
+
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -210,6 +216,10 @@ if(isLoggedIn===true){
                   type="text"
                   id="contactNumber"
                   name="contactNumber"
+                  // pattern="07[1,2,5,6,7,8][0-9]+"
+                  // type="tel"
+                  maxlength="10"
+                  minlength="10"
                   placeholder="Contact Number"
                   value={contact_no}
                   onChange={(e) => setContact_no(e.target.value)}
@@ -237,9 +247,10 @@ if(isLoggedIn===true){
                 />
               </InputGroup>
             </FormGroup>
+
+
+
             <FormGroup className="form-actions">
-
-
               <Button
                 type="submit"
                 size="sm"
@@ -258,6 +269,8 @@ if(isLoggedIn===true){
                 onClick={deleteFunc}
               >Delete Profile</Button>
             </FormGroup>
+
+
           </Form>
         </CardBody>
       </Card>

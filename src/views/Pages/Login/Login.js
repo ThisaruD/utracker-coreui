@@ -44,10 +44,12 @@ class Login extends Component {
       console.log(res.data);
 
     if(res.data.message=='success'){
+      alert('Successfully Login');
       console.log(res.data.user.id);
       localStorage["token"]=res.data.access_token;
       localStorage["user_id"]=res.data.user.id;
       localStorage["companies_company_id"]=res.data.user.companies_company_id;
+
       //localStorage["user_role_id"]=res.data.user.user_roles_role_id;
       // localStorage.setItem('u_id',JSON.stringify({res.data.user.id}));
 

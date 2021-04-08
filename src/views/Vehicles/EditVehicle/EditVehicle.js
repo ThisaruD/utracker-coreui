@@ -36,7 +36,7 @@ import axios from 'axios';
       }else {
 
 
-        axios.get('http://localhost:8000/api/allvehiclenumbers/' + user_id)
+        axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"))
           .then(res => {
             //handle response data
             console.log(res);
@@ -89,7 +89,6 @@ if(isLoggedIn===true){
               <option
                 values={vehicle}
               > {vehicle}</option>
-
             ))}
           </Input>
         </Col>
@@ -128,7 +127,6 @@ if(isLoggedIn===true){
                   className="btn-pill"
                   onClick={backToLogin}
                 >Login</Button>
-
               </Col>
               <Col md="4"></Col>
             </Row>

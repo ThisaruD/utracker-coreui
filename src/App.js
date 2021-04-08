@@ -17,8 +17,8 @@ const Page404 = React.lazy(() => import("./views/Pages/Page404"));
 const Page500 = React.lazy(() => import("./views/Pages/Page500"));
 const ForgotPassword = React.lazy(() => import("./views/Pages/ForgotPassword"));
 const ResetPassword = React.lazy(() => import("./views/Pages/ResetPassword"));
-const AccessDenied = React.lazy(() => import('./views/Pages/AccessDenied/AccessDenied'));
-
+//const AccessDenied = React.lazy(() => import('./views/Pages/AccessDenied/AccessDenied'));
+const Logout = React.lazy(()=>import("./views/Pages/Logout/Logout"));
 
 
 class App extends Component {
@@ -35,15 +35,12 @@ class App extends Component {
             />
 
 
-
             <Route
               exact
               path="/ResetPassword"
               name="Reset Password Page"
               render={(props) => <ResetPassword {...props} />}
             />
-
-
 
 
             <Route
@@ -58,7 +55,6 @@ class App extends Component {
             {/*  name="Access Denied"*/}
             {/*  render={(props) =><AccessDenied {...props} />}*/}
             {/*/>*/}
-
             <Route
               exact
               path="/register"
@@ -84,6 +80,14 @@ class App extends Component {
               name="Home"
               render={(props) => <DefaultLayout {...props} />}
             />
+
+
+            {/*<Route*/}
+            {/*  path="/logout"*/}
+            {/*  name="Logout Page"*/}
+            {/*  render={(props) => <Logout {...props} />}*/}
+            {/*/>*/}
+
 
 
 

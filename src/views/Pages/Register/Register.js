@@ -13,12 +13,21 @@ const Register = (props) => {
   const [company_name, setCompany_name] = useState('');
   const [user_role_id,SetUser_role_id ] = useState('');
 
+  const [isLoggedIn,setIsLoggedIn] = useState(true);
+  const [userId,setUserId] = useState(null);
+
 
 
 useEffect(()=>{
 
+  const user = localStorage.getItem("user_id");
+  setUserId(user);
 
 
+  if(user==undefined) {
+    console.log('hi');
+    setIsLoggedIn(false);
+  }else{
     axios.get('http://localhost:8000/api/getallcompanies')
       .then((res)=>{
         console.log(res.data);
@@ -27,6 +36,7 @@ useEffect(()=>{
       .catch((err)=>{
         console.log(err);
       })
+  }
   },[]);
 
 
@@ -52,10 +62,13 @@ const submitFunc = (e) => {
     });
 }
 
+  const backToLogin = () =>{props.history.push('/login');}
 
 
 
-return (
+
+  if(isLoggedIn===true){
+    return (
       <div className="app flex-row align-items-center">
 
         <Container>
@@ -140,14 +153,14 @@ return (
                         type="select"
                         name="type"
                         id="type"
-                         value={company_name}
+                        value={company_name}
                         onChange={(e)=>{setCompany_name(e.target.value)}}
                         //onChange={(e) => setType(e.target.value)}
                       >
                         <option value="0">Select Company Name</option>
                         {companyNames.map((company)=>(
                           <option values={company}
-                           onChange={(e)=>{setCompany_name(e.target.value)}}
+                                  onChange={(e)=>{setCompany_name(e.target.value)}}
                           >{company}</option>
                         ))}
 
@@ -190,6 +203,37 @@ return (
         </Container>
       </div>
     );
+  }else if(isLoggedIn===false){
+    return (
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >Login</Button>
+
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
+
+
 
 }
 

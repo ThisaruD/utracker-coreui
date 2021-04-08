@@ -50,7 +50,7 @@ const AddVehicle = (props) => {
       console.log('hi');
       setIsLoggedIn(false);
     }
-  })
+  });
 
 
 
