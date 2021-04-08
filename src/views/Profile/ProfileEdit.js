@@ -120,11 +120,11 @@ axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("u
 if(isLoggedIn===true){
   return (
     <div>
-      <Card className="NewClass">
-        <CardHeader className="NewClass_h">
+      <Card className="userProfile">
+        <CardHeader className="userProfile_header">
           <strong>User Profile</strong> information
         </CardHeader>
-        <CardBody className="NewBody">
+        <CardBody className="userProfile_body">
           <Form action="" method="post" onSubmit={submitFunc}>
             <FormGroup>
               <InputGroup>
@@ -254,7 +254,7 @@ if(isLoggedIn===true){
               <Button
                 type="submit"
                 size="sm"
-                color="success"
+                color="primary"
                 className="profBut"
                 onClick={submitFunc}
               >
@@ -265,7 +265,7 @@ if(isLoggedIn===true){
                 type="submit"
                 size="sm"
                 color="danger"
-                className="profBut"
+                className="userProfile_button"
                 onClick={deleteFunc}
               >Delete Profile</Button>
             </FormGroup>

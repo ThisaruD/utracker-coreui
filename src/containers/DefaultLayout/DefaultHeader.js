@@ -42,12 +42,14 @@ class DefaultHeader extends Component {
 
      // if(user.role_id===1 || user.role_id===2){
       return (
+
         <React.Fragment>
           <AppSidebarToggler className="d-lg-none" display="md" mobile />
-          <AppNavbarBrand/>
-          <h1>U-tracker</h1>
-          <h6>TRANSPORT MANAGEMENT SYSTEM</h6>
+          <h1 className="utracker_header"><span style={{fontSize:'40px'}}>Utracker</span>TRANSPORT MANAGEMENT SYSTEM</h1>
+          {/* <h6 className='transportMS'>TRANSPORT MANAGEMENT SYSTEM</h6> */}
           <AppSidebarToggler className="d-md-down-none" display="lg" />
+
+
 
           <Nav className="d-md-down-none" navbar></Nav>
           <Nav className="ml-auto" navbar>

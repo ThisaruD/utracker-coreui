@@ -108,11 +108,11 @@ const Profile = (props) => {
   if(isLoggedIn==true){
     return (
       <div>
-        <Card className="NewClass">
-          <CardHeader className="NewClass_h">
+        <Card className="userProfile">
+          <CardHeader className="userProfile_header">
             <strong>User Profile</strong> information
           </CardHeader>
-          <CardBody className="NewBody">
+          <CardBody className="userProfile_body">
             <Form action="" method="post" onSubmit={submitFunc}>
               <FormGroup>
                 <InputGroup>
@@ -230,7 +230,7 @@ const Profile = (props) => {
                 <Button
                   type="submit"
                   size="sm"
-                  color="success"
+                  color="primary"
                   className="profBut"
                   onClick={goBack}
                 >

@@ -91,21 +91,30 @@ class LiveLocation extends Component{
         }
       })
         .then((res) => {
-
           let x = res.data.GPS_DATA.length;
-          let i, j, k, l;
-          for (i = 0, k = 0, l = 0, j = 1; k < x, l < x, i < x, j <= x; k++, l++, i += 2, j += 2) {
-            this.state.vehicleNumber[k] = res.data.GPS_DATA[i];
-            let coordinate = {
-              lat: res.data.GPS_DATA[j][0].lat * 1,
-              lng: res.data.GPS_DATA[j][0].lng * 1
-            }
-            this.state.vehiclesLongLat.push(coordinate);
-            /* before code */
-            //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
-            //this.state.lat = this.state.vehiclesLongLat[l].lat;
+          console.log(res.data.GPS_DATA.length);
 
-          }
+          // for(let i=0;i<x;i++){
+          //
+          //   vehiclesLongLat[i]=res.data.GPS_DATA.[i];
+          //
+          // }
+
+
+
+
+          // let i, j, k, l;
+          // for (i = 0, k = 0, l = 0, j = 1; k < x, l < x, i < x, j <= x; k++, l++, i += 2, j += 2) {
+          //   this.state.vehicleNumber[k] = res.data.GPS_DATA[i];
+          //   let coordinate = {
+          //     lat: res.data.GPS_DATA[j][0].lat * 1,
+          //     lng: res.data.GPS_DATA[j][0].lng * 1
+          //   }
+          //   this.state.vehiclesLongLat.push(coordinate);
+          //   /* before code */
+          //   //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
+          //   //this.state.lat = this.state.vehiclesLongLat[l].lat;
+          // }
 
         })
         .then(() => {
@@ -138,6 +147,7 @@ class LiveLocation extends Component{
 
 
   showMarkers  () {
+
     return this.state.cords.map((store, index) => {
       return <Marker key={index} id={index} position={{
         lat: store.lat,

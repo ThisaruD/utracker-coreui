@@ -1,19 +1,113 @@
 // Here you can add other styles
 
-.NewClass {
+.userProfile {
   background-color: rgb(7, 119, 35);
   width: 55%;
 
   margin: 50px auto;
 }
 
-.NewClass_h {
-  background-color: rgb(32, 216, 102);
+.userProfile_header{
+  background-color: #abe05b;
 }
 
-.NewBody {
-  background-color: rgb(141, 173, 146);
+.userProfile_body{
+  background-color:#c8d3b7;
 }
-.profBut {
-  background-color: rgb(32, 216, 102);
+// .userProfile_button{
+//   background-color: rgb(32, 216, 102);
+// }
+
+//dashboard-Carousel
+.d-block {
+  height: 520px;
 }
+
+.access_denied {
+  width: 75%;
+  padding: 100px;
+}
+
+.d-block, .w-100:hover{
+  opacity: 0.5;
+}
+.d-block, .w-100{
+  opacity: 1.0;
+}
+
+//navbar img-avatar-height
+.app-header{
+  .nav-item {
+    .nav-link {
+      > .img-avatar {
+        height: $navbar-height - 45px;
+      }
+    }
+  }
+}
+
+//app-header
+.app-header{
+  .utracker_header{
+    margin-left:0px;
+  }
+}
+
+.navbar-brand{
+  justify-content: left;
+}
+
+.utracker_header{
+  margin-left:0px !important;
+  font-size: 15px;
+  justify-content: center !important;
+  margin-top: -10px;
+}
+
+
+
+
+//map-size
+.map_size{
+  height: 500px;
+}
+
+//about-page
+.card-about{
+  width: 55%;
+  height: 100%;
+  margin: 50px auto;
+  text-align: center;
+  border-color: null;
+}
+
+.card-about_cardbody{
+  line-height: 2;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+}
+
+.card-about_header{
+  background-color: #abe05b;
+}
+
+//contact-page
+.card-contact{
+  width: 55%;
+  height: 100%;
+  margin: 50px auto;
+  text-align: center;
+  border-color: null;
+}
+
+.card-contact_cardbody{
+  line-height: 2;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 16px;
+}
+
+.card-contact_header{
+  background-color: #abe05b;
+}
+
+
