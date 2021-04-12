@@ -36,7 +36,12 @@ class PreviousPaths extends Component{
     }else {
 
 
-      axios.get('http://localhost:8000/api/allvehiclenumbers/' +  localStorage.getItem("user_id"))
+      axios.get('http://localhost:8000/api/allvehiclenumbers/' +  localStorage.getItem("user_id"),{
+        headers:{
+          "Content-type":"application/json",
+          Authorization: "Bearer"+localStorage.getItem('token')
+        }
+      })
         .then(res => {
           //handle response data
           console.log(res);
@@ -62,14 +67,14 @@ class PreviousPaths extends Component{
 
     const obj = {
     vehicle_number: this.state.vehicle_number,
-    from_date:  this.state.from_date,
+    from_date:  this.state.from_date.replace(/-/g,"/"),
       from_time:this.state.from_time,
-      to_date: this.state.to_date,
+      to_date: this.state.to_date.replace(/-/g,"/"),
       to_time:this.state.to_time
     }
 
 console.log(obj);
-    axios.get('http://localhost:8000/api/getvehiclepath',obj)
+    axios.get('http://localhost:8000/api/getvehiclepath',obj,)
       .then((res)=>{
         console.log(res.data);
       })

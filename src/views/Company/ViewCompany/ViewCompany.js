@@ -28,7 +28,12 @@ const ViewCompany = (props) =>{
     }else {
 
 
-      axios.get('http://localhost:8000/api/getallcompanies')
+      axios.get('http://localhost:8000/api/getallcompanies',{
+        headers:{
+          "Content-type":"application/json",
+          Authorization: "Bearer"+localStorage.getItem('token')
+        }
+      })
         .then((res) => {
           console.log(res.data);
           setCompanyNames(res.data.companies);

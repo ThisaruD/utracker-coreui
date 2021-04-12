@@ -1,11 +1,10 @@
-import React, { Component,useState} from 'react';
+import React, {Component, useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
 
 
-
-class PreviousLocation extends Component{
+class PreviousLocation extends Component {
 
   constructor(props) {
     super(props);
@@ -15,14 +14,14 @@ class PreviousLocation extends Component{
     this.onChangeTime = this.onChangeTime.bind(this);
 
     this.state = {
-      date:"",
-      time:"",
-      vehicleNumber:"",
-      vehicleList:[],
-      user_id:'3',
-      vehicles:[],
-      isLoggedIn:true,
-      userId:'',
+      date: "",
+      time: "",
+      vehicleNumber: "",
+      vehicleList: [],
+      user_id: '3',
+      vehicles: [],
+      isLoggedIn: true,
+      userId: '',
     }
   }
 
@@ -38,13 +37,18 @@ class PreviousLocation extends Component{
 
     let user = localStorage.getItem("user_id");
 
-    if(user==undefined){
+    if (user == undefined) {
       this.setState({
-        isLoggedIn:false
+        isLoggedIn: false
       });
-    }else {
+    } else {
 
-      axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"))
+      axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"), {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer" + localStorage.getItem('token')
+        }
+      })
         .then(res => {
           //handle response data
           console.log(res.data);
@@ -59,17 +63,18 @@ class PreviousLocation extends Component{
   }
 
 
+  backToLogin() {
+    this.props.history.push('/login');
+  }
 
-  backToLogin () { this.props.history.push('/login'); }
 
-
-  submitFunc(e){
+  submitFunc(e) {
     e.preventDefault();
 
     const obj = {
-      vehicleNumber:this.state.vehicleNumber,
-      date:this.state.date,
-      time:this.state.time
+      vehicleNumber: this.state.vehicleNumber,
+      date: this.state.date,
+      time: this.state.time
     };
 
     console.log(obj);
@@ -77,31 +82,27 @@ class PreviousLocation extends Component{
 
   }
 
-  onChangeVehicleNumber(e){
+  onChangeVehicleNumber(e) {
     this.setState({
-      vehicleNumber:e.target.value
+      vehicleNumber: e.target.value
     })
   }
 
-  onChangeDate(e){
+  onChangeDate(e) {
     this.setState({
-      date:e.target.value
+      date: e.target.value
     })
   }
 
-  onChangeTime(e){
+  onChangeTime(e) {
     this.setState({
-      time:e.target.value
+      time: e.target.value
     })
   }
 
 
-
-
-
-
-  render(){
-    if(this.state.isLoggedIn===true){
+  render() {
+    if (this.state.isLoggedIn === true) {
       return (
         <div>
           <h1>This is previous location tab hello world</h1>
@@ -112,17 +113,16 @@ class PreviousLocation extends Component{
                 <Map
                   google={this.props.google} zoom={9}
                   initialCenter={{
-                    lat:7.0146334,
-                    lng:79.9676378,
-                    accuracy:20
+                    lat: 7.0146334,
+                    lng: 79.9676378,
+                    accuracy: 20
                   }}>
                   <Marker onClick={this.onMarkerClick}
-                          name={'Current location'} />
+                          name={'Current location'}/>
                 </Map>
               </div>
             </Col>
             <Col xs="12" lg="6">
-
 
 
               <Card>
@@ -132,7 +132,7 @@ class PreviousLocation extends Component{
                 </CardHeader>
                 <CardBody>
                   <Form
-                  onSubmit={this.submitFunc}
+                    onSubmit={this.submitFunc}
                   >
                     <Row>
                       <Col xs="12">
@@ -140,7 +140,6 @@ class PreviousLocation extends Component{
                     </Row>
                     <Row>
                       <Col xs="12">
-
 
 
                         <FormGroup row>
@@ -151,7 +150,7 @@ class PreviousLocation extends Component{
                             <Input type="select"
                                    name="select"
                                    id="select"
-                                   onChange={(e) => this.setState({vehicle_number:e.target.value})}
+                                   onChange={(e) => this.setState({vehicle_number: e.target.value})}
                             >
                               <option value="0">Please select</option>
                               {this.state.vehicles.map((vehicle) => (
@@ -163,7 +162,6 @@ class PreviousLocation extends Component{
                             </Input>
                           </Col>
                         </FormGroup>
-
 
 
                       </Col>
@@ -185,8 +183,8 @@ class PreviousLocation extends Component{
                           <Label htmlFor="time">Time</Label>
                           <Input
                             type="time"
-                             value={this.state.time}
-                             onChange={this.onChangeTime}
+                            value={this.state.time}
+                            onChange={this.onChangeTime}
 
                           />
                         </FormGroup>
@@ -208,8 +206,8 @@ class PreviousLocation extends Component{
         </div>
       );
 
-  }else if(this.state.isLoggedIn===false){
-      return(
+    } else if (this.state.isLoggedIn === false) {
+      return (
         <div className="access_denied">
           <Card className="text-white bg-primary ">
             <CardBody>
@@ -244,7 +242,7 @@ class PreviousLocation extends Component{
     }
 
 
-}
+  }
 }
 
 //export default PreviousLocation;

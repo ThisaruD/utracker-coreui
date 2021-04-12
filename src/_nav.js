@@ -148,7 +148,7 @@ export default {
   items: [
     {
       name: 'Dashboard',
-      url: '/dashboard',
+      url: '/super-admin-home',
       icon: 'icon-speedometer',
       badge: {
         variant: 'info',
@@ -158,7 +158,7 @@ export default {
 
     {
       name: 'Home',
-      url: '/home:id',
+      url: '/dashboard',
       icon: 'fa fa-home',
     },
 
@@ -168,19 +168,19 @@ export default {
       icon: 'fa fa-file-text',
       children: [
         {
-          name:'Daily Report',
-          url:'/reports/daily-reports',
-          icon:'fa fa-file-text',
+          name: 'Daily Report',
+          url: '/reports/daily-reports',
+          icon: 'fa fa-file-text',
         },
         {
-          name:'Weekly Report',
-          url:'/reports/weekly-reports',
-          icon:'fa fa-file-text',
+          name: 'Weekly Report',
+          url: '/reports/weekly-reports',
+          icon: 'fa fa-file-text',
         },
         {
-          name:'Monthly Report',
-          url:'/reports/monthly-reports',
-          icon:'fa fa-file-text',
+          name: 'Monthly Report',
+          url: '/reports/monthly-reports',
+          icon: 'fa fa-file-text',
         },
       ],
     },
@@ -191,19 +191,19 @@ export default {
       icon: 'fa fa-location-arrow',
       children: [
         {
-          name:'Live Location',
-          url:'/locations/live-location',
-          icon:'fa fa-location-arrow',
+          name: 'Live Location',
+          url: '/locations/live-location',
+          icon: 'fa fa-location-arrow',
         },
         {
-          name:'Previous Location',
-          url:'/locations/previous-location',
-          icon:'fa fa-location-arrow',
+          name: 'Previous Location',
+          url: '/locations/previous-location',
+          icon: 'fa fa-location-arrow',
         },
         {
-          name:'Previous Paths',
-          url:'/locations/previous-paths',
-          icon:'fa fa-location-arrow',
+          name: 'Previous Paths',
+          url: '/locations/previous-paths',
+          icon: 'fa fa-location-arrow',
         }
       ]
     },
@@ -214,42 +214,42 @@ export default {
       icon: 'fa fa-car',
       children: [
         {
-          name:'Add Vehicle',
-          url:'/vehicles/add-vehicle',
-          icon:'fa fa-car',
+          name: 'Add Vehicle',
+          url: '/vehicles/add-vehicle',
+          icon: 'fa fa-car',
         },
         {
-          name:'Edit vehicle',
-          url:'/vehicles/edit-vehicle',
-          icon:'fa fa-car',
+          name: 'Edit vehicle',
+          url: '/vehicles/edit-vehicle',
+          icon: 'fa fa-car',
         },
         {
-          name:'View vehicles',
-          url:'/vehicles/view-vehicle',
-          icon:'fa fa-car',
+          name: 'View vehicles',
+          url: '/vehicles/view-vehicle',
+          icon: 'fa fa-car',
         }
       ]
     },
 
     {
       name: 'Company',
-      url:'/company/',
+      url: '/company/',
       icon: 'fa fa-building',
       children: [
         {
-          name:'Add Company',
-          url:'/company/add-company',
-          icon:'fa fa-building'
+          name: 'Add Company',
+          url: '/company/add-company',
+          icon: 'fa fa-building'
         },
         {
-          name:'View Company Details',
-          url:'/company/view-company',
-          icon:'fa fa-building',
+          name: 'View Company Details',
+          url: '/company/view-company',
+          icon: 'fa fa-building',
         },
         {
-          name:'Edit Company Details',
-          url:'/company/edit-company',
-          icon:'fa fa-building',
+          name: 'Edit Company Details',
+          url: '/company/edit-company',
+          icon: 'fa fa-building',
         }
       ]
     },
@@ -285,7 +285,7 @@ export default {
     {
       name: 'Required pages',
       url: '',
-      icon:'fa fa-asterisk'
+      icon: 'fa fa-asterisk'
     }
   ],
 };

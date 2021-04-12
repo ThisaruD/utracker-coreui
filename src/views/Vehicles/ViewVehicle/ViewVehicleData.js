@@ -43,20 +43,10 @@ const ViewVehicleData = (props) =>{
   },[]);
 
 
-  const submitFunc = (e) =>{
-    e.preventDefault();
-    axios.post('http://localhost:8000/api/updatevehicledetails'+vehicle_number)
-      .then((res)=>{
-        console.log(res.data);
-        //check meassage is keyword
-        //alert(res.data.message);
-      })
-      .catch((err)=>{
-        console.log(err);
-      })
-  }
+
 
   const vehicleDeleteFunc = (e) =>{
+
     axios.delete('http://localhost:8000/api/user/deletevehicledata',{params:{vehicle_number:props.match.params.id}})
       .then((res)=>{
         console.log(res.data);
@@ -90,7 +80,7 @@ const ViewVehicleData = (props) =>{
             method="post"
             encType="multipart/form-data"
             className="form-horizontal"
-            onSubmit={submitFunc}
+            // onSubmit={submitFunc}
           >
 
 

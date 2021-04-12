@@ -24,7 +24,7 @@ export default function ViewVehicle (props) {
     console.log(vehicleNumber1);
   }
 
-  const backToLogin = () =>{props.history.push('/login');}
+  const backToLogin = () =>{ props.history.push('/login'); }
 
   //https://run.mocky.io/v3/e951b11f-def4-49ab-92d8-d3cf9dc8fbed
   useEffect(() => {
@@ -38,7 +38,12 @@ export default function ViewVehicle (props) {
     }else {
 
 
-      axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"))
+      axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"),{
+        headers:{
+          "Content-type":"application/json",
+          Authorization: "Bearer"+localStorage.getItem('token')
+        }
+      })
         .then(res => {
           //handle response data
           console.log(res);

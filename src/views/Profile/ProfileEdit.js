@@ -22,6 +22,7 @@ const ProfileEdit = (props) => {
   const [nic, setNic] = useState("");
   const [contact_no, setContact_no] = useState("");
   const [password, setPassword] = useState("");
+  const [rePassword, setRepassword] = useState("");
 
   const [isLoggedIn,setIsLoggedIn] = useState(true);
   const [userId,setUserId] = useState("");
@@ -58,31 +59,35 @@ const ProfileEdit = (props) => {
 
 
   const submitFunc = (e) => {
-    e.preventDefault();
-    const profileDetails = {
-      first_name,
-      last_name,
-      email,
-      nic,
-      contact_no,
-      password
-    };
-    console.log(profileDetails);
 
-axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("user_id"),profileDetails,{
-  headers:{
-    "Content_type":"application/json",
-    Authorization:"Bearer"+ localStorage.getItem("token")
-  },
-})
-  .then((res)=>{
-    console.log(res.data);
-    alert(res.data.message1)
-  })
-  .catch((err)=>{
-    console.log(err);
-  })
+    if(password==rePassword){
+      e.preventDefault();
+      const profileDetails = {
+        first_name,
+        last_name,
+        email,
+        nic,
+        contact_no,
+        password
+      };
+      console.log(profileDetails);
 
+      axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("user_id"),profileDetails,{
+        headers:{
+          "Content_type":"application/json",
+          Authorization:"Bearer"+ localStorage.getItem("token")
+        },
+      })
+        .then((res)=>{
+          console.log(res.data);
+          alert(res.data.message1)
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
+    }else{
+      alert('password mismatch')
+    }
 
 
 
@@ -92,9 +97,11 @@ axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("u
 
   const deleteFunc = () =>{
 
-   axios.delete('http://localhost:8000/api/deleteuserdetails',{params:localStorage.getItem('user_id')})
+const user = localStorage.getItem('user_id');
+
+   axios.delete('http://localhost:8000/api/deleteuserdetails/'+user)
      .then((res)=>{
-       console.log(res.data.message1);
+       alert(res.data.message);
      })
      .catch((err)=>{
        console.log(err);
@@ -106,15 +113,7 @@ axios.put('http://localhost:8000/api/updateuserdetails/'+localStorage.getItem("u
 
   const backToLogin = () =>{props.history.push('/login');}
 
-    // fetch('',{
-    //   method:'DELETE',
-    //   headers:{"Content-Type":"application/json"},
-    //   body:JSON.stringify('data')
-    // }).then((res)=>{
-    //   console.log(res.data);
-    // }).catch((err)=>{
-    //   console.log(err);
-    // })
+
 
 
 if(isLoggedIn===true){
@@ -125,7 +124,9 @@ if(isLoggedIn===true){
           <strong>User Profile</strong> information
         </CardHeader>
         <CardBody className="userProfile_body">
-          <Form action="" method="post" onSubmit={submitFunc}>
+          <Form action=""
+            // onSubmit={submitFunc}
+          >
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -204,6 +205,8 @@ if(isLoggedIn===true){
                 />
               </InputGroup>
             </FormGroup>
+
+
             <FormGroup>
               <InputGroup>
                 <InputGroupAddon addonType="prepend">
@@ -217,7 +220,7 @@ if(isLoggedIn===true){
                   id="contactNumber"
                   name="contactNumber"
                   // pattern="07[1,2,5,6,7,8][0-9]+"
-                  // type="tel"
+                   type="tel"
                   maxlength="10"
                   minlength="10"
                   placeholder="Contact Number"
@@ -250,9 +253,35 @@ if(isLoggedIn===true){
 
 
 
+
+            <FormGroup>
+              <InputGroup>
+                <InputGroupAddon addonType="prepend">
+                  <InputGroupText>
+                    <i className="fa fa-asterisk"></i>
+                  </InputGroupText>
+                </InputGroupAddon>
+                <Input
+                  required
+                  type="password"
+                  id="re-enter-password"
+                  name="password1"
+                  placeholder="Re-Enter-Password"
+                  value={rePassword}
+                  required
+                  onChange={(e) => setRepassword(e.target.value)}
+                />
+              </InputGroup>
+            </FormGroup>
+
+
+
+
+
+
             <FormGroup className="form-actions">
               <Button
-                type="submit"
+                // type="submit"
                 size="sm"
                 color="primary"
                 className="profBut"
@@ -262,11 +291,11 @@ if(isLoggedIn===true){
               </Button>
               <Button
                 color="danger"
-                type="submit"
+                // type="submit"
                 size="sm"
                 color="danger"
                 className="userProfile_button"
-                onClick={deleteFunc}
+                 onClick={deleteFunc}
               >Delete Profile</Button>
             </FormGroup>
 
@@ -310,10 +339,6 @@ if(isLoggedIn===true){
     </div>
   );
 }
-
-
-
-
 
 }
 export default ProfileEdit;

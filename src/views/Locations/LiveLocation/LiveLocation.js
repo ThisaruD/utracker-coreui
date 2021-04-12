@@ -40,11 +40,11 @@ class LiveLocation extends Component{
         // {lat: 6.80592, lng: 51.53548},
         // {lat: 9.50523, lng: 51.31991},
         // {lat: 9.66089, lng: 48.70158}
-           {lat: "7.0042083", lng: "79.9530489"},
-            {lat: "6.8412134", lng: "79.9635795"},
+        {lat: "7.0042083", lng: "79.9530489"},
+        {lat: "6.8412134", lng: "79.9635795"},
         {lat: "6.9032139", lng: "79.9178106"}
 
-    ],
+      ],
 
       markerList:[],
       isLoggedIn:true,
@@ -134,9 +134,9 @@ class LiveLocation extends Component{
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
- backToLogin ()  {
+  backToLogin ()  {
     this.props.history.push('/login');
-}
+  }
 
 
 

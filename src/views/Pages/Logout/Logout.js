@@ -5,11 +5,8 @@ import {
   CardBody,
   CardGroup,
   Col,
+  Form,
   Container,
-  Form, Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
   Row
 } from "reactstrap";
 import {Link} from "react-router-dom";
@@ -17,14 +14,15 @@ import {Link} from "react-router-dom";
 
 
 
-const Logout = (props) =>{
+      const Logout = (props) =>{
 
 
-   const clickHandler = () =>{
-     localStorage.clear();
-     //props.history.push('/login');
+         const clickHandler = () =>{
+           localStorage.clear();
+           props.history.push('/dashboard');
+           window.location.reload();
 
-   }
+         }
 
 
 
@@ -43,7 +41,6 @@ const Logout = (props) =>{
                       Do you really want to logout from U-tracker system
                     </p>
 
-
                     <Row>
                       <Col xs="6">
                         <Link to="ResetPassword">
@@ -57,6 +54,7 @@ const Logout = (props) =>{
                         </Link>
                       </Col>
                     </Row>
+
                   </Form>
                 </CardBody>
               </Card>

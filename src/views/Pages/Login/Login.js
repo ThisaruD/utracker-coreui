@@ -1,6 +1,19 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import {Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row,} from "reactstrap";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {
+  Button,
+  Card,
+  CardBody,
+  CardGroup,
+  Col,
+  Container,
+  Form,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Row,
+} from "reactstrap";
 import axios from "axios";
 
 class Login extends Component {
@@ -30,6 +43,7 @@ class Login extends Component {
     });
   }
 
+  //submit button handling
   submitFunc(e) {
     e.preventDefault();
 
@@ -39,61 +53,40 @@ class Login extends Component {
     };
 
     console.log(obj);
-    axios.post("http://127.0.0.1:8000/api/login", obj)
+    axios.post("http://127.0.0.1:8000/api/login", obj, {
+      headers: {
+        "content-type": "application/json",
+        Authorization: "Bearer" + localStorage.getItem('token')
+      }
+    })
       .then((res) => {
-      console.log(res.data);
+        console.log(res.data);
+        //response data handling
+        if (res.data.message == 'success') {
+          alert('Successfully Login');
+          console.log(res.data.user.id);
+          localStorage["token"] = res.data.access_token;
+          localStorage["user_id"] = res.data.user.id;
+          localStorage["companies_company_id"] = res.data.user.companies_company_id;
+          localStorage['user_role_id'] = res.data.user.user_roles_role_id;
 
-    if(res.data.message=='success'){
-      alert('Successfully Login');
-      console.log(res.data.user.id);
-      localStorage["token"]=res.data.access_token;
-      localStorage["user_id"]=res.data.user.id;
-      localStorage["companies_company_id"]=res.data.user.companies_company_id;
+          this.props.history.push('/home' + res.data.user.user_roles_role_id);
 
-      //localStorage["user_role_id"]=res.data.user.user_roles_role_id;
-      // localStorage.setItem('u_id',JSON.stringify({res.data.user.id}));
-
-
-
-      this.props.history.push('/home'+res.data.user.user_roles_role_id);
-
-      // if(res.data.user.user_roles_role_id===1){
-      //   alert("User logged successfully");
-      //   this.props.history.push('/home/1');
-      // }else if(res.data.user.user_roles_role_id===2){
-      //   alert("User logged successfully");
-      //   this.props.history.push('/home/2');
-      // }else if(res.data.user.user_roles_role_id===3){
-      //   alert("User logged successfully");
-      //   this.props.history.push('/home/3');
-      // }else if(res.data.user.user_roles_role_id==undefined){
-      //   alert("User Not registerd");
-      // }
-
-
-
-
-
-    }else{
-      alert(res.data.message);
-    }
-
-
+        } else {
+          alert(res.data.message);
+        }
       })
-      .catch((err)=>{
+      //error handling
+      .catch((err) => {
         console.log(err);
+        alert(err);
       })
-
-
-    //.then(alert('User logged succesfuly'));
-    //.then( this.props.history.push('/home'));
 
     this.setState({
       email: "",
       password: "",
     });
   }
-
 
 
   render() {

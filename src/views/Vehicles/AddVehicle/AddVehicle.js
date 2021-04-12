@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import {
   CardHeader,
   Card,
@@ -27,36 +27,39 @@ const AddVehicle = (props) => {
   const [owner_contact_number, setOwner_contact_number] = useState("");
   const [date, setDate] = useState("");
   const [unit_per_1km, setUnit_per_1km] = useState('');
-  const [serial_number,setSerial_number] = useState('');
-  const [status,setStatus] = useState('');
+  const [serial_number, setSerial_number] = useState('');
+  const [status, setStatus] = useState('');
 
 //===========================should get this data from local storage==========================
-  const [user_id,setUser_id] = useState('2');
-  const [companies_company_id,setCompanies_company_id] = useState('2');
+  const [user_id, setUser_id] = useState('');
+  const [companies_company_id, setCompanies_company_id] = useState('');
 
-  const [isLoggedIn,setIsLoggedIn] = useState(true);
-  const [userId,setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userId, setUserId] = useState(null);
 
 
-
- // const user = JSON.parse(localStorage.getItem('user'));
+  // const user = JSON.parse(localStorage.getItem('user'));
 //console.log(user.role_id);
 
-  useEffect(()=>{
+  useEffect(() => {
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
-    if(user==undefined){
+    if (user == undefined) {
       console.log('hi');
       setIsLoggedIn(false);
+    }
+    else{
+      setCompanies_company_id(localStorage.getItem('companies_company_id'));
+      setUser_id(localStorage.getItem('user_id'));
     }
   });
 
 
-
-
   const submitFunc = (e) => {
     e.preventDefault();
+
+
     const vehicleDetails = {
       vehicle_number,
       type,
@@ -71,30 +74,30 @@ const AddVehicle = (props) => {
     };
     console.log(vehicleDetails);
 
-   axios.post('http://localhost:8000/api/savevehicledetails/'+user_id,vehicleDetails,{
-     headers:{
-       "content-type":"application/json",
-        Authorization:"Bearer" + localStorage.getItem('token'),
-     },
+    axios.post('http://localhost:8000/api/savevehicledetails/' + user_id, vehicleDetails, {
+      headers: {
+        "content-type": "application/json",
+        Authorization: "Bearer" + localStorage.getItem('token'),
+      },
     })
-     .then(res=>{
-       //handling success part
-       console.log(res.data);
-       alert("vehicle added successfully");
-       setVehicle_number('');
-       setType('');
-       setOwner_name('');
-       setDriver_name('');
-       setOwner_contact_number('');
-       setDriver_contact_number('');
-       setUnit_per_1km('');
-       setSerial_number('');
-       setStatus('')
-     })
-     .catch(err=>{
-       //handling error part
-       console.log(err);
-     })
+      .then(res => {
+        //handling success part
+        console.log(res.data);
+        alert("vehicle added successfully");
+        setVehicle_number('');
+        setType('');
+        setOwner_name('');
+        setDriver_name('');
+        setOwner_contact_number('');
+        setDriver_contact_number('');
+        setUnit_per_1km('');
+        setSerial_number('');
+        setStatus('')
+      })
+      .catch(err => {
+        //handling error part
+        console.log(err);
+      })
     // fetch('http://localhost:8000/user/savevehicledetails/'+user_id,{
     //   method:'POST',
     //   headers:{"Content-Type":"application/json"},
@@ -107,7 +110,7 @@ const AddVehicle = (props) => {
   }
 
 
-  const resetFunc = (e) =>{
+  const resetFunc = (e) => {
     setVehicle_number('');
     setType('');
     setDriver_name('');
@@ -118,292 +121,293 @@ const AddVehicle = (props) => {
     setStatus('');
   }
 
-  const backToLogin = () =>{props.history.push('/login');}
+  const backToLogin = () => {props.history.push('/login');}
 
 
-if(isLoggedIn===true){
-  return (
-    <div>
-      <Card>
-        <CardHeader>
-          <strong>Add vehicles</strong>
-        </CardHeader>
-        <CardBody>
-          <Form
-            action=""
-            method="post"
-            encType="multipart/form-data"
-            className="form-horizontal"
-            onSubmit={submitFunc}
-          >
-            <FormGroup row>
-              {/*space for empty row  */}
-              <Col md="3">
-                <Label></Label>
-              </Col>
-              <Col xs="12" md="9">
-                <p className="form-control-static">-</p>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Vehicle Number</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="vehicle-number"
-                  name="vehicle-number"
-                  placeholder="Vehicle Number"
-                  value={vehicle_number}
-                  onChange={(e) => setVehicle_number(e.target.value)}
-                />
-                <FormText color="muted">Please enter vehicle number</FormText>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Type</Label>
-                <Input
-                  required
-                  type="select"
-                  name="type"
-                  id="type"
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                >
-                  <option value="0">Please select type</option>
-                  <option value="van">Van</option>
-                  <option value="car">Car</option>
-                  <option value="bus">Bus</option>
-                  <option value="truck">Truck</option>
-                </Input>
-              </Col>
-              <Col md="6">
-                {/*<Label>Brand Name</Label>*/}
-                {/*<Input*/}
-                {/*  type="text"*/}
-                {/*  id="brand-name"*/}
-                {/*  name="brand-Name"*/}
-                {/*  placeholder="Vehicle brand name"*/}
-                {/*  value={brandName}*/}
-                {/*  onChange={(e) => setBrandName(e.target.value)}*/}
-                {/*/>*/}
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Driver Name</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="driver-name"
-                  name="driver-name"
-                  placeholder="Driver Name"
-                  value={driver_name}
-                  onChange={(e) => setDriver_name(e.target.value)}
-                />
-                <FormText className="help-block">Enter driver name</FormText>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Driver Contact Number</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="driver-contact-number"
-                  name="driver-contact-number"
-                  placeholder="Driver Contact Number"
-                  // autoComplete="text"
-                  value={driver_contact_number}
-                  onChange={(e) => setDriver_contact_number(e.target.value)}
-                />
-                <FormText className="help-block">
-                  Enter driver contact number
-                </FormText>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Owner Name</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="owner-name"
-                  name="owner-name"
-                  placeholder="Owner Name"
-                  value={owner_name}
-                  onChange={(e) => setOwner_name(e.target.value)}
-                />
-                <FormText className="help-block">Enter owner name</FormText>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Owner Contact Number</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="owner-contact-number"
-                  name="owner-contact-number"
-                  placeholder="Owner Contact Number"
-                  value={owner_contact_number}
-                  onChange={(e) => setOwner_contact_number(e.target.value)}
-                />
-                <FormText className="help-block">
-                  Enter owner contact number
-                </FormText>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>
-                  Date Input <Badge>NEW</Badge>
-                </Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="date"
-                  id="date-added"
-                  name="date-added"
-                  placeholder="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="3">
-                <Label>Unit per Km</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="select"
-                  name="unit-per-km"
-                  id="unit-per-km"
-                  value={unit_per_1km}
-                  onChange={(e) => setUnit_per_1km(e.target.value)}
-                >
-                  <option value="0">Please select</option>
-                  <option value="1">Rs:100</option>
-                  <option value="2">Rs:200</option>
-                  <option value="3">Rs:300</option>
-                </Input>
-              </Col>
-            </FormGroup>
-
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Device Serial Number</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="device-serial-number"
-                  name="device-serial-number"
-                  placeholder="device-serial-number"
-                  value={serial_number}
-                  onChange={(e) => setSerial_number(e.target.value)}
-                />
-                <FormText color="muted">Please enter vehicle number</FormText>
-              </Col>
-            </FormGroup>
-
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Device Status</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  required
-                  type="text"
-                  id="device-status"
-                  name="device-status"
-                  placeholder="device-status"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                />
-                <FormText color="muted">Please enter vehicle number</FormText>
-              </Col>
-            </FormGroup>
-
-
-            <Button type="submit" size="sm" color="primary">
-              <i className="fa fa-dot-circle-o" /> Submit
-            </Button>
-            <Button
-              type="reset"
-              size="sm"
-              color="danger"
-              onClick={resetFunc}
+  if (isLoggedIn === true) {
+    return (
+      <div>
+        <Card>
+          <CardHeader>
+            <strong>Add vehicles</strong>
+          </CardHeader>
+          <CardBody>
+            <Form
+              action=""
+              encType="multipart/form-data"
+              className="form-horizontal"
             >
-              <i className="fa fa-ban" /> Reset
-            </Button>
-          </Form>
-        </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-    </div>
-  );
+              <FormGroup row>
+                <Col md="3">
+                  <Label></Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <p className="form-control-static">You can add new vehicle to the system here</p>
+                  <p className="form-control-static">All field required</p>
+                </Col>
+              </FormGroup>
 
-}else if(isLoggedIn===false){
-  return (
-    <div className="access_denied">
-      <Card className="text-white bg-primary ">
-        <CardBody>
-          <div className="clearfix">
-            {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
-            <h4 className="pt-3">Please login First</h4>
-            <p className="text-muted float-left">
-              You don't have permission to access requested page. Please login first
-            </p>
-            <Row>
-              <Col md="4"></Col>
-              <Col md="4">
-                <Button
-                  block color="dark"
-                  className="btn-pill"
-                  onClick={backToLogin}
-                >Login</Button>
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Vehicle Number</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="vehicle-number"
+                    name="vehicle-number"
+                    placeholder="Vehicle Number"
+                    value={vehicle_number}
+                    onChange={(e) => setVehicle_number(e.target.value)}
+                  />
+                  <FormText color="muted">Please enter vehicle number</FormText>
+                </Col>
+              </FormGroup>
 
-              </Col>
-              <Col md="4"></Col>
-            </Row>
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-  );
-}
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Type</Label>
+                  <Input
+                    required
+                    type="select"
+                    name="type"
+                    id="type"
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
+                  >
+                    <option value="0">Please select type</option>
+                    <option value="van">Van</option>
+                    <option value="car">Car</option>
+                    <option value="bus">Bus</option>
+                    <option value="truck">Truck</option>
+                  </Input>
+                </Col>
+                <Col md="6">
+                  {/*<Label>Brand Name</Label>*/}
+                  {/*<Input*/}
+                  {/*  type="text"*/}
+                  {/*  id="brand-name"*/}
+                  {/*  name="brand-Name"*/}
+                  {/*  placeholder="Vehicle brand name"*/}
+                  {/*  value={brandName}*/}
+                  {/*  onChange={(e) => setBrandName(e.target.value)}*/}
+                  {/*/>*/}
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>Driver Name</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="driver-name"
+                    name="driver-name"
+                    placeholder="Driver Name"
+                    value={driver_name}
+                    onChange={(e) => setDriver_name(e.target.value)}
+                  />
+                  <FormText className="help-block">Enter driver name</FormText>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>Driver Contact Number</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="driver-contact-number"
+                    name="driver-contact-number"
+                    placeholder="Driver Contact Number"
+                    // autoComplete="text"
+                    value={driver_contact_number}
+                    onChange={(e) => setDriver_contact_number(e.target.value)}
+                  />
+                  <FormText className="help-block">
+                    Enter driver contact number
+                  </FormText>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>Owner Name</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="owner-name"
+                    name="owner-name"
+                    placeholder="Owner Name"
+                    value={owner_name}
+                    onChange={(e) => setOwner_name(e.target.value)}
+                  />
+                  <FormText className="help-block">Enter owner name</FormText>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>Owner Contact Number</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="owner-contact-number"
+                    name="owner-contact-number"
+                    placeholder="Owner Contact Number"
+                    value={owner_contact_number}
+                    onChange={(e) => setOwner_contact_number(e.target.value)}
+                  />
+                  <FormText className="help-block">
+                    Enter owner contact number
+                  </FormText>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>
+                    Date Input <Badge>NEW</Badge>
+                  </Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="date"
+                    id="date-added"
+                    name="date-added"
+                    placeholder="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="3">
+                  <Label>Unit per Km</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="select"
+                    name="unit-per-km"
+                    id="unit-per-km"
+                    value={unit_per_1km}
+                    onChange={(e) => setUnit_per_1km(e.target.value)}
+                  >
+                    <option value="0">Please select</option>
+                    <option value="1">Rs:100</option>
+                    <option value="2">Rs:200</option>
+                    <option value="3">Rs:300</option>
+                  </Input>
+                </Col>
+              </FormGroup>
 
 
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Device Serial Number</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="text"
+                    id="device-serial-number"
+                    name="device-serial-number"
+                    placeholder="device-serial-number"
+                    value={serial_number}
+                    onChange={(e) => setSerial_number(e.target.value)}
+                  />
+                  <FormText color="muted">Please enter vehicle GPS device serial number</FormText>
+                </Col>
+              </FormGroup>
 
 
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Device Status</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    required
+                    type="select"
+                    id="device-status"
+                    name="device-status"
+                    placeholder="device-status"
+                    value={status}
+                    onChange={(e) => setStatus(e.target.value)}
+                  >
+                    <option>Please select</option>
+                    <option value="ON">ON</option>
+                    <option value="OFF">OFF</option>
+                  </Input>
+                  <FormText color="muted">Please enter GPS device status</FormText>
+                </Col>
+              </FormGroup>
 
 
+              <Button type="submit"
+                      size="sm"
+                      color="primary"
+                      onClick={submitFunc}
+              >
+                <i className="fa fa-dot-circle-o"/> Submit
+              </Button>
+
+              <Button
+                type="reset"
+                size="sm"
+                color="danger"
+                onClick={resetFunc}
+              ><i className="fa fa-ban"/> Reset
+              </Button>
+
+            </Form>
+          </CardBody>
+          <CardFooter></CardFooter>
+        </Card>
+      </div>
+    );
+
+  } else if (isLoggedIn === false) {
+    return (
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >Login</Button>
+
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    );
+  }
 
 
 };

@@ -1,4 +1,4 @@
-import React,{useState,useEffect}  from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Badge,
   Button,
@@ -17,80 +17,65 @@ import axios from "axios";
 import csrf from 'csrf';
 
 
-const AddCompany = (props) =>{
+const AddCompany = (props) => {
 
 
   const user = JSON.parse(localStorage.getItem('user'));
 //console.log(user.role_id);
 
-  const[company_name,setCompany_name] = useState('');
-  const[company_location,setCompany_location] = useState('');
-  const[company_address,setCompany_address] = useState('');
+  const [company_name, setCompany_name] = useState('');
+  const [company_location, setCompany_location] = useState('');
+  const [company_address, setCompany_address] = useState('');
 
-  const[isLoggedIn,setIsLoggedIn] = useState(true);
-  const[userId, setUserId] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userId, setUserId] = useState('');
 
 
-  useEffect(()=>{
+  useEffect(() => {
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
-    if(user==undefined){
+    if (user == undefined) {
       console.log('hi');
       setIsLoggedIn(false);
     }
 
 
-    })
+  })
 
 
-
-
- const submitFunc=(e)=>{
-   e.preventDefault();
-    const companyDetails = {company_name,company_location,company_address};
+  const submitFunc = (e) => {
+    e.preventDefault();
+    const companyDetails = {company_name, company_location, company_address};
     console.log(companyDetails);
 
-
-// const config ={
-//   headers:{
-//     'Content_Type':'application/json'
-//   }
-// }
-//    const body = {
-//      company_name:'wso2',
-//      company_location:'jaffna',
-//      company_address:'no5555'
-//    }
-   // axios.post("http://localhost:8000/api/savecompanydetails",JSON.stringify(companyDetails),config)
-   //   .then((res)=>{
-   //     console.log(res.data);
-   //   })
-   //   .catch((err)=>{
-   //     console.log(err);
-   //   });
-
-fetch('http://localhost:8000/api/savecompanydetails',{
-  method:'POST',
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify(companyDetails)
-}).then((res)=>{
-  console.log(res.data.reply);
-}).catch((err)=>{
-  console.log(err);
-})
-
+    axios.post("http://localhost:8000/api/savecompanydetails", companyDetails)
+      .then((res) => {
+        console.log(res.data);
+        alert(res.data.reply);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
 
     setCompany_name('');
     setCompany_address('');
     setCompany_location('');
   }
 
-  const backToLogin = () =>{props.history.push('/login');}
+  const backToLogin = () => {
+    props.history.push('/login');
+  }
+
+  const resetFunc = () => {
+    setCompany_name('');
+    setCompany_address('');
+    setCompany_location('')
+  }
 
 
-
-  if(isLoggedIn===true){
+  if (isLoggedIn === true) {
     return (
       <div>
         <Card>
@@ -172,11 +157,20 @@ fetch('http://localhost:8000/api/savecompanydetails',{
               </FormGroup>
 
 
-              <Button type="submit" size="sm" color="primary">
-                <i className="fa fa-dot-circle-o" /> Submit
+              <Button
+                type="submit"
+                size="sm"
+                color="primary"
+                onClick={submitFunc}
+
+              ><i className="fa fa-dot-circle-o"/> Submit
               </Button>
-              <Button type="reset" size="sm" color="danger">
-                <i className="fa fa-ban" /> Reset
+
+              <Button
+                onClick={resetFunc}
+                size="sm"
+                color="danger"
+              ><i className="fa fa-ban"/> Reset
               </Button>
             </Form>
           </CardBody>
@@ -185,7 +179,7 @@ fetch('http://localhost:8000/api/savecompanydetails',{
       </div>
     );
 
-  }else if(isLoggedIn===false){
+  } else if (isLoggedIn === false) {
     return (
       <div className="access_denied">
         <Card className="text-white bg-primary ">
@@ -214,10 +208,6 @@ fetch('http://localhost:8000/api/savecompanydetails',{
       </div>
     );
   }
-
-
-
-
 
 
 }

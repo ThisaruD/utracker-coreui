@@ -36,7 +36,12 @@ import axios from 'axios';
       }else {
 
 
-        axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"))
+        axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"),{
+          headers:{
+            "Content-type":"application/json",
+            Authorization: "Bearer"+localStorage.getItem('token')
+          }
+        })
           .then(res => {
             //handle response data
             console.log(res);

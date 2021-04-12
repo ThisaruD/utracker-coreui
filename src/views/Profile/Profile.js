@@ -33,28 +33,21 @@ const Profile = (props) => {
 
   useEffect(()=>{
 
+  //check user is available
     const user = localStorage.getItem("user_id");
-    //console.log(user);
-    //setUserId(JSON.parse(localStorage.getItem("user_id")));
-    //setUserId(parseInt());
-    //console.log(userId);
-    //return user  ? JSON.parse(user) : [];
-
-
-   if(user==undefined){
+    if(user==undefined){
 
        console.log('hi');
        setIsLoggedIn(false);
    }else{
 
-
-
-      //console.log('hello');
-      //console.log(userId);
-
-
-
-      axios.get('http://localhost:8000/api/getuserdetails/'+localStorage.getItem("user_id"))
+  //get user details from DB
+      axios.get('http://localhost:8000/api/getuserdetails/'+localStorage.getItem("user_id"),{
+        headers:{
+          "content-type":"application/json",
+          Authorization:"Bearer" + localStorage.getItem('token'),
+        },
+      })
         .then((res) => {
           console.log(res.data);
           setFirstName(res.data.user[0].first_name);
@@ -67,15 +60,13 @@ const Profile = (props) => {
         .catch((err) => {
           console.log(err);
         })
-
-
     }
 
-  },[]);
+    },[]);
 
 
 
-
+// submit function handler
   const submitFunc = (e) => {
     e.preventDefault();
     const profileDetails = {
@@ -237,8 +228,6 @@ const Profile = (props) => {
                   Back
                 </Button>
               </FormGroup>
-
-
             </Form>
           </CardBody>
         </Card>
@@ -250,7 +239,6 @@ const Profile = (props) => {
         <Card className="text-white bg-primary ">
           <CardBody>
             <div className="clearfix">
-              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
               <h4 className="pt-3">Please login First</h4>
               <p className="text-muted float-left">
                 You don't have permission to access requested page. Please login first
@@ -277,13 +265,5 @@ const Profile = (props) => {
       </div>
     );
   }
-
-
-
-
-
-
-
-
 }
 export default Profile;
