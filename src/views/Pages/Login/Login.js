@@ -54,10 +54,10 @@ class Login extends Component {
 
     console.log(obj);
     axios.post("http://127.0.0.1:8000/api/login", obj, {
-      headers: {
-        "content-type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem('token')
-      }
+      // headers: {
+      //   "content-type": "application/json",
+      //   Authorization: "Bearer" + localStorage.getItem('token')
+      // }
     })
       .then((res) => {
         console.log(res.data);

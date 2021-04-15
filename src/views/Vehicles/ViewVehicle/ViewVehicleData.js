@@ -1,78 +1,88 @@
-import React,{useState,useEffect} from 'react';
-import {Badge, Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, FormText, Input, Label} from "reactstrap";
+import React, { useState, useEffect } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Col,
+  Form,
+  FormGroup,
+  FormText,
+  Input,
+  Label,
+} from "reactstrap";
 import axios from "axios";
 
-
-const ViewVehicleData = (props) =>{
-
-
-  const[vehicle_number,setVehicle_number] = useState('');
-  const [type,setType] = useState('');
-  const [unit_per_1km, setUnit_per_1km] = useState('');
-  const [driver_name, setDriver_name] = useState('');
+const ViewVehicleData = (props) => {
+  const [vehicle_number, setVehicle_number] = useState("");
+  const [type, setType] = useState("");
+  const [unit_per_1km, setUnit_per_1km] = useState("");
+  const [driver_name, setDriver_name] = useState("");
   const [driver_contact_number, setDriver_contact_number] = useState("");
   const [owner_name, setOwner_name] = useState("");
   const [owner_contact_number, setOwner_contact_number] = useState("");
-  const [serial_number,setSerial_number] = useState('');
-  const [status,setStatus] = useState('');
+  const [serial_number, setSerial_number] = useState("");
+  const [status, setStatus] = useState("");
 
   const [date, setDate] = useState("");
-  const [user_id,setUser_id] = useState('1');
+  const [user_id, setUser_id] = useState("1");
 
-
-  useEffect(()=>{
+  useEffect(() => {
     //vehicle numbers pass
-    axios.get('http://localhost:8000/api/getvehicledetails',{params:{vehicle_number:props.match.params.id}})
-      .then((res)=>{
+    axios
+      .get("http://localhost:8000/api/getvehicledetails", {
+        params: { vehicle_number: props.match.params.id },
+      })
+      .then((res) => {
         // setVehicle_number();
         setVehicle_number(res.data.vehicle_num);
-        setType(res.data.type);
+        setType(res.data.type1);
         setUnit_per_1km(res.data.unit_per_1km);
         setDriver_name(res.data.driver_name);
-        setDriver_contact_number(res.data.driver_contact_number);
+        setDriver_contact_number(res.data.driver_contact_no);
         setOwner_name(res.data.owner_name);
-        setOwner_contact_number(res.data.owner_contact_number);
+        setOwner_contact_number(res.data.owner_contact_no);
         setSerial_number(res.data.serial_number);
-        setStatus(res.data.status);
+        setStatus(res.data.status1);
 
         console.log(res.data);
+        console.log(res.data.owner_name);
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
+      });
+  }, []);
+
+  const goBack = () => {
+    props.history.push("/vehicles/view-vehicle");
+  };
+
+  const vehicleDeleteFunc = (e) => {
+    axios
+      .delete("http://localhost:8000/api/user/deletevehicledata", {
+        params: { vehicle_number: props.match.params.id },
       })
-  },[]);
-
-
-
-
-  const vehicleDeleteFunc = (e) =>{
-
-    axios.delete('http://localhost:8000/api/user/deletevehicledata',{params:{vehicle_number:props.match.params.id}})
-      .then((res)=>{
+      .then((res) => {
         console.log(res.data);
-        if(res.data.messages=='vehicle successfully removed'){
+        if (res.data.messages == "vehicle successfully removed") {
           alert("successfully removed vehicle");
           // setVehicleNumber('');
           // setType('');
         }
-
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
-      })
-  }
-
-
-
+      });
+  };
 
   return (
-
-
-
     <div>
       <Card>
         <CardHeader>
           <strong>Vehicle Details</strong>
+          <h2>{props.match.params.id}</h2>
         </CardHeader>
         <CardBody>
           <Form
@@ -80,12 +90,9 @@ const ViewVehicleData = (props) =>{
             method="post"
             encType="multipart/form-data"
             className="form-horizontal"
-            // onSubmit={submitFunc}
+            onSubmit={goBack}
           >
-
-
             <FormGroup row>
-              {/*space for empty row  */}
               <Col md="3">
                 <Label></Label>
               </Col>
@@ -93,7 +100,6 @@ const ViewVehicleData = (props) =>{
                 <p className="form-control-static">-</p>
               </Col>
             </FormGroup>
-
 
             <FormGroup row>
               <Col md="6">
@@ -106,11 +112,9 @@ const ViewVehicleData = (props) =>{
                   // autoComplete="text"
                   value={type}
                   disabled
-
                 />
               </Col>
-              <Col md="6">
-              </Col>
+              <Col md="6"></Col>
             </FormGroup>
 
             <FormGroup row>
@@ -130,6 +134,7 @@ const ViewVehicleData = (props) =>{
               </Col>
             </FormGroup>
 
+
             <FormGroup row>
               <Col md="3">
                 <Label>Driver Contact Number</Label>
@@ -143,7 +148,6 @@ const ViewVehicleData = (props) =>{
                   // autoComplete="text"
                   value={driver_contact_number}
                   disabled
-
                 />
                 <FormText className="help-block">
                   Enter driver contact number
@@ -161,7 +165,7 @@ const ViewVehicleData = (props) =>{
                   id="owner-name"
                   name="owner-name"
                   placeholder="Owner Name"
-                  onChnge={owner_name}
+                  value={owner_name}
                   disabled
                 />
                 <FormText className="help-block">Enter owner name</FormText>
@@ -211,20 +215,14 @@ const ViewVehicleData = (props) =>{
               </Col>
               <Col xs="12" md="9">
                 <Input
-                  type="select"
+                  type="text"
                   name="unit-per-km"
                   id="unit-per-km"
                   value={unit_per_1km}
                   disabled
-                >
-                  <option value="0">Please select</option>
-                  <option value="1">Rs:100</option>
-                  <option value="2">Rs:200</option>
-                  <option value="3">Rs:300</option>
-                </Input>
+                />
               </Col>
             </FormGroup>
-
 
             <FormGroup row>
               <Col md="6">
@@ -261,38 +259,20 @@ const ViewVehicleData = (props) =>{
               </Col>
             </FormGroup>
 
-
-            <Button
-              type="submit"
-              size="sm"
-              color="primary"
-            >
-              <i className="fa fa-dot-circle-o" /> Submit
+            <Button onClick={goBack} size="sm" color="primary">
+              <i className="fa fa-dot-circle-o" /> Back
             </Button>
 
-
-            <Button
-              onClick={vehicleDeleteFunc}
-              size="sm"
-              color="danger"
-            ><i className="fa fa-ban" />Delete Vehicle
+            <Button onClick={vehicleDeleteFunc} size="sm" color="danger">
+              <i className="fa fa-ban" />
+              Delete Vehicle
             </Button>
           </Form>
         </CardBody>
         <CardFooter></CardFooter>
       </Card>
     </div>
-
-
-
   );
-
-
-
-
-
-
-
-}
+};
 
 export default ViewVehicleData;

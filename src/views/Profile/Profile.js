@@ -45,7 +45,7 @@ const Profile = (props) => {
       axios.get('http://localhost:8000/api/getuserdetails/'+localStorage.getItem("user_id"),{
         headers:{
           "content-type":"application/json",
-          Authorization:"Bearer" + localStorage.getItem('token'),
+          Authorization:"Bearer " + localStorage.getItem('token'),
         },
       })
         .then((res) => {
