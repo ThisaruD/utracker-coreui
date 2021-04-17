@@ -1,8 +1,9 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
 import GoogleMapReact from 'google-maps-react';
 import {Button, Card, CardBody, Col, Row} from "reactstrap";
+import {GoogleMap} from "react-google-maps";
 
 
 const mapStyles = {
@@ -11,9 +12,7 @@ const mapStyles = {
 };
 
 
-//const AnyReactComponent = ({ text }) => <div>{text}</div>;
-
-class LiveLocation extends Component{
+class LiveLocation extends Component {
 
   // static defaultProps = {
   //   center: {
@@ -25,62 +24,45 @@ class LiveLocation extends Component{
 
   constructor(props) {
     super(props);
-    this.showMarkers = this.showMarkers.bind(this);
+    // this.showMarkers = this.showMarkers.bind(this);
     this.backToLogin = this.backToLogin.bind(this);
     this.state = {
-      isLoading:true,
-      date:[],
-      name:[],
-      company_id:"1",
-      vehicleNumber:[],
-      vehiclesLongLat:[],
+      isLoading: true,
+      date: [],
+      name: [],
+      company_id: "1",
+      vehicleNumber: [],
+      vehiclesLongLat: [],
       cords: [
         // {lat: 9.96233, lng: 49.80404},
         // {lat: 6.11499, lng: 50.76891},
         // {lat: 6.80592, lng: 51.53548},
         // {lat: 9.50523, lng: 51.31991},
         // {lat: 9.66089, lng: 48.70158}
-        {lat: "7.0042083", lng: "79.9530489"},
-        {lat: "6.8412134", lng: "79.9635795"},
-        {lat: "6.9032139", lng: "79.9178106"}
+        // {lat: "7.0042083", lng: "79.9530489"},
+        //  {lat: "7.0042317", lng: "79.9531022"},
+        {lat: "8.0408", lng: "79.8394"}
 
       ],
 
-      markerList:[],
-      isLoggedIn:true,
-      userId:'',
+      markerList: [],
+      isLoggedIn: true,
+      userId: '',
     }
   }
 
 
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////
-  componentDidMount() {
+  async componentDidMount() {
 
-
-    // const user = localStorage.getItem("user_id");
-    // this.setState({
-    //   userId:user
-    // });
-
-    // if(user==undefined){
-    //   console.log('hi');
-    //   this.setState({
-    //     isLoggedIn:false
-    //   });
-    //  // setIsLoggedIn(false);
-    //
-    // }else {
     let user = localStorage.getItem("user_id");
 
-    if(user==undefined){
+    if (user == undefined) {
       this.setState({
-        isLoggedIn:false
+        isLoggedIn: false
       });
     }else{
-
-      axios.get('http://localhost:8000/api/getuniquedata', {
+     await axios.get('http://localhost:8000/api/getuniquedata', {
         params: {
           company_id: this.state.company_id
         }
@@ -91,81 +73,72 @@ class LiveLocation extends Component{
         }
       })
         .then((res) => {
-          let x = res.data.GPS_DATA.length;
-          console.log(res.data.GPS_DATA.length);
+          console.log(res.data);
 
-          // for(let i=0;i<x;i++){
-          //
-          //   vehiclesLongLat[i]=res.data.GPS_DATA.[i];
-          //
-          // }
+          for (let i = 0; i < res.data.GPS_DATA.length; i++) {
 
+            let coordinates = {
+              lat: res.data.GPS_DATA[i].latitude,
+              lng: res.data.GPS_DATA[i].longitude
+            }
 
-
-
-          // let i, j, k, l;
-          // for (i = 0, k = 0, l = 0, j = 1; k < x, l < x, i < x, j <= x; k++, l++, i += 2, j += 2) {
-          //   this.state.vehicleNumber[k] = res.data.GPS_DATA[i];
-          //   let coordinate = {
-          //     lat: res.data.GPS_DATA[j][0].lat * 1,
-          //     lng: res.data.GPS_DATA[j][0].lng * 1
-          //   }
-          //   this.state.vehiclesLongLat.push(coordinate);
-          //   /* before code */
-          //   //this.state.vehiclesLongLat[l]=res.data.GPS_DATA[j][0];
-          //   //this.state.lat = this.state.vehiclesLongLat[l].lat;
-          // }
+            this.state.cords.push(coordinates);
+            //  this.state.cords.setState({
+            //    lat:coordinates.lat,
+            //    lng:coordinates.lng
+            //  });
+          }
+          console.log(this.state.cords);
 
         })
-        .then(() => {
-          //console.log(this.state.vehicleNumber);
-          console.log(this.state.vehiclesLongLat);
-          // this.showMarkers();
-          this.state.isLoading = false;
 
-        })
         .catch((err) => {
           console.log(err);
         })
 
+
     }
     //this.state.vehiclesLongLat = JSON.stringify(this.state.vehiclesLongLat);
+
+
   }
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-  backToLogin ()  {
+  backToLogin() {
     this.props.history.push('/login');
   }
 
 
+  // showMarkers() {
+  //
+  //
+  //
+  //   console.log('hi');
+  //   console.log(this.state.cords);
+  //
+  //   return this.state.cords.map((store, index) => (
+  //       <Marker key={index} id={index} position={{
+  //       lat: store.lat,
+  //       lng: store.lng,
+  //
+  //     }}
+  //
+  //                    onClick={() => console.log("Clicked")}/>
+  //   ));
+  //
+  // }
 
 
-
-
-
-
-
-  showMarkers  () {
-
-    return this.state.cords.map((store, index) => {
-      return <Marker key={index} id={index} position={{
-        lat: store.lat,
-        lng: store.lng
-      }}
-                     onClick={() => console.log("Clicked")} />
-    })
-  }
-
-
-
-
-  render(){
+  render() {
 
 
     // if(this.state.isLoggedIn===true){
-    if(this.state.isLoggedIn==true){
-      return(
+    if (this.state.isLoggedIn == true) {
+
+
+      return (
         <Map
           google={this.props.google}
           zoom={9}
@@ -174,12 +147,19 @@ class LiveLocation extends Component{
             lat: 7.0042083,
             lng: 79.9530489
           }}>
-          {this.showMarkers()}
+          {this.state.cords.map((cord)=>(
+            <Marker
+              position={{lat:cord.lat,lng:cord.lng}}
+            />
+          ))}
         </Map>
+
+
       );
 
-    }else if(this.state.isLoggedIn==false){
-      return(
+
+    }else if (this.state.isLoggedIn == false) {
+      return (
         <div className="access_denied">
           <Card className="text-white bg-primary ">
             <CardBody>
@@ -192,7 +172,6 @@ class LiveLocation extends Component{
                 <p className="text-muted float-left">
                   Please login first
                 </p>
-
                 <Row>
                   <Col md="4"></Col>
                   <Col md="4">
@@ -211,7 +190,6 @@ class LiveLocation extends Component{
         </div>
       );
     }
-
 
 
     // }else if(this.state.isLoggedIn===false){
@@ -242,12 +220,6 @@ class LiveLocation extends Component{
     //       </Card>
     //     </div>
     //   );
-
-
-
-
-
-
 
 
   }
