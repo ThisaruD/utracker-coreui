@@ -162,28 +162,28 @@ export default {
       icon: 'fa fa-home',
     },
 
-    {
-      name: 'Reports',
-      url: '/reports',
-      icon: 'fa fa-file-text',
-      children: [
-        {
-          name: 'Daily Report',
-          url: '/reports/daily-reports',
-          icon: 'fa fa-file-text',
-        },
-        {
-          name: 'Weekly Report',
-          url: '/reports/weekly-reports',
-          icon: 'fa fa-file-text',
-        },
-        {
-          name: 'Monthly Report',
-          url: '/reports/monthly-reports',
-          icon: 'fa fa-file-text',
-        },
-      ],
-    },
+    // {
+    //   name: 'Reports',
+    //   url: '/reports',
+    //   icon: 'fa fa-file-text',
+    //   children: [
+    //     {
+    //       name: 'Daily Report',
+    //       url: '/reports/daily-reports',
+    //       icon: 'fa fa-file-text',
+    //     },
+    //     {
+    //       name: 'Weekly Report',
+    //       url: '/reports/weekly-reports',
+    //       icon: 'fa fa-file-text',
+    //     },
+    //     {
+    //       name: 'Monthly Report',
+    //       url: '/reports/monthly-reports',
+    //       icon: 'fa fa-file-text',
+    //     },
+    //   ],
+    // },
 
     {
       name: 'Locations',
@@ -281,12 +281,12 @@ export default {
       name: 'Logout',
       url: '/logout',
       icon: 'fa fa-sign-out',
-    },
-    {
-      name: 'Required pages',
-      url: '',
-      icon: 'fa fa-asterisk'
     }
+    // {
+    //   name: 'Required pages',
+    //   url: '',
+    //   icon: 'fa fa-asterisk'
+    // }
   ],
 };
 

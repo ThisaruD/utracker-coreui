@@ -40,7 +40,12 @@ const ProfileEdit = (props) => {
     }else {
 
 
-      axios.get('http://localhost:8000/api/getuserdetails/' +localStorage.getItem("user_id"))
+      axios.get('http://localhost:8000/api/getuserdetails/' +localStorage.getItem("user_id"),{
+        headers:{
+          "content-type":"application/json",
+          Authorization:"Bearer " + localStorage.getItem('token'),
+        },
+      })
         .then((res) => {
           console.log(res.data);
           setFirst_name(res.data.user[0].first_name);
@@ -60,7 +65,7 @@ const ProfileEdit = (props) => {
 
   const submitFunc = (e) => {
 
-    if(password==rePassword){
+    // if(password==rePassword){
       e.preventDefault();
       const profileDetails = {
         first_name,
@@ -85,9 +90,9 @@ const ProfileEdit = (props) => {
         .catch((err)=>{
           console.log(err);
         })
-    }else{
-      alert('password mismatch')
-    }
+    // }else{
+    //   alert('password mismatch')
+    // }
 
 
 
@@ -254,25 +259,25 @@ if(isLoggedIn===true){
 
 
 
-            <FormGroup>
-              <InputGroup>
-                <InputGroupAddon addonType="prepend">
-                  <InputGroupText>
-                    <i className="fa fa-asterisk"></i>
-                  </InputGroupText>
-                </InputGroupAddon>
-                <Input
-                  required
-                  type="password"
-                  id="re-enter-password"
-                  name="password1"
-                  placeholder="Re-Enter-Password"
-                  value={rePassword}
-                  required
-                  onChange={(e) => setRepassword(e.target.value)}
-                />
-              </InputGroup>
-            </FormGroup>
+            {/*<FormGroup>*/}
+            {/*  <InputGroup>*/}
+            {/*    <InputGroupAddon addonType="prepend">*/}
+            {/*      <InputGroupText>*/}
+            {/*        <i className="fa fa-asterisk"></i>*/}
+            {/*      </InputGroupText>*/}
+            {/*    </InputGroupAddon>*/}
+            {/*    <Input*/}
+            {/*      required*/}
+            {/*      type="password"*/}
+            {/*      id="re-enter-password"*/}
+            {/*      name="password1"*/}
+            {/*      placeholder="Re-Enter-Password"*/}
+            {/*      value={rePassword}*/}
+            {/*      required*/}
+            {/*      onChange={(e) => setRepassword(e.target.value)}*/}
+            {/*    />*/}
+            {/*  </InputGroup>*/}
+            {/*</FormGroup>*/}
 
 
 

@@ -15,6 +15,7 @@ import axios from 'axios';
 
     const [isLoggedIn,setIsLoggedIn] = useState(true);
     const [userId,setUserId] = useState(null);
+    const [userRoleID, setUserRoleID] = useState('');
 
 
 
@@ -31,7 +32,7 @@ import axios from 'axios';
       setUserId(user);
 
       if(user==undefined){
-        console.log('hi');
+
         setIsLoggedIn(false);
       }else {
 
@@ -55,16 +56,7 @@ import axios from 'axios';
           })
 
 
-        // fetch('http://localhost:8000/api/allvehiclenumbers/1',{
-        //   method:'GET',
-        //   headers:{"Content-Type":"application/json"},
-        //   // body:JSON.stringify(companyDetails)
-        // }).then((res)=>{
-        //  // console.log(res.data);
-        //   setVehicles(res.data.vehicles);
-        // }).catch((err)=>{
-        //   console.log(err);
-        // })
+      setUserRoleID(localStorage.getItem('user_role_id'));
 
       }
     }, []);
@@ -76,43 +68,58 @@ import axios from 'axios';
 
 
 if(isLoggedIn===true){
-  return (
-    <div>
-      <h1>This is edit vehicle tab</h1>
-      <FormGroup row>
-        <Col md="3">
-          <Label htmlFor="select">Select Vehicle Number</Label>
-        </Col>
-        <Col xs="12" md="9">
-          <Input type="select"
-                 name="select"
-                 id="select"
-                 onChange={(e) => setVehicleNumber1(e.target.value)}
-          >
-            <option value="0">Please select</option>
-            {vehicles.map((vehicle) => (
-              <option
-                values={vehicle}
-              > {vehicle}</option>
-            ))}
-          </Input>
-        </Col>
-      </FormGroup>
-      <Row>
-        <Col md="4"></Col>
-        <Col md="4">
 
-          <Button
-            block color="primary"
-            className="btn-pill"
-            onClick={clickHandler}
-          >Edit Vehicle Data</Button>
 
-        </Col>
-        <Col md="4"></Col>
-      </Row>
-    </div>
-  );
+  if(userRoleID==1 || userRoleID==2){
+    return (
+      <div>
+        <h1>This is edit vehicle tab</h1>
+        <FormGroup row>
+          <Col md="3">
+            <Label htmlFor="select">Select Vehicle Number</Label>
+          </Col>
+          <Col xs="12" md="9">
+            <Input type="select"
+                   name="select"
+                   id="select"
+                   onChange={(e) => setVehicleNumber1(e.target.value)}
+            >
+              <option value="0">Please select</option>
+              {vehicles.map((vehicle) => (
+                <option
+                  values={vehicle}
+                > {vehicle}</option>
+              ))}
+            </Input>
+          </Col>
+        </FormGroup>
+        <Row>
+          <Col md="4"></Col>
+          <Col md="4">
+
+            <Button
+              block color="primary"
+              className="btn-pill"
+              onClick={clickHandler}
+            >Edit Vehicle Data</Button>
+
+          </Col>
+          <Col md="4"></Col>
+        </Row>
+      </div>
+    );
+  }else{
+    return (
+      <div>
+        <h1>Access Denide</h1>
+      </div>
+    );
+  }
+
+
+
+
+
 }else if(isLoggedIn===false){
   return (
     <div className="access_denied">

@@ -30,6 +30,9 @@ const SuperAdminHome = React.lazy(() => import('./views/Home/SuperAdminHome/Supe
 const SuperAdminCompanyDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/SuperAdminCompanyDetails'));
 const SuperAdminVehicleDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/SuperAdminVehicleDetails'));
 
+//const TransportManagerHome = React.lazy(()=>import('./views/Home/TransportManagerHome/TransportManagerHome'));
+const TransportManagerVehicleDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/TransportManagerVehicleDetails'));
+const TransportManagerUserDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/TransportManagerUserDetails'));
 
 const Logout = React.lazy(() => import('./views/Pages/Logout/Logout'));
 ////////////////////////////Required Sample Pages///////////////////////
@@ -41,9 +44,11 @@ const routes = [
   // { path: '/super-admin-home',  name:'SuperAdminHome', component:SuperAdminHome },
   {path: '/dashboard', exact: true, name: 'Dashboard', component: Dashboard},
   {path: '/logout', name: 'Logout', component: Logout},
-  {path: '/super-admin-home', name: 'SuperAdminHome', component: SuperAdminHome},
+  {path: '/super-admin-home', name: 'Dashboard', component: SuperAdminHome},
   {path: '/super-admin-company-details', name: 'SuperAdminCompanyDetails', component: SuperAdminCompanyDetails},
   {path: '/super-admin-vehicle-details', name: 'SuperAdminVehicleDetails', component: SuperAdminVehicleDetails},
+  {path: '/transport-manager-vehicle-details', name:'TransportManagerHome', component:TransportManagerVehicleDetails},
+  {path: '/transport-manager-user-details', name:'TransportManagerUserDetails', component:TransportManagerUserDetails},
   {path: '/about', name: 'About', component: About},
   {path: '/contact', name: 'Contact', component: Contact},
   {path: '/setting', name: 'Setting', component: Setting},

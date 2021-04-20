@@ -12,7 +12,7 @@ const EditCompany = (props) => {
 
   const[isLoggedIn,setIsLoggedIn] = useState(true);
   const[userId, setUserId] = useState('');
-
+  const[userRoleID, setUserRoleID] = useState('');
 
 
   const clickHandler = () => {
@@ -49,54 +49,75 @@ const EditCompany = (props) => {
           console.log(err);
         })
     }
+
+    setUserRoleID(localStorage.getItem('user_role_id'));
     }, [])
 
   //const user = JSON.parse(localStorage.getItem('user'));
 
 
   if(isLoggedIn===true){
-    return (
-      <di>
-        <h1>This edit company details page</h1>
-        <Form
-          onSubmit={clickHandler}
-        >
-          <FormGroup row>
-            <Col md="3">
-              <Label htmlFor="select">Company Name</Label>
-            </Col>
-            <Col xs="12" md="9">
 
-              <Input
-                type="select"
-                name="company-name"
-                id="company-name"
-                onChange={(e) => setCompanyName(e.target.value)}
-              >
-                <option value="0">Select Company Name</option>
-                {companyNames.map((company) => (
-                  <option
-                    values={company}
+    if(userRoleID==1 || userRoleID==2){
+      return (
+        <di>
+          <h1>This edit company details page</h1>
+          <Form
+            onSubmit={clickHandler}
+          >
+            <FormGroup row>
+              <Col md="3">
+                <Label htmlFor="select">Company Name</Label>
+              </Col>
+              <Col xs="12" md="9">
 
-                  > {company}</option>
-                ))}
-              </Input>
-            </Col>
-          </FormGroup>
-          <Row>
-            <Col md="4"></Col>
-            <Col md="4">
-              <Button
-                block color="primary"
-                className="btn-pill"
-                onClick={clickHandler}
-              >Edit Company Data</Button>
-            </Col>
-            <Col md="4"></Col>
-          </Row>
-        </Form>
-      </di>
-    );
+                <Input
+                  type="select"
+                  name="company-name"
+                  id="company-name"
+                  onChange={(e) => setCompanyName(e.target.value)}
+                >
+                  <option value="0">Select Company Name</option>
+                  {companyNames.map((company) => (
+                    <option
+                      values={company}
+
+                    > {company}</option>
+                  ))}
+                </Input>
+              </Col>
+            </FormGroup>
+            <Row>
+              <Col md="4"></Col>
+              <Col md="4">
+                <Button
+                  block color="primary"
+                  className="btn-pill"
+                  onClick={clickHandler}
+                >Edit Company Data</Button>
+              </Col>
+              <Col md="4"></Col>
+            </Row>
+          </Form>
+        </di>
+      );
+    }else{
+      return (
+        <div>
+          <h1>Access Denided</h1>
+        </div>
+      );
+    }
+
+
+
+
+
+
+
+
+
+
   }else if(isLoggedIn===false){
     return (
       <div className="access_denied">

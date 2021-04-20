@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Badge,
   Button,
@@ -11,36 +11,34 @@ import {
   FormGroup,
   FormText,
   Input,
-  Label
+  Label,
 } from "reactstrap";
 import axios from "axios";
 
-
 const EditVehicleData = (props) => {
+  const [vehicle_number, setVehicle_number] = useState("");
+  const [type, setType] = useState("");
+  const [unit_per_1km, setUnit_per_1km] = useState("");
+  const [driver_name, setDriver_name] = useState("");
+  const [driver_contact_number, setDriver_contact_number] = useState("");
+  const [owner_name, setOwner_name] = useState("");
+  const [owner_contact_number, setOwner_contact_number] = useState("");
+  const [serial_number, setSerial_number] = useState("");
+  const [status, setStatus] = useState("");
+  const [vehicleId, setVehicleId] = useState("");
 
-
-  const [vehicle_number, setVehicle_number] = useState('');
-  const [type, setType] = useState('');
-  const [unit_per_1km, setUnit_per_1km] = useState('');
-  const [driver_name, setDriver_name] = useState('');
-  const [driver_contact_number, setDriver_contact_number] = useState('');
-  const [owner_name, setOwner_name] = useState('');
-  const [owner_contact_number, setOwner_contact_number] = useState('');
-  const [serial_number, setSerial_number] = useState('');
-  const [status, setStatus] = useState('');
-  const [vehicleId, setVehicleId] = useState('');
-
-
-  const [date, setDate] = useState('');
-  const [user_id, setUser_id] = useState('1');
-
+  const [date, setDate] = useState("");
+  const [user_id, setUser_id] = useState("1");
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     //vehicle numbers pass
-    axios.get('http://localhost:8000/api/getvehicledetails', {params: {vehicle_number: props.match.params.id}})
+    axios
+      .get("http://localhost:8000/api/getvehicledetails", {
+        params: { vehicle_number: props.match.params.id },
+      })
       .then((res) => {
-        // setVehicle_number();
-        setVehicleId(res.data.vehicle_id);
+         setVehicleId(res.data.vehicle_id);
         setVehicle_number(res.data.vehicle_num);
         setType(res.data.type1);
         setUnit_per_1km(res.data.unit_per_1km);
@@ -55,67 +53,157 @@ const EditVehicleData = (props) => {
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }, []);
 
+  const validate = () => {
+    let errors = {};
+
+    let formIsValid = true;
+
+    //driver_name
+    if (!driver_name) {
+      formIsValid = false;
+
+      errors["driver_name"] = "*Please enter driver name.";
+    }
+
+    if (typeof driver_name !== "undefined") {
+      if (!driver_name.match(/^[a-zA-Z ]*$/)) {
+        formIsValid = false;
+
+        errors["driver_name"] = "*Please enter alphabet characters only.";
+      }
+
+      // driver_contact_number
+      if (!driver_contact_number) {
+        formIsValid = false;
+
+        errors["driver_contact_number"] =
+          "*Please enter driver contact number.";
+      }
+
+      if (typeof driver_contact_number !== "undefined") {
+        let pattern = new RegExp(
+          /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/
+        );
+
+        if (!pattern.test(driver_contact_number)) {
+          formIsValid = false;
+
+          errors["driver_contact_number"] =
+            "*Please enter valid contact number.";
+        }
+      }
+
+      //owner_name
+      if (!owner_name) {
+        formIsValid = false;
+
+        errors["owner_name"] = "*Please enter your owner name.";
+      }
+
+      if (typeof owner_name !== "undefined") {
+        if (!owner_name.match(/^[a-zA-Z ]*$/)) {
+          formIsValid = false;
+
+          errors["owner_name"] = "*Please enter alphabet characters only.";
+        }
+      }
+
+      //owner_contact_number
+      if (!owner_contact_number) {
+        formIsValid = false;
+
+        errors["owner_contact_number"] = "*Please enter owner contact number.";
+      }
+
+      if (typeof owner_contact_number !== "undefined") {
+        let pattern = new RegExp(
+          /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/
+        );
+
+        if (!pattern.test(owner_contact_number)) {
+          formIsValid = false;
+
+          errors["owner_contact_number"] =
+            "*Please enter valid contact number.";
+        }
+      }
+
+      // //unit_per_1km
+      if (!unit_per_1km) {
+        formIsValid = false;
+
+        errors["unit_per_1km"] = "*Please enter rate.";
+      }
+
+      setErrors(errors);
+
+      return formIsValid;
+    }
+  };
+
+  const driver_contact_no = driver_contact_number;
+  const owner_contact_no = owner_contact_number;
 
   const submitFunc = (e) => {
     e.preventDefault();
+    if (validate()) {
+      const obj = {
+        vehicle_number,
+        type,
+        unit_per_1km,
+        driver_name,
+        driver_contact_no,
+        owner_name,
+        owner_contact_no,
+        serial_number,
+        status
+      };
 
-    const driver_contact_no = driver_contact_number;
-    const owner_contact_no = owner_contact_number;
-    const obj = {
-      vehicle_number, type, unit_per_1km, driver_name, driver_contact_no, owner_name, owner_contact_no
+      console.log(obj);
+
+      axios
+        .put("http://localhost:8000/api/updatevehicledetails", obj)
+        .then((res) => {
+          alert("vehicle edited successfully");
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-
-    axios.put('http://localhost:8000/api/updatevehicledetails', {obj}, {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem('token')
-      }
-    })
-      .then((res) => {
-        console.log(res.data);
-        //check meassage is keyword
-        //alert(res.data.message);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-  }
+  };
 
   const vehicleDeleteFunc = (e) => {
-
     // const obj = {props.match.params.id}
-    const vehicleNumber = props.match.params.id;
-    console.log(vehicleNumber);
+    //const vehicleNumber = props.match.params.id;
+   // console.log(vehicleNumber);
 
-    axios.delete('http://localhost:8000/api/deletevehicledetails/'+vehicleId)
+    axios
+      .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
       .then((res) => {
         console.log(res.data);
-        if (res.data.message == 'successfully deleted') {
+        if (res.data.message == "successfully deleted") {
           alert("successfully removed vehicle");
 
           // setVehicleNumber('');
           // setType('');
-        }else{
-          alert('operation fail');
+        } else {
+          alert("operation fail");
         }
-
       })
-      .then(()=>{
-        props.history.push('/vehicles/edit-vehicle');
+      .then(() => {
+        props.history.push("/vehicles/edit-vehicle");
       })
       .catch((err) => {
         console.log(err);
         alert(err);
-      })
-  }
-
+      });
+  };
 
   return (
-
-
     <div>
       <Card>
         <CardHeader>
@@ -130,8 +218,6 @@ const EditVehicleData = (props) => {
             className="form-horizontal"
             //onSubmit={submitFunc}
           >
-
-
             <FormGroup row>
               {/*space for empty row  */}
               <Col md="3">
@@ -141,7 +227,6 @@ const EditVehicleData = (props) => {
                 <p className="form-control-static">-</p>
               </Col>
             </FormGroup>
-
 
             <FormGroup row>
               <Col md="3">
@@ -161,7 +246,6 @@ const EditVehicleData = (props) => {
               </Col>
             </FormGroup>
 
-
             <FormGroup row>
               <Col md="3">
                 <Label>Driver Name</Label>
@@ -174,9 +258,9 @@ const EditVehicleData = (props) => {
                   placeholder="Driver Name"
                   value={driver_name}
                   onChange={(e) => setDriver_name(e.target.value)}
-
                 />
                 <FormText className="help-block">Enter driver name</FormText>
+                <div style={{ color: "red" }}>{errors.driver_name}</div>
               </Col>
             </FormGroup>
 
@@ -197,6 +281,9 @@ const EditVehicleData = (props) => {
                 <FormText className="help-block">
                   Enter driver contact number
                 </FormText>
+                <div style={{ color: "red" }}>
+                  {errors.driver_contact_number}
+                </div>
               </Col>
             </FormGroup>
 
@@ -214,6 +301,7 @@ const EditVehicleData = (props) => {
                   onChange={(e) => setOwner_name(e.target.value)}
                 />
                 <FormText className="help-block">Enter owner name</FormText>
+                <div style={{ color: "red" }}>{errors.owner_name}</div>
               </Col>
             </FormGroup>
 
@@ -233,9 +321,11 @@ const EditVehicleData = (props) => {
                 <FormText className="help-block">
                   Enter owner contact number
                 </FormText>
+                <div style={{ color: "red" }}>
+                  {errors.owner_contact_number}
+                </div>
               </Col>
             </FormGroup>
-
 
             <FormGroup row>
               <Col md="3">
@@ -254,9 +344,9 @@ const EditVehicleData = (props) => {
                   <option value="2">Rs:200</option>
                   <option value="3">Rs:300</option>
                 </Input>
+                <div style={{ color: "red" }}>{errors.unit_per_1km}</div>
               </Col>
             </FormGroup>
-
 
             <FormGroup row>
               <Col md="6">
@@ -275,7 +365,6 @@ const EditVehicleData = (props) => {
               </Col>
             </FormGroup>
 
-
             <FormGroup row>
               <Col md="6">
                 <Label htmlFor="text-input">Device Status</Label>
@@ -289,7 +378,6 @@ const EditVehicleData = (props) => {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-
                   <option>Please select</option>
                   <option value="ON">ON</option>
                   <option value="OFF">OFF</option>
@@ -298,33 +386,25 @@ const EditVehicleData = (props) => {
               </Col>
             </FormGroup>
 
-
             <Button
               type="submit"
               size="sm"
               color="primary"
               onClick={submitFunc}
             >
-              <i className="fa fa-dot-circle-o"/> Submit
+              <i className="fa fa-dot-circle-o" /> Submit
             </Button>
 
-
-            <Button
-              onClick={vehicleDeleteFunc}
-              size="sm"
-              color="danger"
-            ><i className="fa fa-ban"/>Delete Vehicle
+            <Button onClick={vehicleDeleteFunc} size="sm" color="danger">
+              <i className="fa fa-ban" />
+              Delete Vehicle
             </Button>
           </Form>
         </CardBody>
         <CardFooter></CardFooter>
       </Card>
     </div>
-
-
   );
-
-
-}
+};
 
 export default EditVehicleData;

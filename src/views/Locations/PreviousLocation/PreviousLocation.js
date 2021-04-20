@@ -1,5 +1,5 @@
 import React, {Component, useState} from 'react';
-import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, FormText, Input, Label, Row} from "reactstrap";
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
 
@@ -8,32 +8,21 @@ class PreviousLocation extends Component {
 
   constructor(props) {
     super(props);
-    this.backToLogin = this.backToLogin.bind(this);
     this.submitFunc = this.submitFunc.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.onChangeTime = this.onChangeTime.bind(this);
-
+    this.validate = this.validate.bind(this);
     this.state = {
       date: "",
       time: "",
-      vehicleNumber: "",
-      vehicleList: [],
-      user_id: '3',
+      vehicle_number: "",
       vehicles: [],
       isLoggedIn: true,
-      userId: '',
+      vehiclesLongLat: [],
+      status: false,
+      errors: {}
     }
   }
 
   componentDidMount() {
-    // axios.get('http://localhost:8000/api/user/allvehiclenumbers')
-    //   .then((res)=>{
-    //     console.log(res.data);
-    //     this.state.vehicleList(res.data.vehicles);
-    //   })
-    //   .catch((err)=>{
-    //     console.log(err);
-    //   })
 
     let user = localStorage.getItem("user_id");
 
@@ -46,7 +35,7 @@ class PreviousLocation extends Component {
       axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"), {
         headers: {
           "Content-type": "application/json",
-          Authorization: "Bearer" + localStorage.getItem('token')
+          Authorization: "Bearer " + localStorage.getItem('token')
         }
       })
         .then(res => {
@@ -67,37 +56,87 @@ class PreviousLocation extends Component {
     this.props.history.push('/login');
   }
 
+  //regular expression function for time
+  validate() {
+    let errors = {};
 
-  submitFunc(e) {
+    let isValid = true;
+
+    //time
+    if (!this.state.time) {
+        isValid=false;
+      errors["time"] = "*Please enter correct time format.";
+    }
+
+    if(this.state.time!==undefined){
+      var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
+
+    }
+
+    if(!pattern.test(this.state.time)){
+        isValid = false;
+      errors["time"] = "*Please enter correct time format.";
+    }
+
+    this.setState({
+      errors:errors
+    });
+
+    return isValid;
+  }
+
+  async submitFunc(e) {
     e.preventDefault();
 
-    const obj = {
-      vehicleNumber: this.state.vehicleNumber,
-      date: this.state.date,
-      time: this.state.time
-    };
+    // let time1 = this.state.time;
+    // if (time1.charAt(0) === '0') {
+    //   console.log('hello');
+    //   this.setState({time: time1.substring(1, 6)});
+    // }
 
-    console.log(obj);
+    // if(validate()){
+    //
+    // }
+
+    //console.log(this.state.time);
+    //console.log(this.state.vehicle_number);
+    if(this.validate()){
+
+      await axios.get('http://localhost:8000/api/previouslocation', {
+        params: {
+          vehicle_number: this.state.vehicle_number,
+          date: "2021/03/15",
+          time: this.state.time
+        }
+      })
+        .then((res) => {
+          console.log(res.data);
+
+          if(res.data.GPS_DATA.length==0){
+            alert('Not found GPS data for this time');
+
+          }else{
+            const coordinates = {
+              lat: res.data.GPS_DATA[0].latitude,
+              lng: res.data.GPS_DATA[0].longitude
+            }
+
+            this.state.vehiclesLongLat.push(coordinates);
+
+            this.setState({
+              status: true
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
 
 
-  }
 
-  onChangeVehicleNumber(e) {
-    this.setState({
-      vehicleNumber: e.target.value
-    })
-  }
 
-  onChangeDate(e) {
-    this.setState({
-      date: e.target.value
-    })
-  }
 
-  onChangeTime(e) {
-    this.setState({
-      time: e.target.value
-    })
   }
 
 
@@ -105,21 +144,29 @@ class PreviousLocation extends Component {
     if (this.state.isLoggedIn === true) {
       return (
         <div>
-          <h1>This is previous location tab hello world</h1>
+          <h3>Check vehicles previous location here...</h3>
           <Row>
             <Col xs="12" lg="6">
-              {/*<h1>USe this column for google map</h1>*/}
               <div>
-                <Map
-                  google={this.props.google} zoom={9}
-                  initialCenter={{
-                    lat: 7.0146334,
-                    lng: 79.9676378,
-                    accuracy: 20
-                  }}>
-                  <Marker onClick={this.onMarkerClick}
-                          name={'Current location'}/>
-                </Map>
+                {this.state.status ?
+                  <Map
+                    google={this.props.google} zoom={9}
+                    initialCenter={{
+                      lat: 7.0146334,
+                      lng: 79.9676378,
+                      accuracy: 20
+                    }}>
+                    {this.state.vehiclesLongLat.map((store, index) => {
+                      return (<Marker key={index} id={index} position={{
+                        lat: store.lat,
+                        lng: store.lng
+                      }}
+                      />)
+
+                    })}
+
+                  </Map>
+                  : <h6><center>Map Showing here</center></h6>}
               </div>
             </Col>
             <Col xs="12" lg="6">
@@ -132,7 +179,7 @@ class PreviousLocation extends Component {
                 </CardHeader>
                 <CardBody>
                   <Form
-                    onSubmit={this.submitFunc}
+
                   >
                     <Row>
                       <Col xs="12">
@@ -153,9 +200,10 @@ class PreviousLocation extends Component {
                                    onChange={(e) => this.setState({vehicle_number: e.target.value})}
                             >
                               <option value="0">Please select</option>
-                              {this.state.vehicles.map((vehicle) => (
+                              {this.state.vehicles.map((vehicle, index) => (
                                 <option
-                                  values={vehicle}
+                                  key={index}
+                                  values={this.state.vehicle}
                                 > {vehicle}</option>
 
                               ))}
@@ -173,20 +221,26 @@ class PreviousLocation extends Component {
                           <Input
                             type="date"
                             value={this.state.date}
-                            onChange={this.onChangeDate}
+                            onChange={(e) => {
+                              this.setState({date: e.target.value})
+                            }}
 
                           />
+
                         </FormGroup>
                       </Col>
                       <Col xs="4">
                         <FormGroup>
                           <Label htmlFor="time">Time</Label>
                           <Input
-                            type="time"
+                            type="text"
+                            min="0:00"
                             value={this.state.time}
-                            onChange={this.onChangeTime}
+                            onChange={(e) => this.setState({time: e.target.value})}
 
                           />
+                          <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
+                          <div style={{color: "red"}}>{this.state.errors.time}</div>
                         </FormGroup>
                       </Col>
                       <Col xs="4">
@@ -195,7 +249,11 @@ class PreviousLocation extends Component {
                     </Row>
                     <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
 
-                      <Button block color="primary" className="btn-pill" type="submit">Get Location</Button>
+                      <Button
+                        block color="primary"
+                        className="btn-pill"
+                        onClick={this.submitFunc}
+                      >Get Location</Button>
 
                     </Col>
                   </Form>
@@ -245,7 +303,6 @@ class PreviousLocation extends Component {
   }
 }
 
-//export default PreviousLocation;
 export default GoogleApiWrapper({
   apiKey: ("AIzaSyDpv6eCg72bvXFAtKzEO_fpJ1Rgy1-MTb0")
 })(PreviousLocation)

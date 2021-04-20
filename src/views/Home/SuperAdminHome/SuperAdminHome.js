@@ -5,43 +5,81 @@ import Carousel from "react-bootstrap/Carousel";
 
 const SuperAdminHome = (props) => {
 
-
   const [index, setIndex] = useState(0);
+
+  //==================for Super Admin=================================
   const [companyCount, setCompanyCount] = useState('');
   const [vehicleCount, setVehicleCount] = useState('');
 
+  //===============for TM================================================
+  const [transportManagerVehicleCount, setTransportManagerVehicleCount] = useState('');
+  const [transportManagerUserCount, setTransportManagerUserCount] = useState('');
+
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState('');
+  const [userRoleId, setUserRoleId] = useState(null);
 
 
   useEffect(() => {
     const user = localStorage.getItem("user_id");
     setUserId(user);
+    setUserRoleId(localStorage.getItem('user_role_id'));
 
     if (user == undefined) {
-      console.log('hi');
       setIsLoggedIn(false);
     } else {
-      axios.get('http://localhost:8000/api/getvehiclecount')
-        .then((res) => {
-          console.log(res.data);
-          setVehicleCount(res.data.vehiclesCount);
-        })
-        .catch((err) => {
-          console.log(err);
-        })
 
-      axios.get('http://localhost:8000/api/getcompanycount')
-        .then((res) => {
-          console.log(res.data);
-          setCompanyCount(res.data.numberOfCompanies);
+
+      if (userRoleId == 1) {
+
+        axios.get('http://localhost:8000/api/getvehiclecount')
+          .then((res) => {
+            console.log(res.data);
+            setVehicleCount(res.data.vehiclesCount);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+
+        axios.get('http://localhost:8000/api/getcompanycount')
+          .then((res) => {
+            console.log(res.data);
+            setCompanyCount(res.data.numberOfCompanies);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      } else if (userRoleId == 2) {
+
+        axios.get('http://localhost:8000/api/onecompanyvehiclecount/' + localStorage.getItem('companies_company_id'))
+          .then((res) => {
+            console.log(res.data);
+            setTransportManagerVehicleCount(res.data.vehicle_count)
+          })
+          .catch((err) => {
+            alert(err);
+          })
+
+
+        axios.get('http://localhost:8000/api/getusercount/'+localStorage.getItem('companies_company_id'),{
+          params:{
+            user_role_id:"3"
+          }
         })
-        .catch((err) => {
-          console.log(err);
-        })
+          .then((res)=>{
+            console.log(res.data);
+            setTransportManagerUserCount(res.data.user_count);
+
+          })
+          .catch((err)=>{
+            console.log(err);
+          })
+
+
+      }
 
     }
-  }, []);
+  }, [userRoleId]);
 
 
   const handleSelect = (selectedIndex, e) => {
@@ -62,79 +100,179 @@ const SuperAdminHome = (props) => {
 
 
   if (isLoggedIn === true) {
-    return (
-      <div>
-        <h1>Welcome for SuperAdmin Dashboard</h1>
-        <Row>
-          <Col xs="12" sm="6" md="4">
-            <Card className="text-white bg-info">
-              <CardHeader>
-                System Current Company Count
-              </CardHeader>
-              <CardBody>
-                <Row>
-                  <h2 text="center"><pre>      {companyCount}</pre></h2>
-                <Button block color="primary" className="btn-pill" onClick={()=>props.history.push('/super-admin-company-details')} >More</Button>
-                </Row>
-              </CardBody>
-            </Card>
-          </Col>
-
-          <Col xs="12" sm="6" md="4">
-            <Card className="text-white bg-info">
-              <CardHeader>
-                System Current Vehicle Count
-              </CardHeader>
-              <CardBody>
-                <h2 text="center"><pre>      {vehicleCount}</pre></h2>
-                <Button block color="primary" className="btn-pill" onClick={()=>props.history.push('/super-admin-vehicle-details')}>More</Button>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
 
 
+    if (userRoleId == 1) {
+      return (
         <div>
-          <Carousel activeIndex={index} onSelect={handleSelect}>
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://pficapitalltd.com/wp-content/uploads/2019/03/home.jpg"
-                alt="First slide"
-              />
-              <Carousel.Caption>
-                <h3>Grow Your Business With More Clients</h3>
-                <p>You can add company Here...</p>
-                <Button
-                  block color="primary"
-                  className="btn-pill"
-                  onClick={addCompany}
-                >Add Company</Button>
-              </Carousel.Caption>
-            </Carousel.Item>
+          <h1>Welcome for SuperAdmin Dashboard</h1>
+          <Row>
+            <Col xs="12" sm="6" md="4">
+              <Card className="text-white bg-info">
+                <CardHeader>
+                  System Current Company Count
+                </CardHeader>
+                <CardBody>
+                  <Row>
+                    <h2 text="center">
+                      <pre>      {companyCount}</pre>
+                    </h2>
+                    <Button block color="primary" className="btn-pill"
+                            onClick={() => props.history.push('/super-admin-company-details')}>More</Button>
+                  </Row>
+                </CardBody>
+              </Card>
+            </Col>
+
+            <Col xs="12" sm="6" md="4">
+              <Card className="text-white bg-info">
+                <CardHeader>
+                  System Current Vehicle Count
+                </CardHeader>
+                <CardBody>
+                  <h2 text="center">
+                    <pre>      {vehicleCount}</pre>
+                  </h2>
+                  <Button block color="primary" className="btn-pill"
+                          onClick={() => props.history.push('/super-admin-vehicle-details')}>More</Button>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
 
 
-            <Carousel.Item>
-              <img
-                className="d-block w-100"
-                src="https://rtvworldnetshipping.com/wp-content/uploads/2015/04/road.jpg"
-                alt="Second slide"
-              />
-              <Carousel.Caption>
-                <h3>Add More Vehicles</h3>
-                <p>You can add vehicle here...</p>
-                <Button
-                  block color="primary"
-                  className="btn-pill"
-                  onClick={addVehicle}
-                >Add Vehicle</Button>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
+          <div>
+            <Carousel activeIndex={index} onSelect={handleSelect}>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="https://pficapitalltd.com/wp-content/uploads/2019/03/home.jpg"
+                  alt="First slide"
+                />
+                <Carousel.Caption>
+                  <h3>Grow Your Business With More Clients</h3>
+                  <p>You can add company Here...</p>
+                  <Button
+                    block color="primary"
+                    className="btn-pill"
+                    onClick={addCompany}
+                  >Add Company</Button>
+                </Carousel.Caption>
+              </Carousel.Item>
+
+
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="https://rtvworldnetshipping.com/wp-content/uploads/2015/04/road.jpg"
+                  alt="Second slide"
+                />
+                <Carousel.Caption>
+                  <h3>Add More Vehicles</h3>
+                  <p>You can add vehicle here...</p>
+                  <Button
+                    block color="primary"
+                    className="btn-pill"
+                    onClick={addVehicle}
+                  >Add Vehicle</Button>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
+          </div>
+
         </div>
+      );
+    } else if (userRoleId == 2) {
 
+      return (
+        <div>
+          <h1>Welcome To Transport Manager Dashboard</h1>
+          <br/>
+          <Row>
+            <Col xs="12" sm="6" md="4">
+              <Card className="text-white bg-info">
+                <CardHeader align="center">
+                  <h2 style={{fontSize: "18px"}}>
+                    Your Company Current Vehicles Count
+                  </h2>
+                </CardHeader>
+                <CardBody>
+                  <h2 align="center">{transportManagerVehicleCount}</h2>
+                  <br/>
+                  <Button
+                    block
+                    color="primary"
+                    className="btn-pill"
+                    onClick={() =>
+                      props.history.push("/transport-manager-vehicle-details")
+                    }
+                  >
+                    More
+                  </Button>
+                </CardBody>
+              </Card>
+            </Col>
+
+
+            <Col xs="12" sm="6" md="4">
+              <Card className="text-white bg-info">
+                <CardHeader align="center">
+                  <h2 style={{fontSize: "18px"}}>
+                    Your Company Current Staff Members Count
+                  </h2>
+                </CardHeader>
+                <CardBody>
+                  <h2 align="center">{transportManagerUserCount}</h2>
+                  <br/>
+                  <Button
+                    block
+                    color="primary"
+                    className="btn-pill"
+                    onClick={() =>
+                      props.history.push("/transport-manager-user-details")
+                    }
+                  >
+                    More
+                  </Button>
+                </CardBody>
+              </Card>
+            </Col>
+
+
+          </Row>
+          <br/>
+          <div>
+            <Carousel activeIndex={index} onSelect={handleSelect}>
+              <Carousel.Item>
+                <img
+                  className="d-block w-100"
+                  src="https://rtvworldnetshipping.com/wp-content/uploads/2015/04/road.jpg"
+                  alt="Second slide"
+                />
+                <Carousel.Caption>
+                  <h3>Add More Vehicles</h3>
+                  <p>You can add vehicle here...</p>
+                  <Button
+                    block
+                    color="primary"
+                    className="btn-pill"
+                    onClick={addVehicle}
+                  >
+                    Add Vehicle
+                  </Button>
+                </Carousel.Caption>
+              </Carousel.Item>
+            </Carousel>
+          </div>
+        </div>
+      );
+    } else {
+      return <div>
+        <h1>Nothing to show</h1>
       </div>
-    );
+    }
+
+
   } else if (isLoggedIn === false) {
     return (
       <div className="access_denied">
