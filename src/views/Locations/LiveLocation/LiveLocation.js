@@ -6,6 +6,7 @@ import {Button, Card, CardBody, Col, Row} from "reactstrap";
 import {Tooltip} from '@varld/popover';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import Message from "../../Required Sample Pages/Message";
 
 
 const mapStyles = {
@@ -28,42 +29,54 @@ class LiveLocation extends Component {
       markerList: [],
       isLoggedIn: true,
       userId: '',
-      status: false
+      status: false,
+      userRoleId:''
     }
   }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
   componentDidMount() {
-    let user = localStorage.getItem("user_id");
-    axios.get('http://localhost:8000/api/getuniquedata', {
-      params: {
-        company_id: localStorage.getItem('companies_company_id')
-      }
-    })
-      .then((res) => {
-        console.log(res.data);
-        // console.log(res.data["GPS_DATA"][0]["vehiclenum"])
+    const user = localStorage.getItem("user_id");
 
-        res.data["GPS_DATA"].map(value => {
-          // console.log(value.vehiclenum)
-          let coordinate = {
-            lat: value.latitude,
-            lng: value.longitude,
-            vehicleNum: value.vehiclenum
-          };
-          this.state.vehiclesLongLat.push(coordinate);
-        });
+    this.setState({
+      userRoleId:localStorage.getItem('user_role_id')
+    });
 
-        this.setState({
-          status: true
-        })
-
-
-      })
-      .catch((err) => {
-        console.log(err);
+    if(user==undefined){
+      this.setState({
+        isLoggedIn:false
       });
+    }else{
+      axios.get('http://localhost:8000/api/getuniquedata', {
+        params: {
+          company_id: localStorage.getItem('companies_company_id')
+        }
+      })
+        .then((res) => {
+          console.log(res.data);
+          // console.log(res.data["GPS_DATA"][0]["vehiclenum"])
+
+          res.data["GPS_DATA"].map(value => {
+            // console.log(value.vehiclenum)
+            let coordinate = {
+              lat: value.latitude,
+              lng: value.longitude,
+              vehicleNum: value.vehiclenum
+            };
+            this.state.vehiclesLongLat.push(coordinate);
+          });
+
+          this.setState({
+            status: true
+          })
+
+
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,33 +88,45 @@ class LiveLocation extends Component {
 
 
   render() {
-    if (this.state.isLoggedIn == true) {
-      return (
-        <div>
-          {this.state.status ?
-            <Map
-              google={this.props.google}
-              zoom={9}
-              style={mapStyles}
-              initialCenter={{
-                lat: 7.0042083,
-                lng: 79.9530489
-              }}>
-              {this.state.vehiclesLongLat.map((store, index) => {
-                return (<Marker key={index} id={index} position={{
-                  lat: store.lat,
-                  lng: store.lng
-                }}
-                                onMouseover={() => {
-                                  window.alert(store.vehicleNum)
-                                }}
-                />)
 
-              })}
-            </Map>
-            : null}
-        </div>
-      );
+
+    if (this.state.isLoggedIn == true) {
+
+
+      if(this.state.userRoleId==1){
+        return (
+          <div>
+            <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+          </div>
+        );
+      }else{
+        return (
+          <div>
+            {this.state.status ?
+              <Map
+                google={this.props.google}
+                zoom={9}
+                style={mapStyles}
+                initialCenter={{
+                  lat: 7.0042083,
+                  lng: 79.9530489
+                }}>
+                {this.state.vehiclesLongLat.map((store, index) => {
+                  return (<Marker key={index} id={index} position={{
+                    lat: store.lat,
+                    lng: store.lng
+                  }}
+                                  onMouseover={() => {
+                                    window.alert(store.vehicleNum)
+                                  }}
+                  />)
+
+                })}
+              </Map>
+              : null}
+          </div>
+        );
+      }
 
     } else if (this.state.isLoggedIn == false) {
       return (

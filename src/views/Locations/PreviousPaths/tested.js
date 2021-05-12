@@ -1,4 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
+import {
+  withGoogleMap,
+  withScriptjs,
+  GoogleMap,
+  Polyline,
+  Marker,
+} from "react-google-maps";
+
 import {
   Button,
   Card,
@@ -12,61 +20,52 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
-import Map from "./Map";
-import { convertNeSwToNwSe } from "google-map-react";
-import Message from "../../Required Sample Pages/Message";
+import {array} from "prop-types";
 
-class PreviousPaths extends Component {
+class PreviousPath extends React.Component {
+  //PreviousPath
   constructor(props) {
     super(props);
     this.submitFunc = this.submitFunc.bind(this);
-    this.backToLogin = this.backToLogin.bind(this);
-
+    this.validate = this.validate.bind(this);
     this.state = {
       vehicle_number: "HK-1234",
-      from_date: "2021-03-15",
+      from_date: "3/15/2021",
       from_time: "",
-      to_date: "2021-03-15",
+      to_date: "3/15/2021",
       to_time: "",
+      user_id: "2",
       vehicles: [],
+      // vehicleLatLng: [],
       path: [],
       isLoggedIn: true,
-      errors: {},
-      userRoleId:''
+      progress: [],
+      status: false,
+      errors: {}
     };
   }
-  componentDidUpdate() {
-    console.log("path");
-    console.log(this.state.path);
-  }
-  componentDidMount() {
-    const user = localStorage.getItem("user_id");
 
-    this.setState({
-      userRoleId:localStorage.getItem('user_role_id')
-    });
+  componentDidMount() {
+    let user = localStorage.getItem("user_id");
 
     if (user == undefined) {
       this.setState({
         isLoggedIn: false,
       });
     } else {
-      axios
-        .get(
-          "http://localhost:8000/api/allvehiclenumbers/" +
-          localStorage.getItem("user_id"),
-          {
-            headers: {
-              "Content-type": "application/json",
-              Authorization: "Bearer" + localStorage.getItem("token"),
-            },
-          }
-        )
+      axios.get("http://localhost:8000/api/allvehiclenumbers/" + localStorage.getItem("user_id"),
+        {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer" + localStorage.getItem("token"),
+          },
+        }
+      )
         .then((res) => {
           //handle response data
           console.log(res);
           //setVehicles(res.data.vehicles);
-          this.setState({ vehicles: res.data.vehicles });
+          this.setState({vehicles: res.data.vehicles});
         })
         .catch((err) => {
           //handle error
@@ -75,12 +74,12 @@ class PreviousPaths extends Component {
     }
   }
 
-  //replace(/-/g,"/")
   backToLogin() {
     this.props.history.push("/login");
   }
 
-//validation for input field
+
+  //regular expression function for time
   validate() {
     let errors = {};
 
@@ -112,91 +111,58 @@ class PreviousPaths extends Component {
   }
 
 
-
-
-
-
-
-
   submitFunc(e) {
     e.preventDefault();
 
-
-    if(this.validate()){
-
-      // const obj = {
-      //   vehicle_number: "AAA-5678",
-      //   from_date: "3/15/2021",
-      //   from_time: "18.30",
-      //   to_date: "3/15/2021",
-      //   to_time: "19.30",
-      // };
+    // const obj = {
+    //   vehicle_number: this.state.vehicle_number,
+    //   from_date: this.state.from_date.replace(/-/g, "/"),
+    //   from_time: this.state.from_time,
+    //   to_date: this.state.to_date.replace(/-/g, "/"),
+    //   to_time: this.state.to_time,
+    // };
 
 
-      axios
-        .get("http://104.236.96.123:8000/api/getvehiclepath", {
-          params: {
-            vehicle_number: this.state.vehicle_number,
-            from_date: "3/15/2021",
-            from_time: this.state.from_time,
-            to_date: "3/15/2021",
-            to_time: this.state.to_time
-          },
-        })
+    if (this.validate()) {
+
+      axios.get("http://localhost:8000/api/getvehiclepath", {
+        params: {
+          vehicle_number: this.state.vehicle_number,
+          from_date: "3/15/2021",
+          from_time: this.state.from_time,
+          to_date: "3/15/2021",
+          to_time: this.state.to_time
+
+        }
+      })
         .then((res) => {
-          let tempPath = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let coordinates = {
-              lat: res.data[i].latitude * 1,
-              lng: res.data[i].longitude * 1,
-            };
 
-            tempPath.push(coordinates);
-          }
-          this.setState({ path: tempPath });
+          res.data["GPS_PATH_DATA"].map(value => {
+            // console.log(value.vehiclenum)
+            let coordinate = {
+              lat: value.latitude * 1,
+              lng: value.longitude * 1,
+            };
+            this.state.path.push(coordinate);
+          });
+
+
+          this.setState({
+            status: true,
+          });
+
+          console.log(this.state.path);
         })
         .catch((err) => {
           console.log(err);
         });
-
-      this.setState({
-        vehicle_number: "",
-        from_date: "",
-        from_time: "",
-        to_date: "",
-        to_time: "",
-      });
-
     }
 
   }
 
-  // const submitFunc = (e) =>{
-  //   e.preventDefault();
-  //   const obj ={vehicleNumber, date1, time1, date2, time2}
-  //   console.log(obj);
-  //
-  // setVehicleNumber('');
-  // setDate1('');
-  // setTime1('');
-  // setDate2('');
-  // setTime2('');
-  //
-  // }
 
-  render() {
+  render = () => {
     if (this.state.isLoggedIn == true) {
-
-
-      if(this.state.userRoleId==1){
-        return (
-          <div>
-           <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
-          </div>
-        );
-      }else{
-
-
       return (
         <div>
           <h1>This is previous paths tab</h1>
@@ -333,13 +299,23 @@ class PreviousPaths extends Component {
               </Card>
             </Col>
           </Row>
+
           <div>
-            <Map pathCoordinates={this.state.path} />
+            {this.state.status ? (
+              <GoogleMap
+                defaultZoom={16}
+                defaultCenter={{lat: 6.8667528, lng: 79.8769134}}
+              >
+                <Polyline
+                  path={this.state.path}
+                  options={{strokeColor: "#FF0000 "}}
+                />
+                <Marker position={this.state.path[this.state.path.length - 1]}/>
+              </GoogleMap>
+            ) : <h6>map showing here</h6>}
           </div>
-          <div>{/* <Map mapData={this.state.path} /> */}</div>
         </div>
       );
-      }
     } else if (this.state.isLoggedIn == false) {
       return (
         <div className="access_denied">
@@ -374,7 +350,16 @@ class PreviousPaths extends Component {
         </div>
       );
     }
-  }
+  };
 }
 
-export default PreviousPaths;
+const MapComponent = withScriptjs(withGoogleMap(PreviousPath));
+
+export default () => (
+  <MapComponent
+    googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+    loadingElement={<div style={{height: `100%`}}/>}
+    containerElement={<div style={{height: `400px`, width: "940px"}}/>}
+    mapElement={<div style={{height: `100%`}}/>}
+  />
+);

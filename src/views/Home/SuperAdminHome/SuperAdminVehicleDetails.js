@@ -1,33 +1,42 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import Loader from "../../Required Sample Pages/Loader";
 
 
-const SuperAdminVehicleDetails = (props) =>{
+const SuperAdminVehicleDetails = (props) => {
 
 
-  const[vehicles,setVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [dataLoad, setDataLoad] = useState(false);
 
 
-
-  useEffect(()=>{
+  useEffect(() => {
 
     axios.get('http://localhost:8000/api/getallvehiclesdetails')
-      .then((res)=>{
+      .then((res) => {
         console.log(res.data);
         setVehicles(res.data.vehicles);
+        setLoading(false);
+        setDataLoad(true);
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
       })
-  },[]);
+  }, [dataLoad, loading]);
 
 
+  const headerStyle = {
+    backgroundColor:  ' #4d94ff',
 
-  return(
+  };
+
+  return (
     <div>
-      <h1>This is vehicle details  page</h1>
-
+      <h1 style={headerStyle}>This is vehicle details page</h1>
+      {loading && <Loader/>}
+      {dataLoad &&
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i>Vehicles List
@@ -43,7 +52,7 @@ const SuperAdminVehicleDetails = (props) =>{
             </tr>
             </thead>
             <tbody>
-            {vehicles.map((vehicle)=>(
+            {vehicles.map((vehicle) => (
               <tr>
                 <td>{vehicle.vehicle_number}</td>
                 <td>{vehicle.type}</td>
@@ -55,17 +64,17 @@ const SuperAdminVehicleDetails = (props) =>{
           </Table>
           <Row>
             <Col md="4">
-              <Button block color="primary" className="btn-pill" onClick={()=>props.history.push('/super-admin-home')}>Back</Button>
+              <Button block color="primary" className="btn-pill"
+                      onClick={() => props.history.push('/super-admin-home')}>Back</Button>
             </Col>
             <Col md="4"></Col>
             <Col md="4"></Col>
           </Row>
 
 
-
         </CardBody>
       </Card>
-
+      }
 
     </div>
   );

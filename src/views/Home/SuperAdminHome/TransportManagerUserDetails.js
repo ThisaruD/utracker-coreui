@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import Loader from "../../Required Sample Pages/Loader";
 
 
 const TransportManagerUserDetails = (props) => {
@@ -12,6 +13,8 @@ const TransportManagerUserDetails = (props) => {
   const [nic, setNic] = useState('');
   const [contactNo, setContactNo] = useState('');
   const [users,setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [dataLoad, setDataLoad] = useState(false);
 
 
   useEffect(()=>{
@@ -25,12 +28,14 @@ const TransportManagerUserDetails = (props) => {
       .then((res)=>{
         console.log(res.data);
         setUsers(res.data.user_details);
+        setLoading(false);
+        setDataLoad(true);
       })
       .catch((err)=>{
         console.log(err);
       })
 
-  },[]);
+  },[dataLoad,loading]);
 
 
   const userDeleteFunc =(id)=>{
@@ -46,18 +51,22 @@ const TransportManagerUserDetails = (props) => {
       .catch((err)=>{
         alert(err);
       })
-
-
-
   }
+
+  const headerStyle = {
+    backgroundColor:  ' #4d94ff',
+
+  };
 
 
 
 
   return (
     <div>
-      <h1>This is User details page</h1>
-      <br />
+      <h1 style={headerStyle}>This is User details page</h1>
+      {loading &&<Loader/>}
+      {dataLoad &&
+
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i>Vehicles List
@@ -91,7 +100,7 @@ const TransportManagerUserDetails = (props) => {
                       borderColor: "white",
                     }}
                     size="sm"
-                     onClick={()=>userDeleteFunc(user.id)}
+                    onClick={() => userDeleteFunc(user.id)}
                   >
                     Delete User Account
                   </button>
@@ -117,6 +126,7 @@ const TransportManagerUserDetails = (props) => {
           </Row>
         </CardBody>
       </Card>
+      }
     </div>
   );
 

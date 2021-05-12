@@ -28,7 +28,7 @@ const EditCompanyDetails = (props) => {
       .catch((err) => {
         console.log(err);
       })
-  }, []);
+  }, [props.match.params.id]);
 
 
   const submitFunc = (e) => {
@@ -45,8 +45,11 @@ const EditCompanyDetails = (props) => {
         alert(res.data.message);
       })
       .catch((err) => {
-        console.log(err);
+        alert(err);
       })
+
+
+
   }
 
 

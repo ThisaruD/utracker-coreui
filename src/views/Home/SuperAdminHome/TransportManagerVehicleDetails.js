@@ -9,11 +9,16 @@ import {
   Row,
   Table,
 } from "reactstrap";
+import Loader from "../../Required Sample Pages/Loader";
 
 const TransportManagerVehicleDetails = (props) => {
 
   const [vehicles, setVehicles] = useState([]);
   const [vehicleId, setVehicleID] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [dataLoad, setDataLoad] = useState(false);
+
+
 
   useEffect(() => {
 
@@ -31,12 +36,14 @@ const TransportManagerVehicleDetails = (props) => {
         vehicleId.push(details);
       });
 
+setLoading(false);
+setDataLoad(true);
 
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [dataLoad,loading]);
 
 
  const vehicleDeleteFunc = (id) =>{
@@ -66,13 +73,18 @@ const TransportManagerVehicleDetails = (props) => {
 
   }
 
+  const headerStyle = {
+    backgroundColor:  ' #4d94ff',
+
+  };
 
 
 
   return (
     <div>
-      <h1>This is vehicle details page</h1>
-      <br />
+      <h1 style={headerStyle}>This is vehicle details page</h1>
+      {loading && <Loader/>}
+      { dataLoad &&
       <Card>
         <CardHeader>
           <i className="fa fa-align-justify"></i>Vehicles List
@@ -130,6 +142,9 @@ const TransportManagerVehicleDetails = (props) => {
           </Row>
         </CardBody>
       </Card>
+      }
+
+
     </div>
   );
 };

@@ -25,33 +25,53 @@ const EditCompany = (props) => {
 //https://run.mocky.io/v3/535d0e80-1eae-4404-bc8c-52d252fb9069 - run moky api
   useEffect(() => {
 
+    setUserRoleID(localStorage.getItem('user_role_id'));
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
     if(user==undefined){
 
-      console.log('hi');
+
       setIsLoggedIn(false);
     }else{
 
-      axios.get('http://localhost:8000/api/getallcompanies',{
-        headers:{
-          "Content-type":"application/json",
-          Authorization:"Bearer"+localStorage.getItem('token')
-        }
-      })
-        .then((res) => {
-          console.log(res.data);
-          setCompanyNames(res.data.companies);
+      if(userRoleID == 1){
+        axios.get('http://localhost:8000/api/getallcompanies', {
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer" + localStorage.getItem('token')
+          }
         })
+          .then((res) => {
+            console.log(res.data);
+            setCompanyNames(res.data.companies);
+          })
 
-        .catch((err) => {
-          console.log(err);
+          .catch((err) => {
+            console.log(err);
+          })
+      }else{
+
+
+        axios.get('http://localhost:8000/api/getallcompanies',{
+          params: {
+            company_id: localStorage.getItem('companies_company_id')
+          }
         })
+          .then((res) => {
+            console.log(res.data)
+            setCompanyNames(res.data.company);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+
+
+      }
     }
 
-    setUserRoleID(localStorage.getItem('user_role_id'));
-    }, [])
+
+    }, [setUserRoleID])
 
   //const user = JSON.parse(localStorage.getItem('user'));
 
@@ -104,7 +124,23 @@ const EditCompany = (props) => {
     }else{
       return (
         <div>
-          <h1>Access Denided</h1>
+          <div className="access_denied">
+            <Card className="text-white bg-primary ">
+              <CardBody>
+                <div className="clearfix">
+                  {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+                  <h4 className="pt-3">Access Denied</h4>
+                  <p className="text-muted float-left">
+                    You don't have permission to access requested page.
+                  </p>
+                  <p className="text-muted float-left">
+                    Please Contact Your Transport Manager
+                  </p>
+                </div>
+              </CardBody>
+            </Card>
+          </div>
+          );
         </div>
       );
     }

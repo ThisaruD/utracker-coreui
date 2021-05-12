@@ -1,6 +1,7 @@
 import React, {useEffect,useState} from 'react';
 import {Button, Card, CardBody, Col, FormGroup, Input, Label, Row} from "reactstrap";
 import axios from 'axios';
+import Message from "../../Required Sample Pages/Message";
 
 
 
@@ -69,8 +70,15 @@ import axios from 'axios';
 
 if(isLoggedIn===true){
 
+  if(userRoleID==1){
+    return (
+      <div>
+        <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+      </div>
+    )
+  }
 
-  if(userRoleID==1 || userRoleID==2){
+  else if( userRoleID==2){
     return (
       <div>
         <h1>This is edit vehicle tab</h1>
@@ -108,10 +116,29 @@ if(isLoggedIn===true){
         </Row>
       </div>
     );
+
+
+
   }else{
     return (
       <div>
-        <h1>Access Denide</h1>
+        <div className="access_denied">
+          <Card className="text-white bg-primary ">
+            <CardBody>
+              <div className="clearfix">
+                {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+                <h4 className="pt-3">Access Denied</h4>
+                <p className="text-muted float-left">
+                  You don't have permission to access requested page.
+                </p>
+                <p className="text-muted float-left">
+                  Please Contact Your Transport Manager
+                </p>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+        );
       </div>
     );
   }

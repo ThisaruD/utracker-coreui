@@ -1,21 +1,21 @@
 import React, {useEffect,useState} from 'react';
 import {Button, Card, CardBody, Col, FormGroup, Input, Label, Row} from "reactstrap";
 import axios from 'axios';
+import Message from "../../Required Sample Pages/Message";
 
 
 
 
 export default function ViewVehicle (props) {
 
-  const [id, setId] = useState("100");
+
   const [vehicles, setVehicles] = useState([]);
   const [vehicleNumber1, setVehicleNumber1] = useState('');
-  //const [id,setId] = useState('2');
-  const [user_id,setUser_id] = useState('1');
 
 
   const [isLoggedIn,setIsLoggedIn] = useState(true);
   const [userId,setUserId] = useState(null);
+  const [userRoleId,setUserRoleId] = useState('');
 
 
 
@@ -35,7 +35,9 @@ export default function ViewVehicle (props) {
     if(user==undefined){
       console.log('hi');
       setIsLoggedIn(false);
+
     }else {
+
 
 
       axios.get('http://localhost:8000/api/allvehiclenumbers/' + localStorage.getItem("user_id"),{
@@ -56,6 +58,7 @@ export default function ViewVehicle (props) {
         })
 
 
+      setUserRoleId(localStorage.getItem('user_role_id'));
       // fetch('http://localhost:8000/api/allvehiclenumbers/1',{
       //   method:'GET',
       //   headers:{"Content-Type":"application/json"},
@@ -76,45 +79,57 @@ export default function ViewVehicle (props) {
 
 
 if(isLoggedIn===true){
-  return (
-    <div>
-      <h1>This is view vehicle tab</h1>
-      <FormGroup row>
-        <Col md="3">
-          <Label htmlFor="select">Select Vehicle Number</Label>
-        </Col>
-        <Col xs="12" md="9">
-          <Input type="select"
-                 name="select"
-                 id="select"
-                 onChange={(e) => setVehicleNumber1(e.target.value)}
-          >
-            <option value="0">Please select</option>
-            {vehicles.map((vehicle) => (
-              <option
-                values={vehicle}
 
-              > {vehicle}</option>
+  if(userRoleId==1){
+    return (
+      <div>
+        <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+      </div>
+    )
+  }else {
 
-            ))}
-          </Input>
-        </Col>
-      </FormGroup>
-      <Row>
-        <Col md="4"></Col>
-        <Col md="4">
+    return (
+      <div>
+        <h1>This is view vehicle tab</h1>
+        <FormGroup row>
+          <Col md="3">
+            <Label htmlFor="select">Select Vehicle Number</Label>
+          </Col>
+          <Col xs="12" md="9">
+            <Input type="select"
+                   name="select"
+                   id="select"
+                   onChange={(e) => setVehicleNumber1(e.target.value)}
+            >
+              <option value="0">Please select</option>
+              {vehicles.map((vehicle) => (
+                <option
+                  values={vehicle}
 
-          <Button
-            block color="primary"
-            className="btn-pill"
-            onClick={clickHandler}
-          >View Vehicle Data</Button>
+                > {vehicle}</option>
 
-        </Col>
-        <Col md="4"></Col>
-      </Row>
-    </div>
-  );
+              ))}
+            </Input>
+          </Col>
+        </FormGroup>
+        <Row>
+          <Col md="4"></Col>
+          <Col md="4">
+
+            <Button
+              block color="primary"
+              className="btn-pill"
+              onClick={clickHandler}
+            >View Vehicle Data</Button>
+
+          </Col>
+          <Col md="4"></Col>
+        </Row>
+      </div>
+    );
+
+  }
+
 }else if(isLoggedIn===false){
   return (
     <div className="access_denied">

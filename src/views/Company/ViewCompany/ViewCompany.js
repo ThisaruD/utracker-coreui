@@ -3,35 +3,35 @@ import {Button, Col, FormGroup, Input, Label, Form, Row, Card, CardBody} from "r
 import axios from "axios";
 
 
-const ViewCompany = (props) =>{
+const ViewCompany = (props) => {
 
 
-   const[name,setName] = useState('Dilshan');
+  const [name, setName] = useState('Dilshan');
 
-  const [companyNames,setCompanyNames] = useState([]);
+  const [companyNames, setCompanyNames] = useState([]);
   const [companyName, setCompanyName] = useState('');
 
-  const[isLoggedIn,setIsLoggedIn] = useState(true);
-  const[userId, setUserId] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userId, setUserId] = useState('');
+  const [userRoleId, setUserRoleId] = useState('');
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
+    setUserRoleId(localStorage.getItem('user_role_id'));
 
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
-    if(user==undefined){
-
-      console.log('hi');
+    if (user == undefined) {
       setIsLoggedIn(false);
-    }else {
+    } else {
 
-
-      axios.get('http://localhost:8000/api/getallcompanies',{
-        headers:{
-          "Content-type":"application/json",
-          Authorization: "Bearer"+localStorage.getItem('token')
+    if(userRoleId == 1){
+      axios.get('http://localhost:8000/api/getallcompanies', {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer" + localStorage.getItem('token')
         }
       })
         .then((res) => {
@@ -42,20 +42,45 @@ const ViewCompany = (props) =>{
         .catch((err) => {
           console.log(err);
         })
-    }
-  },[])
+    }else{
 
-  const clickHandler=()=>{
-    props.history.push('/company/details2/'+companyName);
+
+      axios.get('http://localhost:8000/api/getallcompanies',{
+        params: {
+          company_id: localStorage.getItem('companies_company_id')
+        }
+      })
+        .then((res) => {
+          console.log(res.data)
+          setCompanyNames(res.data.company);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+
+
+    }
+
+
+
+
+    }
+  }, [userRoleId]);
+
+  const clickHandler = () => {
+    props.history.push('/company/details2/' + companyName);
     console.log(companyName);
   }
 
-  const backToLogin = () =>{props.history.push('/login');}
+  const backToLogin = () => {
+    props.history.push('/login');
+  }
 
 
-  if(isLoggedIn===true){
-    return(
+  if (isLoggedIn === true) {
+    return (
       <di>
+
         <h1>This is view company details page</h1>
         <Form
           onSubmit={clickHandler}
@@ -70,10 +95,10 @@ const ViewCompany = (props) =>{
                 type="select"
                 name="company-name"
                 id="company-name"
-                onChange={(e)=>setCompanyName(e.target.value)}
+                onChange={(e) => setCompanyName(e.target.value)}
               >
                 <option value="0">Select Company Name</option>
-                {companyNames.map((company)=>(
+                {companyNames.map((company) => (
                   <option
                     values={company}
 
@@ -96,7 +121,7 @@ const ViewCompany = (props) =>{
         </Form>
       </di>
     );
-  }else if(isLoggedIn===false){
+  } else if (isLoggedIn === false) {
     return (
       <div className="access_denied">
         <Card className="text-white bg-primary ">
@@ -125,9 +150,6 @@ const ViewCompany = (props) =>{
       </div>
     );
   }
-
-
-
 
 
 }

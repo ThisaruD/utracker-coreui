@@ -15,6 +15,8 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
+import Loader from "../../Required Sample Pages/Loader";
+import Message from "../../Required Sample Pages/Message";
 
 class Login extends Component {
   constructor(props) {
@@ -28,6 +30,10 @@ class Login extends Component {
       password: "",
       token: "",
       res: [],
+      success: false,
+      notLogin: true,
+      error: false,
+      errorMessage: ''
     };
   }
 
@@ -46,40 +52,46 @@ class Login extends Component {
   //submit button handling
   submitFunc(e) {
     e.preventDefault();
-
+    this.setState({success: true, notLogin: false});
     const obj = {
       email: this.state.email,
       password: this.state.password,
     };
 
     console.log(obj);
-    axios.post("http://127.0.0.1:8000/api/login", obj, {
+    axios.post("http://localhost:8000/api/login", obj, {
       // headers: {
       //   "content-type": "application/json",
       //   Authorization: "Bearer" + localStorage.getItem('token')
       // }
     })
       .then((res) => {
+
         console.log(res.data);
         //response data handling
         if (res.data.message == 'success') {
-          alert('Successfully Login');
+
+          // alert('Successfully Login');
           console.log(res.data.user.id);
           localStorage["token"] = res.data.access_token;
           localStorage["user_id"] = res.data.user.id;
           localStorage["companies_company_id"] = res.data.user.companies_company_id;
           localStorage['user_role_id'] = res.data.user.user_roles_role_id;
+          localStorage['first_name'] = res.data.user.first_name;
 
           this.props.history.push('/home' + res.data.user.user_roles_role_id);
 
         } else {
           alert(res.data.message);
+          this.setState({error: true, errorMessage: res.data.message})
+
+          window.location.reload();
         }
       })
       //error handling
       .catch((err) => {
-        console.log(err);
         alert(err);
+        this.setState({notLogin: true, success: false})
       })
 
     this.setState({
@@ -92,6 +104,9 @@ class Login extends Component {
   render() {
     return (
       <div className="app flex-row align-items-center">
+        {this.state.success && <Loader/>}
+        {this.state.error && <Message variant='danger'>{this.state.errorMessage}</Message>}
+        {this.state.notLogin &&
         <Container>
           <Row className="justify-content-center">
             <Col md="8">
@@ -151,6 +166,7 @@ class Login extends Component {
             </Col>
           </Row>
         </Container>
+        }
       </div>
     );
   }

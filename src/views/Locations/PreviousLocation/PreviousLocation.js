@@ -2,6 +2,7 @@ import React, {Component, useState} from 'react';
 import {Button, Card, CardBody, CardHeader, Col, Form, FormGroup, FormText, Input, Label, Row} from "reactstrap";
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
+import Message from "../../Required Sample Pages/Message";
 
 
 class PreviousLocation extends Component {
@@ -18,13 +19,19 @@ class PreviousLocation extends Component {
       isLoggedIn: true,
       vehiclesLongLat: [],
       status: false,
-      errors: {}
+      errors: {},
+      userRoleId:''
     }
   }
 
   componentDidMount() {
 
     let user = localStorage.getItem("user_id");
+
+    this.setState({
+      userRoleId:localStorage.getItem('user_role_id')
+    });
+
 
     if (user == undefined) {
       this.setState({
@@ -142,127 +149,143 @@ class PreviousLocation extends Component {
 
   render() {
     if (this.state.isLoggedIn === true) {
-      return (
-        <div>
-          <h3>Check vehicles previous location here...</h3>
-          <Row>
-            <Col xs="12" lg="6">
-              <div>
-                {this.state.status ?
-                  <Map
-                    google={this.props.google} zoom={9}
-                    initialCenter={{
-                      lat: 7.0146334,
-                      lng: 79.9676378,
-                      accuracy: 20
-                    }}>
-                    {this.state.vehiclesLongLat.map((store, index) => {
-                      return (<Marker key={index} id={index} position={{
-                        lat: store.lat,
-                        lng: store.lng
-                      }}
-                      />)
 
-                    })}
+      if(this.state.userRoleId==1){
+        return (
+          <div>
+            <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+          </div>
+        );
+      }else{
+        return (
+          <div>
+            <h3>Check vehicles previous location here...</h3>
+            <Row>
+              <Col xs="12" lg="6">
+                <div>
+                  {this.state.status ?
+                    <Map
+                      google={this.props.google} zoom={9}
+                      initialCenter={{
+                        lat: 7.0146334,
+                        lng: 79.9676378,
+                        accuracy: 20
+                      }}>
+                      {this.state.vehiclesLongLat.map((store, index) => {
+                        return (<Marker key={index} id={index} position={{
+                          lat: store.lat,
+                          lng: store.lng
+                        }}
+                        />)
 
-                  </Map>
-                  : <h6><center>Map Showing here</center></h6>}
-              </div>
-            </Col>
-            <Col xs="12" lg="6">
+                      })}
+
+                    </Map>
+                    : <h6><center>Map Showing here</center></h6>}
+                </div>
+              </Col>
+              <Col xs="12" lg="6">
 
 
-              <Card>
-                <CardHeader>
-                  <strong>Enter Details</strong>
-                  <small>For Previous Location</small>
-                </CardHeader>
-                <CardBody>
-                  <Form
+                <Card>
+                  <CardHeader>
+                    <strong>Enter Details</strong>
+                    <small>For Previous Location</small>
+                  </CardHeader>
+                  <CardBody>
+                    <Form
 
-                  >
-                    <Row>
-                      <Col xs="12">
+                    >
+                      <Row>
+                        <Col xs="12">
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col xs="12">
+
+
+                          <FormGroup row>
+                            <Col md="3">
+                              <Label htmlFor="select">Select Vehicle Number</Label>
+                            </Col>
+                            <Col xs="12" md="9">
+                              <Input type="select"
+                                     name="select"
+                                     id="select"
+                                     onChange={(e) => this.setState({vehicle_number: e.target.value})}
+                              >
+                                <option value="0">Please select</option>
+                                {this.state.vehicles.map((vehicle, index) => (
+                                  <option
+                                    key={index}
+                                    values={this.state.vehicle}
+                                  > {vehicle}</option>
+
+                                ))}
+                              </Input>
+                            </Col>
+                          </FormGroup>
+
+
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col xs="6">
+                          <FormGroup>
+                            <Label htmlFor="date">Date</Label>
+                            <Input
+                              type="date"
+                              value={this.state.date}
+                              onChange={(e) => {
+                                this.setState({date: e.target.value})
+                              }}
+
+                            />
+
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4">
+                          <FormGroup>
+                            <Label htmlFor="time">Time</Label>
+                            <Input
+                              type="text"
+                              min="0:00"
+                              value={this.state.time}
+                              onChange={(e) => this.setState({time: e.target.value})}
+
+                            />
+                            <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
+                            <div style={{color: "red"}}>{this.state.errors.time}</div>
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4">
+
+                        </Col>
+                      </Row>
+                      <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+
+                        <Button
+                          block color="primary"
+                          className="btn-pill"
+                          onClick={this.submitFunc}
+                        >Get Location</Button>
+
                       </Col>
-                    </Row>
-                    <Row>
-                      <Col xs="12">
+                    </Form>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </div>
+        );
+
+      }
 
 
-                        <FormGroup row>
-                          <Col md="3">
-                            <Label htmlFor="select">Select Vehicle Number</Label>
-                          </Col>
-                          <Col xs="12" md="9">
-                            <Input type="select"
-                                   name="select"
-                                   id="select"
-                                   onChange={(e) => this.setState({vehicle_number: e.target.value})}
-                            >
-                              <option value="0">Please select</option>
-                              {this.state.vehicles.map((vehicle, index) => (
-                                <option
-                                  key={index}
-                                  values={this.state.vehicle}
-                                > {vehicle}</option>
-
-                              ))}
-                            </Input>
-                          </Col>
-                        </FormGroup>
 
 
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs="6">
-                        <FormGroup>
-                          <Label htmlFor="date">Date</Label>
-                          <Input
-                            type="date"
-                            value={this.state.date}
-                            onChange={(e) => {
-                              this.setState({date: e.target.value})
-                            }}
 
-                          />
 
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4">
-                        <FormGroup>
-                          <Label htmlFor="time">Time</Label>
-                          <Input
-                            type="text"
-                            min="0:00"
-                            value={this.state.time}
-                            onChange={(e) => this.setState({time: e.target.value})}
-
-                          />
-                          <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
-                          <div style={{color: "red"}}>{this.state.errors.time}</div>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4">
-
-                      </Col>
-                    </Row>
-                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-
-                      <Button
-                        block color="primary"
-                        className="btn-pill"
-                        onClick={this.submitFunc}
-                      >Get Location</Button>
-
-                    </Col>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
-      );
 
     } else if (this.state.isLoggedIn === false) {
       return (
