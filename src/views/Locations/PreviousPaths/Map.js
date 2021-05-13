@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   withGoogleMap,
   withScriptjs,
@@ -6,17 +6,17 @@ import {
   Polyline,
   Marker,
 } from "react-google-maps";
-import {compose, withProps} from "recompose";
+import { compose, withProps } from "recompose";
 
 const initialDate = new Date();
 
 const Map = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
-    loadingElement: <div style={{height: `100%`}}/>,
-    containerElement: <div style={{height: `400px`, width: "940px"}}/>,
-    mapElement: <div style={{height: `100%`}}/>,
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDpv6eCg72bvXFAtKzEO_fpJ1Rgy1-MTb0&libraries=geometry,drawing,places",
+    loadingElement: <div style={{ height: `100%` }} />,
+    containerElement: <div style={{ height: `400px`, width: "940px" }} />,
+    mapElement: <div style={{ height: `100%` }} />,
   }),
   withScriptjs,
   withGoogleMap
@@ -45,21 +45,22 @@ const Map = compose(
     setPath(
       rawPath.map((coordinates, i, array) => {
         if (i === 0) {
-          return {...coordinates, distance: 0}; // it begins here!
+          return { ...coordinates, distance: 0 }; // it begins here!
         }
-        const {lat: lat1, lng: lng1} = coordinates;
+        const { lat: lat1, lng: lng1 } = coordinates;
         const latLong1 = new window.google.maps.LatLng(lat1, lng1);
 
-        const {lat: lat2, lng: lng2} = array[0];
+        const { lat: lat2, lng: lng2 } = array[0];
         const latLong2 = new window.google.maps.LatLng(lat2, lng2);
 
         // in meters:
-        const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-          latLong1,
-          latLong2
-        );
+        const distance =
+          window.google.maps.geometry.spherical.computeDistanceBetween(
+            latLong1,
+            latLong2
+          );
 
-        return {...coordinates, distance};
+        return { ...coordinates, distance };
       })
     );
     // setInitialDate(new Date());
@@ -126,16 +127,13 @@ const Map = compose(
   };
 
   return (
-    <GoogleMap
-      defaultZoom={10}
-      defaultCenter={center}
-    >
+    <GoogleMap defaultZoom={10} defaultCenter={center}>
       {prog && (
         <>
           <Polyline
             path={prog}
             // path={path}
-            options={{strokeColor: "#FF0000 "}}
+            options={{ strokeColor: "#FF0000 " }}
           />
           <Marker
             // position={path[prog.path - 1]}

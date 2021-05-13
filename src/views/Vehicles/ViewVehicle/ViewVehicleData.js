@@ -46,6 +46,7 @@ const ViewVehicleData = (props) => {
         setOwner_contact_number(res.data.owner_contact_no);
         setSerial_number(res.data.serial_number);
         setStatus(res.data.status1);
+        setDate(res.data.date);
 
         console.log(res.data);
         console.log(res.data.owner_name);
@@ -57,24 +58,6 @@ const ViewVehicleData = (props) => {
 
   const goBack = () => {
     props.history.push("/vehicles/view-vehicle");
-  };
-
-  const vehicleDeleteFunc = (e) => {
-    axios
-      .delete("http://localhost:8000/api/user/deletevehicledata", {
-        params: { vehicle_number: props.match.params.id },
-      })
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.messages == "vehicle successfully removed") {
-          alert("successfully removed vehicle");
-          // setVehicleNumber('');
-          // setType('');
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   return (
@@ -92,36 +75,30 @@ const ViewVehicleData = (props) => {
             className="form-horizontal"
             onSubmit={goBack}
           >
+            <br />
             <FormGroup row>
               <Col md="3">
-                <Label></Label>
-              </Col>
-              <Col xs="12" md="9">
-                <p className="form-control-static">-</p>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="6">
                 <Label htmlFor="text-input">Type</Label>
+              </Col>
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="type"
                   name="type"
                   placeholder="type"
-                  // autoComplete="text"
                   value={type}
                   disabled
                 />
               </Col>
-              <Col md="6"></Col>
             </FormGroup>
+
+            <br />
 
             <FormGroup row>
               <Col md="3">
                 <Label>Driver Name</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="driver-name"
@@ -130,16 +107,16 @@ const ViewVehicleData = (props) => {
                   value={driver_name}
                   disabled
                 />
-                <FormText className="help-block">Enter driver name</FormText>
               </Col>
             </FormGroup>
 
+            <br />
 
             <FormGroup row>
               <Col md="3">
                 <Label>Driver Contact Number</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="driver-contact-number"
@@ -149,17 +126,16 @@ const ViewVehicleData = (props) => {
                   value={driver_contact_number}
                   disabled
                 />
-                <FormText className="help-block">
-                  Enter driver contact number
-                </FormText>
               </Col>
             </FormGroup>
+
+            <br />
 
             <FormGroup row>
               <Col md="3">
                 <Label>Owner Name</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="owner-name"
@@ -168,15 +144,16 @@ const ViewVehicleData = (props) => {
                   value={owner_name}
                   disabled
                 />
-                <FormText className="help-block">Enter owner name</FormText>
               </Col>
             </FormGroup>
+
+            <br />
 
             <FormGroup row>
               <Col md="3">
                 <Label>Owner Contact Number</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="owner-contact-number"
@@ -185,21 +162,18 @@ const ViewVehicleData = (props) => {
                   value={owner_contact_number}
                   disabled
                 />
-                <FormText className="help-block">
-                  Enter owner contact number
-                </FormText>
               </Col>
             </FormGroup>
 
+            <br />
+
             <FormGroup row>
               <Col md="3">
-                <Label>
-                  Date Input <Badge>NEW</Badge>
-                </Label>
+                <Label>Date</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
-                  type="date"
+                  type="text"
                   id="date-added"
                   name="date-added"
                   placeholder="date"
@@ -209,26 +183,30 @@ const ViewVehicleData = (props) => {
               </Col>
             </FormGroup>
 
+            <br />
+
             <FormGroup row>
               <Col md="3">
-                <Label>Unit per Km</Label>
+                <Label>Unit per Km (Rs:)</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   name="unit-per-km"
                   id="unit-per-km"
                   value={unit_per_1km}
                   disabled
-                />
+                ></Input>
               </Col>
             </FormGroup>
 
+            <br />
+
             <FormGroup row>
-              <Col md="6">
+              <Col md="3">
                 <Label htmlFor="text-input">Device Serial Number</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="device-serial-number"
@@ -237,16 +215,16 @@ const ViewVehicleData = (props) => {
                   value={serial_number}
                   disabled
                 />
-                <FormText color="muted">Please enter vehicle number</FormText>
               </Col>
             </FormGroup>
 
+            <br />
 
             <FormGroup row>
-              <Col md="6">
+              <Col md="3">
                 <Label htmlFor="text-input">Device Status</Label>
               </Col>
-              <Col xs="12" md="9">
+              <Col xs="12" md="4">
                 <Input
                   type="text"
                   id="device-status"
@@ -255,18 +233,19 @@ const ViewVehicleData = (props) => {
                   value={status}
                   disabled
                 />
-                <FormText color="muted">Please enter vehicle number</FormText>
               </Col>
             </FormGroup>
+
+            <br />
 
             <Button onClick={goBack} size="sm" color="primary">
               <i className="fa fa-dot-circle-o" /> Back
             </Button>
 
-            <Button onClick={vehicleDeleteFunc} size="sm" color="danger">
+            {/* <Button onClick={vehicleDeleteFunc} size="sm" color="danger">
               <i className="fa fa-ban" />
               Delete Vehicle
-            </Button>
+            </Button> */}
           </Form>
         </CardBody>
         <CardFooter></CardFooter>

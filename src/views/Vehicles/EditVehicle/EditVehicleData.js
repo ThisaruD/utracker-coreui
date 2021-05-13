@@ -38,7 +38,7 @@ const EditVehicleData = (props) => {
         params: { vehicle_number: props.match.params.id },
       })
       .then((res) => {
-         setVehicleId(res.data.vehicle_id);
+        setVehicleId(res.data.vehicle_id);
         setVehicle_number(res.data.vehicle_num);
         setType(res.data.type1);
         setUnit_per_1km(res.data.unit_per_1km);
@@ -65,26 +65,23 @@ const EditVehicleData = (props) => {
     if (!driver_name) {
       formIsValid = false;
 
-      errors["driver_name"] = "*Please enter driver name.";
+      errors["driver_name"] = "*Please Enter Driver Name";
     }
 
     if (typeof driver_name !== "undefined") {
       if (!driver_name.match(/^[a-zA-Z ]*$/)) {
         formIsValid = false;
 
-        errors["driver_name"] = "*Please enter alphabet characters only.";
+        errors["driver_name"] = "*Please Enter Alphabet Characters Only";
       }
 
       // driver_contact_number
       if (!driver_contact_number) {
         formIsValid = false;
 
-        errors["driver_contact_number"] =
-          "*Please enter driver contact number.";
-      }
-
-      if (typeof driver_contact_number !== "undefined") {
-        let pattern = new RegExp(
+        errors["driver_contact_number"] = "*Please Enter Driver Contact Number";
+      } else if (typeof driver_contact_number !== "undefined") {
+        var pattern = new RegExp(
           /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/
         );
 
@@ -92,7 +89,7 @@ const EditVehicleData = (props) => {
           formIsValid = false;
 
           errors["driver_contact_number"] =
-            "*Please enter valid contact number.";
+            "*Please Enter Valid Contact Number";
         }
       }
 
@@ -100,14 +97,14 @@ const EditVehicleData = (props) => {
       if (!owner_name) {
         formIsValid = false;
 
-        errors["owner_name"] = "*Please enter your owner name.";
+        errors["owner_name"] = "*Please Enter  Owner Name";
       }
 
       if (typeof owner_name !== "undefined") {
         if (!owner_name.match(/^[a-zA-Z ]*$/)) {
           formIsValid = false;
 
-          errors["owner_name"] = "*Please enter alphabet characters only.";
+          errors["owner_name"] = "*Please Enter Alphabet Characters Only";
         }
       }
 
@@ -115,11 +112,9 @@ const EditVehicleData = (props) => {
       if (!owner_contact_number) {
         formIsValid = false;
 
-        errors["owner_contact_number"] = "*Please enter owner contact number.";
-      }
-
-      if (typeof owner_contact_number !== "undefined") {
-        let pattern = new RegExp(
+        errors["owner_contact_number"] = "*Please Enter Owner Contact Number";
+      } else if (typeof owner_contact_number !== "undefined") {
+        var pattern = new RegExp(
           /^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/
         );
 
@@ -127,15 +122,39 @@ const EditVehicleData = (props) => {
           formIsValid = false;
 
           errors["owner_contact_number"] =
-            "*Please enter valid contact number.";
+            "*Please Enter a Valid Contact Number";
         }
       }
 
-      // //unit_per_1km
+      //unit_per_1km
       if (!unit_per_1km) {
         formIsValid = false;
 
-        errors["unit_per_1km"] = "*Please enter rate.";
+        errors["unit_per_1km"] = "*Please Select Rate";
+      }
+
+      // serial_number
+      if (!serial_number) {
+        formIsValid = false;
+
+        errors["serial_number"] = "*Please Enter Device Serial Number";
+      } else if (typeof serial_number !== "undefined") {
+        //regex expression for serial_number validation
+
+        var pattern = new RegExp(/^CN(?=\d{0,3}[1-9])\d{7}$/);
+
+        if (!pattern.test(serial_number)) {
+          formIsValid = false;
+
+          errors["serial_number"] = "*Please Enter Valid Serial Number";
+        }
+      }
+
+      //status
+      if (!status) {
+        formIsValid = false;
+
+        errors["status"] = "**Please Select Device Status";
       }
 
       setErrors(errors);
@@ -144,11 +163,10 @@ const EditVehicleData = (props) => {
     }
   };
 
-  const driver_contact_no = driver_contact_number;
-  const owner_contact_no = owner_contact_number;
-
   const submitFunc = (e) => {
     e.preventDefault();
+    const driver_contact_no = driver_contact_number;
+    const owner_contact_no = owner_contact_number;
     if (validate()) {
       const obj = {
         vehicle_number,
@@ -159,7 +177,7 @@ const EditVehicleData = (props) => {
         owner_name,
         owner_contact_no,
         serial_number,
-        status
+        status,
       };
 
       console.log(obj);
@@ -167,7 +185,7 @@ const EditVehicleData = (props) => {
       axios
         .put("http://localhost:8000/api/updatevehicledetails", obj)
         .then((res) => {
-          alert("vehicle edited successfully");
+          alert("Vehicle Edited Successfully");
           console.log(res.data);
         })
         .catch((err) => {
@@ -176,17 +194,21 @@ const EditVehicleData = (props) => {
     }
   };
 
+  const goBack = () => {
+    props.history.push("/vehicles/edit-vehicle");
+  };
+
   const vehicleDeleteFunc = (e) => {
     // const obj = {props.match.params.id}
     //const vehicleNumber = props.match.params.id;
-   // console.log(vehicleNumber);
+    // console.log(vehicleNumber);
 
     axios
       .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
       .then((res) => {
         console.log(res.data);
         if (res.data.message == "successfully deleted") {
-          alert("successfully removed vehicle");
+          alert("Successfully Removed Vehicle");
 
           // setVehicleNumber('');
           // setType('');
@@ -202,7 +224,6 @@ const EditVehicleData = (props) => {
         alert(err);
       });
   };
-
   return (
     <div>
       <Card>
@@ -224,7 +245,7 @@ const EditVehicleData = (props) => {
                 <Label></Label>
               </Col>
               <Col xs="12" md="9">
-                <p className="form-control-static">-</p>
+                <p className="form-control-static"></p>
               </Col>
             </FormGroup>
 
@@ -340,9 +361,9 @@ const EditVehicleData = (props) => {
                   onChange={(e) => setUnit_per_1km(e.target.value)}
                 >
                   <option value="0">Please select</option>
-                  <option value="1">Rs:100</option>
-                  <option value="2">Rs:200</option>
-                  <option value="3">Rs:300</option>
+                  <option value="100">Rs:100</option>
+                  <option value="200">Rs:200</option>
+                  <option value="300">Rs:300</option>
                 </Input>
                 <div style={{ color: "red" }}>{errors.unit_per_1km}</div>
               </Col>
@@ -362,6 +383,7 @@ const EditVehicleData = (props) => {
                   onChange={(e) => setSerial_number(e.target.value)}
                 />
                 <FormText color="muted">Please enter vehicle number</FormText>
+                <div style={{ color: "red" }}>{errors.serial_number}</div>
               </Col>
             </FormGroup>
 
@@ -383,22 +405,39 @@ const EditVehicleData = (props) => {
                   <option value="OFF">OFF</option>
                 </Input>
                 <FormText color="muted">Please enter vehicle number</FormText>
+                <div style={{ color: "green" }}>{errors.status}</div>
               </Col>
             </FormGroup>
 
-            <Button
-              type="submit"
-              size="sm"
-              color="primary"
-              onClick={submitFunc}
-            >
-              <i className="fa fa-dot-circle-o" /> Submit
-            </Button>
+            <div>
+              <Button
+                style={{ margin: "2px" }}
+                type="submit"
+                size="sm"
+                color="primary"
+                onClick={submitFunc}
+              >
+                <i className="fa fa-dot-circle-o" /> Submit
+              </Button>
 
-            <Button onClick={vehicleDeleteFunc} size="sm" color="danger">
-              <i className="fa fa-ban" />
-              Delete Vehicle
-            </Button>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={vehicleDeleteFunc}
+                size="sm"
+                color="danger"
+              >
+                <i className="fa fa-ban" />
+                Delete Vehicle
+              </Button>
+              <Button
+                style={{ margin: "2px" }}
+                onClick={goBack}
+                size="sm"
+                color="primary"
+              >
+                <i className="fa fa-dot-circle-o" /> Back
+              </Button>
+            </div>
           </Form>
         </CardBody>
         <CardFooter></CardFooter>

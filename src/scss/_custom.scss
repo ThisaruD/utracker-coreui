@@ -7,12 +7,12 @@
   margin: 50px auto;
 }
 
-.userProfile_header{
+.userProfile_header {
   background-color: #abe05b;
 }
 
-.userProfile_body{
-  background-color:#c8d3b7;
+.userProfile_body {
+  background-color: #c8d3b7;
 }
 // .userProfile_button{
 //   background-color: rgb(32, 216, 102);
@@ -28,15 +28,17 @@
   padding: 100px;
 }
 
-.d-block, .w-100:hover{
+.d-block,
+.w-100:hover {
   opacity: 0.5;
 }
-.d-block, .w-100{
-  opacity: 1.0;
+.d-block,
+.w-100 {
+  opacity: 1;
 }
 
 //navbar img-avatar-height
-.app-header{
+.app-header {
   .nav-item {
     .nav-link {
       > .img-avatar {
@@ -47,33 +49,30 @@
 }
 
 //app-header
-.app-header{
-  .utracker_header{
-    margin-left:0px;
+.app-header {
+  .utracker_header {
+    margin-left: 0px;
   }
 }
 
-.navbar-brand{
+.navbar-brand {
   justify-content: left;
 }
 
-.utracker_header{
-  margin-left:0px !important;
+.utracker_header {
+  margin-left: 0px !important;
   font-size: 15px;
   justify-content: center !important;
   margin-top: -10px;
 }
 
-
-
-
 //map-size
-.map_size{
+.map_size {
   height: 500px;
 }
 
 //about-page
-.card-about{
+.card-about {
   width: 55%;
   height: 100%;
   margin: 50px auto;
@@ -81,18 +80,18 @@
   //border-color: null;
 }
 
-.card-about_cardbody{
+.card-about_cardbody {
   line-height: 2;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
 }
 
-.card-about_header{
+.card-about_header {
   background-color: #abe05b;
 }
 
 //contact-page
-.card-contact{
+.card-contact {
   width: 55%;
   height: 100%;
   margin: 50px auto;
@@ -100,13 +99,13 @@
   //border-color: null;
 }
 
-.card-contact_cardbody{
+.card-contact_cardbody {
   line-height: 2;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 16px;
 }
 
-.card-contact_header{
+.card-contact_header {
   background-color: #abe05b;
 }
 
@@ -114,4 +113,24 @@
 .text-white {
   width: 75%;
   margin: 10px 100px;
+}
+
+//Previous Path - Buttons
+.PrevPath {
+  margin: 6px;
+  width: 25%;
+  height: 30px;
+}
+
+.PrevPath_02 {
+  margin-left: 15px;
+}
+
+.PrevPath_03 {
+  margin-left: 255px;
+}
+
+//View-Vehicles
+.ViwVehi {
+  margin-top: 100px;
 }
