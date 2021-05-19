@@ -63,7 +63,7 @@ const TransportManagerUserDetails = (props) => {
 
   return (
     <div>
-      <h1 style={headerStyle}>This is User details page</h1>
+      <h1 style={headerStyle}>Manage Your Users Here</h1>
       {loading &&<Loader/>}
       {dataLoad &&
 

@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 import axios from "axios";
-import GoogleMapReact from 'google-maps-react';
 import {Button, Card, CardBody, Col, Row} from "reactstrap";
-import {Tooltip} from '@varld/popover';
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Message from "../../Required Sample Pages/Message";
 
@@ -90,10 +87,10 @@ class LiveLocation extends Component {
   render() {
 
 
-    if (this.state.isLoggedIn == true) {
+    if (this.state.isLoggedIn === true) {
 
 
-      if(this.state.userRoleId==1){
+      if(this.state.userRoleId==='1'){
         return (
           <div>
             <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
@@ -128,7 +125,7 @@ class LiveLocation extends Component {
         );
       }
 
-    } else if (this.state.isLoggedIn == false) {
+    } else if (this.state.isLoggedIn === false) {
       return (
         <div className="access_denied">
           <Card className="text-white bg-primary ">

@@ -6,7 +6,7 @@ import axios from "axios";
 const ViewCompany = (props) => {
 
 
-  const [name, setName] = useState('Dilshan');
+
 
   const [companyNames, setCompanyNames] = useState([]);
   const [companyName, setCompanyName] = useState('');
@@ -27,11 +27,11 @@ const ViewCompany = (props) => {
       setIsLoggedIn(false);
     } else {
 
-    if(userRoleId == 1){
+    if(userRoleId === '1'){
       axios.get('http://localhost:8000/api/getallcompanies', {
         headers: {
           "Content-type": "application/json",
-          Authorization: "Bearer" + localStorage.getItem('token')
+          Authorization: "Bearer " + localStorage.getItem('token')
         }
       })
         .then((res) => {
@@ -79,12 +79,20 @@ const ViewCompany = (props) => {
 
   if (isLoggedIn === true) {
     return (
-      <di>
 
-        <h1>This is view company details page</h1>
-        <Form
-          onSubmit={clickHandler}
+      <div className="ViwVehi">
+        <Card
+          style={{
+            height: "200px",
+            width: "85%",
+            margin: "100px",
+          }}
         >
+          <CardBody style={{ margin: "40px 50px" }}>
+            <div>
+
+
+
           <FormGroup row>
             <Col md="3">
               <Label htmlFor="select">Company Name</Label>
@@ -98,8 +106,9 @@ const ViewCompany = (props) => {
                 onChange={(e) => setCompanyName(e.target.value)}
               >
                 <option value="0">Select Company Name</option>
-                {companyNames.map((company) => (
+                {companyNames.map((company,index) => (
                   <option
+                    key={index}
                     values={company}
 
                   > {company}</option>
@@ -113,13 +122,15 @@ const ViewCompany = (props) => {
               <Button
                 block color="primary"
                 className="btn-pill"
-                // onClick={clickHandler}
+                onClick={clickHandler}
               >View Company Data</Button>
             </Col>
             <Col md="4"></Col>
           </Row>
-        </Form>
-      </di>
+        </div>
+          </CardBody>
+        </Card>
+        </div>
     );
   } else if (isLoggedIn === false) {
     return (

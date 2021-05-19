@@ -7,13 +7,14 @@ import {
   Marker,
 } from "react-google-maps";
 import {compose, withProps} from "recompose";
+// import car from "../../../assets/img/brand/car.png";
 
 const initialDate = new Date();
 
 const Map = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDpv6eCg72bvXFAtKzEO_fpJ1Rgy1-MTb0&libraries=geometry,drawing,places",
     loadingElement: <div style={{height: `100%`}}/>,
     containerElement: <div style={{height: `400px`, width: "940px"}}/>,
     mapElement: <div style={{height: `100%`}}/>,
@@ -54,10 +55,11 @@ const Map = compose(
         const latLong2 = new window.google.maps.LatLng(lat2, lng2);
 
         // in meters:
-        const distance = window.google.maps.geometry.spherical.computeDistanceBetween(
-          latLong1,
-          latLong2
-        );
+        const distance =
+          window.google.maps.geometry.spherical.computeDistanceBetween(
+            latLong1,
+            latLong2
+          );
 
         return {...coordinates, distance};
       })
@@ -74,7 +76,7 @@ const Map = compose(
   const getDistance = () => {
     // seconds between when the component loaded and now
     const differentInTime = (new Date() - initialDate) / 1000; // pass to seconds
-    return differentInTime * velocity; // d = v*t
+    return differentInTime * velocity; // d = v*t -- thanks Newton!
   };
 
   const moveObject = () => {
@@ -126,10 +128,7 @@ const Map = compose(
   };
 
   return (
-    <GoogleMap
-      defaultZoom={10}
-      defaultCenter={center}
-    >
+    <GoogleMap defaultZoom={10} defaultCenter={center}>
       {prog && (
         <>
           <Polyline
@@ -140,6 +139,10 @@ const Map = compose(
           <Marker
             // position={path[prog.path - 1]}
             position={prog[prog.length - 1]}
+            // icon={{
+            //   url: car,
+            //   height: "50px",
+            // }}
           />
         </>
       )}

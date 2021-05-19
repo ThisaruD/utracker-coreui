@@ -69,7 +69,7 @@ class Login extends Component {
 
         console.log(res.data);
         //response data handling
-        if (res.data.message == 'success') {
+        if (res.data.message === 'success') {
 
           // alert('Successfully Login');
           console.log(res.data.user.id);

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, FormText, Input, Label} from "reactstrap";
+import BackToLogin from "../../Required Sample Pages/BackToLogin";
 
 const EditCompanyDetails = (props) => {
 
@@ -10,24 +11,38 @@ const EditCompanyDetails = (props) => {
   const [companyAddress, setCompanyAddress] = useState('');
   const[companyId, setCompanyId] = useState('');
 
+
+  const[userId, setUserId] = useState('');
+  const[isLoggedIn,setIsLoggedIn] = useState(true);
+
+
   useEffect(() => {
-    axios.get('http://localhost:8000/api/getcompanydetails', {params: {company_name: props.match.params.id}}, {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer" + localStorage.getItem('token')
-      }
-    })
-      .then((res) => {
-        console.log(res.data);
-        //setCompanyId(res.data.company_id);
-        setCompanyName(res.data.company_name);
-        setCompanyLocation(res.data.company_location);
-        setCompanyAddress(res.data.company_address);
-        setCompanyId(res.data.company_id);
+
+    const user = localStorage.getItem("user_id");
+    setUserId(user);
+
+    if(user==undefined){
+      setIsLoggedIn(false);
+    }else {
+
+      axios.get('http://localhost:8000/api/getcompanydetails', {params: {company_name: props.match.params.id}}, {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer" + localStorage.getItem('token')
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      })
+        .then((res) => {
+          console.log(res.data);
+          //setCompanyId(res.data.company_id);
+          setCompanyName(res.data.company_name);
+          setCompanyLocation(res.data.company_location);
+          setCompanyAddress(res.data.company_address);
+          setCompanyId(res.data.company_id);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+    }
   }, [props.match.params.id]);
 
 
@@ -58,7 +73,7 @@ const EditCompanyDetails = (props) => {
       .then((res) => {
         console.log(res.data);
         alert(res.data.message);
-        //window.location.reload();
+        props.history.push('/company/edit-company');
       })
       .catch((err) => {
         console.log(err);
@@ -75,110 +90,126 @@ const EditCompanyDetails = (props) => {
 
 
 
-  return (
-    <div>
-      <Card>
-        <CardHeader>
-          <strong>Edit Company Details</strong>
-        </CardHeader>
-        <CardBody>
-          <Form
-            encType="multipart/form-data"
-            className="form-horizontal"
-          >
-            <FormGroup row>
-              {/*space for empty row  */}
-              <Col md="3">
-                <Label></Label>
-              </Col>
-              <Col xs="12" md="9">
-                <p className="form-control-static">-</p>
-              </Col>
-            </FormGroup>
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Company Name</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  type="text"
-                  disabled
-                  id="company-name"
-                  name="company-name"
-                  placeholder="Company Name"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                />
-                <FormText color="muted">Please Enter Company Name </FormText>
-              </Col>
-            </FormGroup>
 
 
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Company Location</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  type="text"
-                  id="company-location"
-                  name="company-location"
-                  placeholder="company-location"
-                  value={companyLocation}
-                  onChange={(e) => setCompanyLocation(e.target.value)}
-                />
-              </Col>
-            </FormGroup>
 
-
-            <FormGroup row>
-              <Col md="6">
-                <Label htmlFor="text-input">Company Address</Label>
-              </Col>
-              <Col xs="12" md="9">
-                <Input
-                  type="text"
-                  id="company-address"
-                  name="company-address"
-                  placeholder="company-address"
-                  value={companyAddress}
-                  onChange={(e) => setCompanyAddress(e.target.value)}
-                />
-              </Col>
-            </FormGroup>
-
-            <Button
-              type="reset"
-              size="sm"
-              color="primary"
-              onClick={goBack}
+    if(isLoggedIn===true){
+      return(
+      <div>
+        <Card>
+          <CardHeader>
+            <strong>Edit Company Details</strong>
+          </CardHeader>
+          <CardBody>
+            <Form
+              encType="multipart/form-data"
+              className="form-horizontal"
             >
-              <i className="fa fa-dot-circle-o"/>Back
-            </Button>
+              <FormGroup row>
+                {/*space for empty row  */}
+                <Col md="3">
+                  <Label></Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <p className="form-control-static">-</p>
+                </Col>
+              </FormGroup>
+
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Company Name</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    type="text"
+                    disabled
+                    id="company-name"
+                    name="company-name"
+                    placeholder="Company Name"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                  />
+                  <FormText color="muted">Please Enter Company Name </FormText>
+                </Col>
+              </FormGroup>
 
 
-            <Button
-              size="sm"
-              color="primary"
-              onClick={submitFunc}
-            ><i className="fa fa-dot-circle-o"/> Save Details
-            </Button>
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Company Location</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    type="text"
+                    id="company-location"
+                    name="company-location"
+                    placeholder="company-location"
+                    value={companyLocation}
+                    onChange={(e) => setCompanyLocation(e.target.value)}
+                  />
+                </Col>
+              </FormGroup>
 
-            <Button
-              size="sm"
-              color="danger"
-              onClick={deleteFunc}
-            >
-              <i className="fa fa-ban"/> Delete Company
-            </Button>
-          </Form>
-        </CardBody>
-        <CardFooter></CardFooter>
-      </Card>
-    </div>
 
-  );
+              <FormGroup row>
+                <Col md="6">
+                  <Label htmlFor="text-input">Company Address</Label>
+                </Col>
+                <Col xs="12" md="9">
+                  <Input
+                    type="text"
+                    id="company-address"
+                    name="company-address"
+                    placeholder="company-address"
+                    value={companyAddress}
+                    onChange={(e) => setCompanyAddress(e.target.value)}
+                  />
+                </Col>
+              </FormGroup>
+
+              <Button
+                type="reset"
+                size="sm"
+                color="primary"
+                onClick={goBack}
+              >
+                <i className="fa fa-dot-circle-o"/>Back
+              </Button>
+
+
+              <Button
+                size="sm"
+                color="primary"
+                onClick={submitFunc}
+              ><i className="fa fa-dot-circle-o"/> Save Details
+              </Button>
+
+              <Button
+                size="sm"
+                color="danger"
+                onClick={deleteFunc}
+              >
+                <i className="fa fa-ban"/> Delete Company
+              </Button>
+            </Form>
+          </CardBody>
+          <CardFooter></CardFooter>
+        </Card>
+      </div>
+    );
+    }else{
+      return (
+        <div>
+          <BackToLogin/>
+        </div>
+      )
+    }
+
+
+
+
+
+
 }
 
 export default EditCompanyDetails;

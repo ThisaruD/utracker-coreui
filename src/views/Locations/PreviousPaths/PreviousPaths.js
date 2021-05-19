@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Button,
   Card,
@@ -6,14 +6,14 @@ import {
   CardHeader,
   Col,
   Form,
-  FormGroup, FormText,
+  FormGroup,
   Input,
   Label,
   Row,
 } from "reactstrap";
 import axios from "axios";
 import Map from "./Map";
-import { convertNeSwToNwSe } from "google-map-react";
+import {convertNeSwToNwSe} from "google-map-react";
 import Message from "../../Required Sample Pages/Message";
 
 class PreviousPaths extends Component {
@@ -21,13 +21,15 @@ class PreviousPaths extends Component {
     super(props);
     this.submitFunc = this.submitFunc.bind(this);
     this.backToLogin = this.backToLogin.bind(this);
+    this.validate = this.validate.bind(this);
 
     this.state = {
-      vehicle_number: "HK-1234",
+      vehicle_number: "",
       from_date: "2021-03-15",
       from_time: "",
       to_date: "2021-03-15",
       to_time: "",
+      user_id: "2",
       vehicles: [],
       path: [],
       isLoggedIn: true,
@@ -35,12 +37,14 @@ class PreviousPaths extends Component {
       userRoleId:''
     };
   }
+
   componentDidUpdate() {
     console.log("path");
     console.log(this.state.path);
   }
+
   componentDidMount() {
-    const user = localStorage.getItem("user_id");
+    let user = localStorage.getItem("user_id");
 
     this.setState({
       userRoleId:localStorage.getItem('user_role_id')
@@ -48,7 +52,7 @@ class PreviousPaths extends Component {
 
     if (user == undefined) {
       this.setState({
-        isLoggedIn: false,
+        isLoggedIn: true,
       });
     } else {
       axios
@@ -66,7 +70,7 @@ class PreviousPaths extends Component {
           //handle response data
           console.log(res);
           //setVehicles(res.data.vehicles);
-          this.setState({ vehicles: res.data.vehicles });
+          this.setState({vehicles: res.data.vehicles});
         })
         .catch((err) => {
           //handle error
@@ -80,80 +84,38 @@ class PreviousPaths extends Component {
     this.props.history.push("/login");
   }
 
-//validation for input field
-  validate() {
-    let errors = {};
-
-    let isValid = true;
-
-    //time
-
-
-    if (this.state.from_time !== undefined) {
-      var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
-
-    }else if(this.state.to_time !== undefined){
-      var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
-    }
-
-    if (!pattern.test(this.state.to_time)) {
-      isValid = false;
-      errors["time"] = "*Please enter correct time format.";
-    }else if(!pattern.test(this.state.from_time)){
-      isValid = false;
-      errors["time"] = "*Please enter correct time format.";
-    }
-
-    this.setState({
-      errors: errors
-    });
-
-    return isValid;
-  }
-
-
-
-
-
-
-
-
   submitFunc(e) {
     e.preventDefault();
 
+    if (this.validate()) {
+      const obj = {
+        vehicle_number: this.state.vehicle_number,
+        from_date: "3/15/2021",
+        from_time: this.state.from_time,
+        to_date: "3/15/2021",
+        to_time: this.state.to_time,
+      };
 
-    if(this.validate()){
-
-      // const obj = {
-      //   vehicle_number: "AAA-5678",
-      //   from_date: "3/15/2021",
-      //   from_time: "18.30",
-      //   to_date: "3/15/2021",
-      //   to_time: "19.30",
-      // };
-
-
+      console.log(obj);
       axios
-        .get("http://104.236.96.123:8000/api/getvehiclepath", {
-          params: {
-            vehicle_number: this.state.vehicle_number,
-            from_date: "3/15/2021",
-            from_time: this.state.from_time,
-            to_date: "3/15/2021",
-            to_time: this.state.to_time
-          },
+        .get("http://localhost:8000/api/getvehiclepath", {
+          params: obj,
         })
         .then((res) => {
-          let tempPath = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let coordinates = {
-              lat: res.data[i].latitude * 1,
-              lng: res.data[i].longitude * 1,
-            };
+          if (res.data.GPS_PATH_DATA.length == 0) {
+            alert("There is no data for this time range !!!");
+          } else {
+            let tempPath = [];
+            for (let i = 0; i < res.data.GPS_PATH_DATA.length; i++) {
+              let coordinates = {
+                lat: res.data.GPS_PATH_DATA[i].latitude * 1,
+                lng: res.data.GPS_PATH_DATA[i].longitude * 1,
+              };
 
-            tempPath.push(coordinates);
+              tempPath.push(coordinates);
+            }
+            this.setState({path: tempPath});
           }
-          this.setState({ path: tempPath });
         })
         .catch((err) => {
           console.log(err);
@@ -161,184 +123,246 @@ class PreviousPaths extends Component {
 
       this.setState({
         vehicle_number: "",
-        from_date: "",
+        // from_date: "",
         from_time: "",
-        to_date: "",
+        // to_date: "",
         to_time: "",
       });
-
     }
-
+    // console.log(this.state.path);
   }
 
-  // const submitFunc = (e) =>{
-  //   e.preventDefault();
-  //   const obj ={vehicleNumber, date1, time1, date2, time2}
-  //   console.log(obj);
-  //
-  // setVehicleNumber('');
-  // setDate1('');
-  // setTime1('');
-  // setDate2('');
-  // setTime2('');
-  //
-  // }
+  //refresh
+  refreshPage() {
+    window.location.reload();
+  }
+
+  //Validation
+  validate() {
+    let errors = {};
+
+    let isValid = true;
+
+    //vehicle number
+    if (!this.state.vehicle_number) {
+      isValid = false;
+
+      errors["vehicle_number"] = "*Please Select a Vehicle";
+    }
+
+    //from_time
+    if (!this.state.from_time) {
+      isValid = false;
+      errors["from_time"] = "*Please Enter Time";
+    } else if (this.state.from_time !== "undefined") {
+      var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
+
+      if (!pattern.test(this.state.from_time)) {
+        isValid = false;
+        errors["from_time"] = "*Please Enter Correct Time Format (HH:MM)";
+      }
+    }
+
+    //to_time
+    if (!this.state.to_time) {
+      isValid = false;
+      errors["to_time"] = "*Please Enter Time";
+    } else if (this.state.to_time !== "undefined") {
+      var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
+
+      if (!pattern.test(this.state.to_time)) {
+        isValid = false;
+        errors["to_time"] = "*Please Enter Correct Time Format (HH:MM)";
+      }
+    }
+
+    this.setState({
+      errors: errors,
+    });
+
+    return isValid;
+  }
 
   render() {
     if (this.state.isLoggedIn == true) {
 
-
       if(this.state.userRoleId==1){
         return (
           <div>
-           <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+            <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
           </div>
         );
-      }else{
+      }else {
 
 
-      return (
-        <div>
-          <h1>This is previous paths tab</h1>
-          <br></br>
-          <Row>
-            <Col xs="12" lg="9">
-              <Card>
-                <CardHeader>
-                  <strong>Enter Details</strong>
-                  <small> For vehicles previous path </small>
-                </CardHeader>
-                <CardBody>
-                  <Form onSubmit={this.submitFunc}>
-                    <Row>
-                      <Col xs="12"></Col>
-                    </Row>
-                    <Row>
-                      <Col xs="12">
-                        <FormGroup row>
-                          <Col md="3">
-                            <Label htmlFor="select">
-                              Select Vehicle Number
-                            </Label>
-                          </Col>
-                          <Col xs="12" md="9">
-                            <Input
-                              type="select"
-                              name="select"
-                              id="select"
-                              value={this.state.vehicle_number}
-                              onChange={(e) =>
-                                this.setState({
-                                  vehicle_number: e.target.value,
-                                })
-                              }
-                            >
-                              <option value="0">Please select</option>
-                              {this.state.vehicles.map((vehicle) => (
-                                <option values={this.state.vehicle}>
-
-                                  {vehicle}
-                                </option>
-                              ))} }
-                            </Input>
-                          </Col>
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <p>From</p>
-                    </Row>
-                    <Row>
-                      <Col xs="6">
-                        <FormGroup>
-                          <Label htmlFor="date1">Date</Label>
-                          <Input
-                            type="date"
-                            format="yyyy-MM-dd"
-                            name="date1"
-                            id="date1"
-                            value={this.state.from_date}
-                            onChange={(e) => {
-                              this.setState({from_date: e.target.value});
-                            }}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4">
-                        <FormGroup>
-                          <Label htmlFor="time1">Time</Label>
-                          <Input
-                            type="text"
-                            name="time1"
-                            id="time1"
-                            value={this.state.from_time}
-                            onChange={(e) => {
-                              this.setState({from_time: e.target.value});
-                            }}
-                          />
-                          <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
-                          <div style={{color: "red"}}>{this.state.errors.time}</div>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4"></Col>
-                    </Row>
-                    <Row>
-                      <p>To</p>
-                    </Row>
-                    <Row>
-                      <Col xs="6">
-                        <FormGroup>
-                          <Label htmlFor="date2">Date</Label>
-                          <Input
-                            type="text"
-                            name="date2"
-                            id="date2"
-                            value={this.state.to_date}
-                            onChange={(e) => {
-                              this.setState({to_date: e.target.value});
-                            }}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4">
-                        <FormGroup>
-                          <Label htmlFor="time2">Time</Label>
-                          <Input
-                            type="text"
-                            name="time2"
-                            id="time2"
-                            value={this.state.to_time}
-                            onChange={(e) => {
-                              this.setState({to_time: e.target.value});
-                            }}
-                          />
-                          <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
-                          <div style={{color: "red"}}>{this.state.errors.time}</div>
-                        </FormGroup>
-                      </Col>
-                      <Col xs="4"></Col>
-                    </Row>
-                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                      <Button
-                        block
-                        color="primary"
-                        className="btn-pill"
-                        type="submit"
-                      >
-                        Get Path
-                      </Button>
-                    </Col>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+        return (
           <div>
-            <Map pathCoordinates={this.state.path} />
+            {/* <h1>This is previous paths tab</h1> */}
+            <br></br>
+            <Row>
+              <Col xs="12" lg="9">
+                <Card>
+                  <CardHeader>
+                    <strong>Enter Details</strong>
+                    {/* <small> For vehicles previous path </small> */}
+                  </CardHeader>
+                  <br/>
+                  <CardBody>
+                    <Form onSubmit={this.submitFunc}>
+                      <Row>
+                        <Col xs="12"></Col>
+                      </Row>
+                      <Row>
+                        <Col xs="12">
+                          <FormGroup row>
+                            <Col md="3">
+                              <Label htmlFor="select">
+                                <b>Select Vehicle Number</b>
+                              </Label>
+                            </Col>
+                            <Col xs="12" md="9">
+                              <Input
+                                type="select"
+                                name="select"
+                                id="select"
+                                value={this.state.vehicle_number}
+                                onChange={(e) =>
+                                  this.setState({
+                                    vehicle_number: e.target.value,
+                                  })
+                                }
+                              >
+                                <option value="0">Please select</option>
+                                {this.state.vehicles.map((vehicle) => (
+                                  <option values={this.state.vehicle}>
+                                    {vehicle}
+                                  </option>
+                                ))}{" "}
+                              </Input>
+                              <div style={{color: "red"}}>
+                                {this.state.errors.vehicle_number}
+                              </div>
+                            </Col>
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <br/>
+                      <Row>
+                        <p className="PrevPath_02">
+                          <b>From</b>
+                        </p>
+                      </Row>
+                      <Row>
+                        <Col xs="6">
+                          <FormGroup>
+                            <Label htmlFor="date1">Date</Label>
+                            <Input
+                              type="date"
+                              format="yyyy-MM-dd"
+                              name="date1"
+                              id="date1"
+                              value={this.state.from_date}
+                              onChange={(e) => {
+                                this.setState({from_date: e.target.value});
+                              }}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4">
+                          <FormGroup>
+                            <Label htmlFor="time1">Time</Label>
+                            <Input
+                              type="text"
+                              name="time1"
+                              id="time1"
+                              placeholder="HH:MM"
+                              value={this.state.from_time}
+                              onChange={(e) => {
+                                this.setState({from_time: e.target.value});
+                              }}
+                            />
+                            <div style={{color: "red"}}>
+                              {this.state.errors.from_time}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4"></Col>
+                      </Row>
+                      <br/>
+                      <Row>
+                        <p className="PrevPath_02">
+                          <b>To</b>
+                        </p>
+                      </Row>
+                      <Row>
+                        <Col xs="6">
+                          <FormGroup>
+                            <Label htmlFor="date2">Date</Label>
+                            <Input
+                              type="date"
+                              format="yyyy-MM-dd"
+                              name="date2"
+                              id="date2"
+                              value={this.state.to_date}
+                              onChange={(e) => {
+                                this.setState({to_date: e.target.value});
+                              }}
+                            />
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4">
+                          <FormGroup>
+                            <Label htmlFor="time2">Time</Label>
+                            <Input
+                              type="text"
+                              name="time2"
+                              id="time2"
+                              placeholder="HH:MM"
+                              value={this.state.to_time}
+                              onChange={(e) => {
+                                this.setState({to_time: e.target.value});
+                              }}
+                            />
+                            <div style={{color: "red"}}>
+                              {this.state.errors.to_time}
+                            </div>
+                          </FormGroup>
+                        </Col>
+                        <Col xs="4"></Col>
+                        <br/>
+                      </Row>
+                      <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                        <div className="PrevPath_03">
+                          <Button
+                            className="PrevPath"
+                            type="submit"
+                            size="sm"
+                            color="primary"
+                          >
+                            Get Path
+                          </Button>
+
+                          <Button
+                            className="PrevPath"
+                            type="refresh"
+                            size="sm"
+                            color="danger"
+                            onClick={this.refreshPage}
+                          >
+                            Refresh
+                          </Button>
+                        </div>
+                      </Col>
+                    </Form>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            <div>
+              <Map pathCoordinates={this.state.path}/>
+            </div>
           </div>
-          <div>{/* <Map mapData={this.state.path} /> */}</div>
-        </div>
-      );
+        );
       }
     } else if (this.state.isLoggedIn == false) {
       return (

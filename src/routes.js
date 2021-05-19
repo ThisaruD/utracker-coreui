@@ -34,6 +34,8 @@ const SuperAdminVehicleDetails = React.lazy(()=>import('./views/Home/SuperAdminH
 const TransportManagerVehicleDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/TransportManagerVehicleDetails'));
 const TransportManagerUserDetails = React.lazy(()=>import('./views/Home/SuperAdminHome/TransportManagerUserDetails'));
 
+const StaffMemberVehicleDetails  = React.lazy(()=>import('./views/Home/SuperAdminHome/StaffMemberVehicleDetails'));
+
 const Logout = React.lazy(() => import('./views/Pages/Logout/Logout'));
 ////////////////////////////Required Sample Pages///////////////////////
 // const Company
@@ -49,6 +51,7 @@ const routes = [
   {path: '/super-admin-vehicle-details', name: 'SuperAdminVehicleDetails', component: SuperAdminVehicleDetails},
   {path: '/transport-manager-vehicle-details', name:'TransportManagerHome', component:TransportManagerVehicleDetails},
   {path: '/transport-manager-user-details', name:'TransportManagerUserDetails', component:TransportManagerUserDetails},
+  {path: '/staff-member-vehicle-details', name:'StaffMemberVehicleDetails', component:StaffMemberVehicleDetails},
   {path: '/about', name: 'About', component: About},
   {path: '/contact', name: 'Contact', component: Contact},
   {path: '/setting', name: 'Setting', component: Setting},

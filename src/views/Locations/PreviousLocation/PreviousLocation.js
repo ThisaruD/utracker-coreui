@@ -20,7 +20,7 @@ class PreviousLocation extends Component {
       vehiclesLongLat: [],
       status: false,
       errors: {},
-      userRoleId:''
+      userRoleId: ''
     }
   }
 
@@ -29,7 +29,7 @@ class PreviousLocation extends Component {
     let user = localStorage.getItem("user_id");
 
     this.setState({
-      userRoleId:localStorage.getItem('user_role_id')
+      userRoleId: localStorage.getItem('user_role_id')
     });
 
 
@@ -63,6 +63,11 @@ class PreviousLocation extends Component {
     this.props.history.push('/login');
   }
 
+  refreshPage() {
+    window.location.reload();
+  }
+
+
   //regular expression function for time
   validate() {
     let errors = {};
@@ -71,22 +76,22 @@ class PreviousLocation extends Component {
 
     //time
     if (!this.state.time) {
-        isValid=false;
+      isValid = false;
       errors["time"] = "*Please enter correct time format.";
     }
 
-    if(this.state.time!==undefined){
+    if (this.state.time !== undefined) {
       var pattern = new RegExp(/^([01]\d|2[0-3]):?([0-5]\d)$/);
 
     }
 
-    if(!pattern.test(this.state.time)){
-        isValid = false;
+    if (!pattern.test(this.state.time)) {
+      isValid = false;
       errors["time"] = "*Please enter correct time format.";
     }
 
     this.setState({
-      errors:errors
+      errors: errors
     });
 
     return isValid;
@@ -95,19 +100,7 @@ class PreviousLocation extends Component {
   async submitFunc(e) {
     e.preventDefault();
 
-    // let time1 = this.state.time;
-    // if (time1.charAt(0) === '0') {
-    //   console.log('hello');
-    //   this.setState({time: time1.substring(1, 6)});
-    // }
-
-    // if(validate()){
-    //
-    // }
-
-    //console.log(this.state.time);
-    //console.log(this.state.vehicle_number);
-    if(this.validate()){
+    if (this.validate()) {
 
       await axios.get('http://localhost:8000/api/previouslocation', {
         params: {
@@ -119,10 +112,10 @@ class PreviousLocation extends Component {
         .then((res) => {
           console.log(res.data);
 
-          if(res.data.GPS_DATA.length==0){
+          if (res.data.GPS_DATA.length == 0) {
             alert('Not found GPS data for this time');
 
-          }else{
+          } else {
             const coordinates = {
               lat: res.data.GPS_DATA[0].latitude,
               lng: res.data.GPS_DATA[0].longitude
@@ -141,22 +134,19 @@ class PreviousLocation extends Component {
     }
 
 
-
-
-
   }
 
 
   render() {
     if (this.state.isLoggedIn === true) {
 
-      if(this.state.userRoleId==1){
+      if (this.state.userRoleId == 1) {
         return (
           <div>
             <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
           </div>
         );
-      }else{
+      } else {
         return (
           <div>
             <h3>Check vehicles previous location here...</h3>
@@ -181,7 +171,9 @@ class PreviousLocation extends Component {
                       })}
 
                     </Map>
-                    : <h6><center>Map Showing here</center></h6>}
+                    : <h6>
+                      <center>Map Showing here</center>
+                    </h6>}
                 </div>
               </Col>
               <Col xs="12" lg="6">
@@ -263,13 +255,24 @@ class PreviousLocation extends Component {
                         </Col>
                       </Row>
                       <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                        <Row>
 
-                        <Button
-                          block color="primary"
-                          className="btn-pill"
-                          onClick={this.submitFunc}
-                        >Get Location</Button>
+                          <Button
+                            className="PrevPath"
+                            type="refresh"
+                            size="sm"
+                            color="danger"
+                            onClick={this.refreshPage}
+                          >Refresh
+                          </Button>
 
+                          <Button
+                            block color="primary"
+                            className="PrevPath"
+                            onClick={this.submitFunc}
+                          >Get Location
+                          </Button>
+                        </Row>
                       </Col>
                     </Form>
                   </CardBody>
@@ -280,11 +283,6 @@ class PreviousLocation extends Component {
         );
 
       }
-
-
-
-
-
 
 
     } else if (this.state.isLoggedIn === false) {

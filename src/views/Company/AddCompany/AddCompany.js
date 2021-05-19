@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {
-  Badge,
   Button,
   Card,
   CardBody,
@@ -14,7 +13,7 @@ import {
   Label, Row
 } from "reactstrap";
 import axios from "axios";
-import csrf from 'csrf';
+import Message from "../../Required Sample Pages/Message";
 
 
 const AddCompany = (props) => {
@@ -29,6 +28,7 @@ const AddCompany = (props) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState('');
+  const [userRoleId, setUserRoleId] = useState('');
 
 
   useEffect(() => {
@@ -36,11 +36,10 @@ const AddCompany = (props) => {
     setUserId(user);
 
     if (user == undefined) {
-      console.log('hi');
       setIsLoggedIn(false);
+    } else {
+      setUserRoleId(localStorage.getItem('user_role_id'));
     }
-
-
   })
 
 
@@ -76,108 +75,121 @@ const AddCompany = (props) => {
 
 
   if (isLoggedIn === true) {
-    return (
-      <div>
-        <Card>
-          <CardHeader>
-            <strong>Add company</strong>
-          </CardHeader>
 
-          <CardBody>
-            <Form
+if(userRoleId==='1'){
+  return (
+    <div>
+      <Card>
+        <CardHeader>
+          <strong>Add company</strong>
+        </CardHeader>
 
-              encType="multipart/form-data"
-              className="form-horizontal"
-              onSubmit={submitFunc}
-            >
-              <FormGroup row>
-                {/*space for empty row  */}
-                <Col md="3">
-                  <Label></Label>
-                </Col>
-                <Col xs="12" md="9">
-                  <p className="form-control-static">-</p>
-                </Col>
-              </FormGroup>
+        <CardBody>
+          <Form
 
-              <FormGroup row>
-                <Col md="6">
-                  <Label htmlFor="text-input">Company Name</Label>
-                </Col>
-                <Col xs="12" md="9">
-                  <Input
-                    type="text"
-                    id="company-name"
-                    name="company-name"
-                    placeholder="Company Name"
-                    value={company_name}
-                    onChange={(e) => setCompany_name(e.target.value)}
-                  />
+            encType="multipart/form-data"
+            className="form-horizontal"
+            onSubmit={submitFunc}
+          >
+            <FormGroup row>
+              {/*space for empty row  */}
+              <Col md="3">
+                <Label></Label>
+              </Col>
+              <Col xs="12" md="9">
+                <p className="form-control-static">-</p>
+              </Col>
+            </FormGroup>
 
-                  <FormText color="muted">Please Enter Company Name </FormText>
-                </Col>
-              </FormGroup>
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Name</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-name"
+                  name="company-name"
+                  placeholder="Company Name"
+                  value={company_name}
+                  onChange={(e) => setCompany_name(e.target.value)}
+                />
 
-
-              <FormGroup row>
-                <Col md="6">
-                  <Label htmlFor="text-input">Company Location</Label>
-                </Col>
-                <Col xs="12" md="9">
-                  <Input
-                    type="text"
-                    id="company-location"
-                    name="company-location"
-                    placeholder="company-location"
-                    value={company_location}
-                    onChange={(e) => setCompany_location(e.target.value)}
-                  />
-
-                  {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
-                </Col>
-              </FormGroup>
+                <FormText color="muted">Please Enter Company Name </FormText>
+              </Col>
+            </FormGroup>
 
 
-              <FormGroup row>
-                <Col md="6">
-                  <Label htmlFor="text-input">Company Address</Label>
-                </Col>
-                <Col xs="12" md="9">
-                  <Input
-                    type="text"
-                    id="company-address"
-                    name="company-address"
-                    placeholder="company-address"
-                    value={company_address}
-                    onChange={(e) => setCompany_address(e.target.value)}
-                  />
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Location</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-location"
+                  name="company-location"
+                  placeholder="company-location"
+                  value={company_location}
+                  onChange={(e) => setCompany_location(e.target.value)}
+                />
 
-                  {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
-                </Col>
-              </FormGroup>
+                {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
+              </Col>
+            </FormGroup>
 
 
-              <Button
-                type="submit"
-                size="sm"
-                color="primary"
-                onClick={submitFunc}
+            <FormGroup row>
+              <Col md="6">
+                <Label htmlFor="text-input">Company Address</Label>
+              </Col>
+              <Col xs="12" md="9">
+                <Input
+                  type="text"
+                  id="company-address"
+                  name="company-address"
+                  placeholder="company-address"
+                  value={company_address}
+                  onChange={(e) => setCompany_address(e.target.value)}
+                />
 
-              ><i className="fa fa-dot-circle-o"/> Submit
-              </Button>
+                {/*<FormText color="muted">Please Enter Transport Manager First Name </FormText>*/}
+              </Col>
+            </FormGroup>
 
-              <Button
-                onClick={resetFunc}
-                size="sm"
-                color="danger"
-              ><i className="fa fa-ban"/> Reset
-              </Button>
-            </Form>
-          </CardBody>
-          <CardFooter></CardFooter>
-        </Card>
-      </div>
-    );
+
+            <Button
+              type="submit"
+              size="sm"
+              color="primary"
+              onClick={submitFunc}
+
+            ><i className="fa fa-dot-circle-o"/> Submit
+            </Button>
+
+            <Button
+              onClick={resetFunc}
+              size="sm"
+              color="danger"
+            ><i className="fa fa-ban"/> Reset
+            </Button>
+          </Form>
+        </CardBody>
+        <CardFooter></CardFooter>
+      </Card>
+    </div>
+  );
+}else{
+  return(
+    <div>
+      <Message variant='danger'>You Don't Have Permission to Add Company</Message>
+    </div>
+  );
+
+}
+
+
+
 
   } else if (isLoggedIn === false) {
     return (

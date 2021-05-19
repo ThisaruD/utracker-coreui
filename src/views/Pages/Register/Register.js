@@ -97,7 +97,10 @@ const Register = (props) => {
         setEmail('');
         setPassword('');
         setUser_role_id('');
-      });
+      })
+      .catch((err)=>{
+        alert(err);
+      })
   }
 
   const backToLogin = () => {
@@ -182,7 +185,7 @@ const Register = (props) => {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="password"
-                               placeholder="Password"
+                               placeholder="Password(Must contain 8 characters)"
                                autoComplete="new-password"
                                required
                                onChange={(e) => setPassword(e.target.value)}
@@ -324,7 +327,7 @@ const Register = (props) => {
                           </InputGroupText>
                         </InputGroupAddon>
                         <Input type="password"
-                               placeholder="Password"
+                               placeholder="Password(Must contain 8 characters)"
                                autoComplete="new-password"
                                required
                                onChange={(e) => setPassword(e.target.value)}

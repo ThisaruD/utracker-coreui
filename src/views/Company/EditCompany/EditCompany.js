@@ -3,6 +3,7 @@ import {Button, Card, CardBody, Col, Form, FormGroup, Input, InputGroup, Label, 
 import axios from "axios";
 import {Redirect,Link} from 'react-router-dom';
 import EditCompanyDetails from "./EditCompanyDetails";
+import BackToLogin from "../../Required Sample Pages/BackToLogin";
 
 const EditCompany = (props) => {
 
@@ -12,7 +13,7 @@ const EditCompany = (props) => {
 
   const[isLoggedIn,setIsLoggedIn] = useState(true);
   const[userId, setUserId] = useState('');
-  const[userRoleID, setUserRoleID] = useState('');
+  const[userRoleId, setUserRoleId] = useState('');
 
 
   const clickHandler = () => {
@@ -25,21 +26,20 @@ const EditCompany = (props) => {
 //https://run.mocky.io/v3/535d0e80-1eae-4404-bc8c-52d252fb9069 - run moky api
   useEffect(() => {
 
-    setUserRoleID(localStorage.getItem('user_role_id'));
+    setUserRoleId(localStorage.getItem('user_role_id'));
+
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
-    if(user==undefined){
-
-
+    if (user == undefined) {
       setIsLoggedIn(false);
-    }else{
+    } else {
 
-      if(userRoleID == 1){
+      if(userRoleId === '1'){
         axios.get('http://localhost:8000/api/getallcompanies', {
           headers: {
             "Content-type": "application/json",
-            Authorization: "Bearer" + localStorage.getItem('token')
+            Authorization: "Bearer " + localStorage.getItem('token')
           }
         })
           .then((res) => {
@@ -68,20 +68,22 @@ const EditCompany = (props) => {
 
 
       }
+
+
+
+
     }
-
-
-    }, [setUserRoleID])
+  }, [userRoleId]);
 
   //const user = JSON.parse(localStorage.getItem('user'));
 
 
   if(isLoggedIn===true){
 
-    if(userRoleID==1 || userRoleID==2){
+    if(userRoleId==='1' || userRoleId==='2'){
       return (
         <di>
-          <h1>This edit company details page</h1>
+          <h1>This is Edit Company Details Page</h1>
           <Form
             onSubmit={clickHandler}
           >
@@ -156,31 +158,9 @@ const EditCompany = (props) => {
 
   }else if(isLoggedIn===false){
     return (
-      <div className="access_denied">
-        <Card className="text-white bg-primary ">
-          <CardBody>
-            <div className="clearfix">
-              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
-              <h4 className="pt-3">Please login First</h4>
-              <p className="text-muted float-left">
-                You don't have permission to access requested page. Please login first
-              </p>
-              <Row>
-                <Col md="4"></Col>
-                <Col md="4">
-                  <Button
-                    block color="dark"
-                    className="btn-pill"
-                    onClick={backToLogin}
-                  >Login</Button>
-
-                </Col>
-                <Col md="4"></Col>
-              </Row>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
+     <div>
+       <BackToLogin/>
+     </div>
     );
   }
 

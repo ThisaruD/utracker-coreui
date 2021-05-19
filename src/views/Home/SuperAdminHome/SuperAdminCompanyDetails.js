@@ -37,7 +37,7 @@ const SuperAdminCompanyDetails = (props) =>{
 
   return(
     <div>
-      <h1 style={headerStyle}>This is company details page</h1>
+      <h1 style={headerStyle}>All Companies Details</h1>
       {loading && <Loader/>}
       {dataLoad &&
       <Card>

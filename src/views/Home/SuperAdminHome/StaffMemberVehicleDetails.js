@@ -27,17 +27,17 @@ const TransportManagerVehicleDetails = (props) => {
         console.log(res.data);
         setVehicles(res.data.vehicle_details);
 
-      res.data['vehicle_details'].map(value=>{
+        res.data['vehicle_details'].map(value=>{
 
-        let details = {
-          vehicle_num:value.vehicle_number,
-          vehicle_id:value.vehicle_id
-        };
-        vehicleId.push(details);
-      });
+          let details = {
+            vehicle_num:value.vehicle_number,
+            vehicle_id:value.vehicle_id
+          };
+          vehicleId.push(details);
+        });
 
-setLoading(false);
-setDataLoad(true);
+        setLoading(false);
+        setDataLoad(true);
 
       })
       .catch((err) => {
@@ -46,32 +46,27 @@ setDataLoad(true);
   }, [dataLoad,loading]);
 
 
- const vehicleDeleteFunc = (id) =>{
-
-
-   axios.delete("http://localhost:8000/api/deletevehicledetails/" + id)
-     .then((res) => {
-       console.log(res.data);
-       if (res.data.message == "successfully deleted") {
-         alert("successfully removed vehicle");
-
-         // setVehicleNumber('');
-         // setType('');
-       } else {
-         alert("operation fail");
-       }
-     })
-     .then(() => {
-       window.location.reload();
-     })
-     .catch((err) => {
-       console.log(err);
-       alert(err);
-     });
-
-
-
-  }
+  // const vehicleDeleteFunc = (id) =>{
+  //   axios.delete("http://localhost:8000/api/deletevehicledetails/" + id)
+  //     .then((res) => {
+  //       console.log(res.data);
+  //       if (res.data.message == "successfully deleted") {
+  //         alert("successfully removed vehicle");
+  //
+  //         // setVehicleNumber('');
+  //         // setType('');
+  //       } else {
+  //         alert("operation fail");
+  //       }
+  //     })
+  //     .then(() => {
+  //       window.location.reload();
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       alert(err);
+  //     });
+  // }
 
   const headerStyle = {
     backgroundColor:  ' #4d94ff',
@@ -82,7 +77,7 @@ setDataLoad(true);
 
   return (
     <div>
-      <h1 style={headerStyle}>Manage Your Vehicles Here</h1>
+      <h1 style={headerStyle}>Your Companies Current Vehicle Information</h1>
       {loading && <Loader/>}
       { dataLoad &&
       <Card>
@@ -97,7 +92,7 @@ setDataLoad(true);
               <th>Type</th>
               <th>Unit Per Km</th>
               <th>Added At</th>
-              <th>Delete</th>
+              {/*<th>Delete</th>*/}
             </tr>
             </thead>
             <tbody>
@@ -107,20 +102,20 @@ setDataLoad(true);
                 <td>{vehicle.type}</td>
                 <td>{vehicle.unit_per_1km}</td>
                 <td>{vehicle.created_at}</td>
-                <td>
-                  <button
-                    style={{
-                      backgroundColor: `#c7081e`,
-                      color: "white",
-                      borderRadius: "5px",
-                      borderColor: "white",
-                    }}
-                    size="sm"
-                    onClick={()=>vehicleDeleteFunc(vehicle.vehicle_id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+                {/*<td>*/}
+                {/*  <button*/}
+                {/*    style={{*/}
+                {/*      backgroundColor: `#c7081e`,*/}
+                {/*      color: "white",*/}
+                {/*      borderRadius: "5px",*/}
+                {/*      borderColor: "white",*/}
+                {/*    }}*/}
+                {/*    size="sm"*/}
+                {/*    onClick={()=>vehicleDeleteFunc(vehicle.vehicle_id)}*/}
+                {/*  >*/}
+                {/*    Delete*/}
+                {/*  </button>*/}
+                {/*</td>*/}
               </tr>
 
             ))}
@@ -132,7 +127,7 @@ setDataLoad(true);
                 block
                 color="primary"
                 className="btn-pill"
-                onClick={() => props.history.push("/super-admin-home")}
+                onClick={() => props.history.push('/super-admin-home')}
               >
                 Back
               </Button>
