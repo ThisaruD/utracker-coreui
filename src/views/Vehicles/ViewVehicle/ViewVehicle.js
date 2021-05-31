@@ -10,6 +10,7 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
+import Message from "../../Required Sample Pages/Message";
 
 export default function ViewVehicle(props) {
   const [id, setId] = useState("100");
@@ -20,6 +21,7 @@ export default function ViewVehicle(props) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState(null);
+  const [userRoleId,setUserRoleId]= useState('');
 
   const clickHandler = () => {
     props.history.push("/vehicles/details2/" + vehicleNumber1);
@@ -59,65 +61,77 @@ export default function ViewVehicle(props) {
           //handle error
           console.log(err);
         });
+      setUserRoleId(localStorage.getItem('user_role_id'));
     }
   }, []);
 
   if (isLoggedIn === true) {
-    return (
-      <div className="ViwVehi">
-        <Card
-          style={{
-            height: "200px",
-            width: "85%",
-            margin: "100px",
-          }}
-        >
-          <CardBody style={{ margin: "40px 50px" }}>
-            <div>
-              <FormGroup row>
-                <Col md="3">
-                  <Label
-                    htmlFor="select"
-                    style={{ fontSize: "18px", fontWeight: "bold" }}
-                  >
-                    Select Vehicle Number :
-                  </Label>
-                </Col>
-                <Col xs="12" md="8">
-                  <Input
-                    type="select"
-                    name="select"
-                    id="select"
-                    onChange={(e) => setVehicleNumber1(e.target.value)}
-                  >
-                    <option value="0">Please select</option>
-                    {vehicles.map((vehicle) => (
-                      <option values={vehicle}> {vehicle}</option>
-                    ))}
-                  </Input>
-                </Col>
-              </FormGroup>
-              <br />
 
-              <Row>
-                <Col md="4"></Col>
-                <Col md="4">
-                  <Button
-                    block
-                    color="primary"
-                    className="btn-pill"
-                    onClick={clickHandler}
-                  >
-                    View Vehicle Data
-                  </Button>
-                </Col>
-                <Col md="4"></Col>
-              </Row>
-            </div>
-          </CardBody>
-        </Card>
-      </div>
-    );
+    if(userRoleId==='1'){
+      return (
+        <div>
+          <Message variant='danger'>You Don't Have Permission</Message>
+        </div>
+      );
+    }else {
+
+
+      return (
+        <div className="ViwVehi">
+          <Card
+            style={{
+              height: "200px",
+              width: "85%",
+              margin: "100px",
+            }}
+          >
+            <CardBody style={{margin: "40px 50px"}}>
+              <div>
+                <FormGroup row>
+                  <Col md="3">
+                    <Label
+                      htmlFor="select"
+                      style={{fontSize: "18px", fontWeight: "bold"}}
+                    >
+                      Select Vehicle Number :
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="8">
+                    <Input
+                      type="select"
+                      name="select"
+                      id="select"
+                      onChange={(e) => setVehicleNumber1(e.target.value)}
+                    >
+                      <option value="0">Please select</option>
+                      {vehicles.map((vehicle) => (
+                        <option values={vehicle}> {vehicle}</option>
+                      ))}
+                    </Input>
+                  </Col>
+                </FormGroup>
+                <br/>
+
+                <Row>
+                  <Col md="4"></Col>
+                  <Col md="4">
+                    <Button
+                      block
+                      color="primary"
+                      className="btn-pill"
+                      onClick={clickHandler}
+                    >
+                      View Vehicle Data
+                    </Button>
+                  </Col>
+                  <Col md="4"></Col>
+                </Row>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      );
+    }
   } else if (isLoggedIn === false) {
     return (
       <div className="access_denied">

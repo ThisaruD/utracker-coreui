@@ -1,17 +1,18 @@
-import React, {Component} from 'react';
-import {Link, NavLink} from 'react-router-dom';
+import React, { Component } from "react";
+import { Link, NavLink } from "react-router-dom";
 import {
   Badge,
+  Button,
   UncontrolledDropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   Nav,
   NavItem,
-} from 'reactstrap';
-import PropTypes from 'prop-types';
+} from "reactstrap";
+import PropTypes from "prop-types";
 
-import {AppSidebarToggler} from '@coreui/react';
+import { AppSidebarToggler } from "@coreui/react";
 //import logo from '../../assets/img/brand/logo.svg'
 //import sygnet from '../../assets/img/brand/sygnet.svg'
 
@@ -22,50 +23,45 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: true,
-      userId: '',
-      user_role_id: ''
-    }
-
+      userId: "",
+      user_role_id: "",
+    };
   }
 
   componentDidMount() {
     let user = localStorage.getItem("user_id");
 
     this.setState({
-      user_role_id: localStorage.getItem('user_role_id')
+      user_role_id: localStorage.getItem("user_role_id"),
     });
 
     if (user == undefined) {
       this.setState({
-        isLoggedIn: false
+        isLoggedIn: false,
       });
     }
   }
 
-
   render() {
-
     // eslint-disable-next-line
-    const {children, ...attributes} = this.props;
+    const { children, ...attributes } = this.props;
     //const user = JSON.parse(localStorage.getItem('user'));
 
-
     if (this.state.isLoggedIn == true) {
-
-
       if (this.state.user_role_id == 1 || this.state.user_role_id == 2) {
         return (
           <React.Fragment>
-            <AppSidebarToggler className="d-lg-none" display="md" mobile/>
-            <h1 className="utracker_header"><span style={{fontSize: '40px'}}>Utracker</span>TRANSPORT MANAGEMENT SYSTEM
+            <AppSidebarToggler className="d-lg-none" display="md" mobile />
+            <h1 className="utracker_header">
+              <span style={{ fontSize: "40px" }}>Utracker</span>
+              TRANSPORT MANAGEMENT SYSTEM
             </h1>
 
-            <AppSidebarToggler className="d-md-down-none" display="lg"/>
+            <AppSidebarToggler className="d-md-down-none" display="lg" />
 
             <Nav className="d-md-down-none" navbar></Nav>
             <Nav className="ml-auto" navbar>
@@ -76,59 +72,106 @@ class DefaultHeader extends Component {
               {/*<NavItem >*/}
               {/*  <NavLink to="/login" className="nav-link">Login<i className=""></i></NavLink>*/}
               {/*</NavItem>*/}
-
-              <NavItem className="d-md-down-none">
-                <NavLink to="/register" className="nav-link">Add User<i className=""></i></NavLink>
+              <NavItem
+                className="d-md-down-none"
+                style={{
+                  color: "black",
+                  marginRight: "18px",
+                  fontWeight: "bold",
+                }}
+              >
+                {"        Welcome   " +
+                localStorage.getItem("first_name") +
+                " !!!"}
               </NavItem>
 
               <NavItem className="d-md-down-none">
-                {/*empty space*/}
+                <NavLink
+                  to="/register"
+                  className="nav-link"
+                  style={{
+                    color: "black",
+                    marginRight: "18px",
+                    marginLeft: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Button block color="success" className="btn-pill addUserB">
+                    Add User
+                  </Button>
+                </NavLink>
               </NavItem>
-
-              <NavItem className="d-md-down-none">
-                {"        Welcome   " + localStorage.getItem('first_name')}
-              </NavItem>
-
-
-
-
 
               <UncontrolledDropdown nav direction="down">
                 <DropdownToggle nav>
-                  <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+                  <img
+                    src={"../../assets/img/avatars/6.jpg"}
+                    className="img-avatar"
+                    alt="admin@bootstrapmaster.com"
+                    style={{ marginRight: "18px" }}
+                  />
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
+                  <DropdownItem header tag="div" className="text-center">
+                    <strong>Settings</strong>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-user"></i><Link to='/profile'> View Profile</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-user"></i>
+                    <Link to="/profile"> View Profile</Link>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/profile-edit'> Edit Profile</Link>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/profile-edit"> Edit Profile</Link>
                   </DropdownItem>
 
                   {/*<DropdownItem ><i className="fa fa-wrench"></i><Link to='/setting'>Setting</Link></DropdownItem>*/}
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/logout'>Logout</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/logout">Logout</Link>
+                  </DropdownItem>
 
-
-                  <DropdownItem divider/>
+                  <DropdownItem divider />
 
                   {/*<DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
                 </DropdownMenu>
               </UncontrolledDropdown>
 
 
-            </Nav>
 
+              <NavItem className="d-md-down-none">
+                <NavLink
+                  to="/logout"
+                  className="nav-link"
+                  style={{
+                    color: "black",
+                    marginRight: "18px",
+                    marginLeft: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Button block color="danger" className="btn-pill addUserB">
+                    logout
+                  </Button>
+                </NavLink>
+              </NavItem>
+
+
+            </Nav>
           </React.Fragment>
         );
       } else if (this.state.user_role_id == 3) {
         return (
           <React.Fragment>
-            <AppSidebarToggler className="d-lg-none" display="md" mobile/>
-            <h1 className="utracker_header"><span style={{fontSize: '40px'}}>Utracker</span>TRANSPORT MANAGEMENT SYSTEM
+            <AppSidebarToggler className="d-lg-none" display="md" mobile />
+            <h1 className="utracker_header">
+              <span style={{ fontSize: "40px" }}>Utracker</span>TRANSPORT
+              MANAGEMENT SYSTEM
             </h1>
 
-            <AppSidebarToggler className="d-md-down-none" display="lg"/>
+            <AppSidebarToggler className="d-md-down-none" display="lg" />
 
             <Nav className="d-md-down-none" navbar></Nav>
             <Nav className="ml-auto" navbar>
@@ -144,52 +187,87 @@ class DefaultHeader extends Component {
               {/*  <NavLink to="/register" className="nav-link">Add User<i className=""></i></NavLink>*/}
               {/*</NavItem>*/}
 
-              <NavItem>
-                {"Welcome   " + localStorage.getItem('first_name')}
-              </NavItem>
-
-              <NavItem className="d-md-down-none">
-                {/*empty space*/}
+              <NavItem
+                style={{
+                  color: "black",
+                  marginRight: "18px",
+                  fontWeight: "bold",
+                }}
+              >
+                {"        Welcome   " +
+                localStorage.getItem("first_name") +
+                " !!!"}
               </NavItem>
 
               <UncontrolledDropdown nav direction="down">
                 <DropdownToggle nav>
-                  <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+                  <img
+                    src={"../../assets/img/avatars/6.jpg"}
+                    className="img-avatar"
+                    alt="admin@bootstrapmaster.com"
+                    style={{ marginRight: "18px" }}
+                  />
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
+                  <DropdownItem header tag="div" className="text-center">
+                    <strong>Settings</strong>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-user"></i><Link to='/profile'> View Profile</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-user"></i>
+                    <Link to="/profile"> View Profile</Link>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/profile-edit'> Edit Profile</Link>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/profile-edit"> Edit Profile</Link>
                   </DropdownItem>
 
                   {/*<DropdownItem ><i className="fa fa-wrench"></i><Link to='/setting'>Setting</Link></DropdownItem>*/}
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/logout'>Logout</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/logout">Logout</Link>
+                  </DropdownItem>
 
-
-                  <DropdownItem divider/>
+                  <DropdownItem divider />
 
                   {/*<DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
                 </DropdownMenu>
               </UncontrolledDropdown>
 
 
-            </Nav>
+              <NavItem className="d-md-down-none">
+                <NavLink
+                  to="/logout"
+                  className="nav-link"
+                  style={{
+                    color: "black",
+                    marginRight: "18px",
+                    marginLeft: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Button block color="danger" className="btn-pill addUserB">
+                    logout
+                  </Button>
+                </NavLink>
+              </NavItem>
 
+
+            </Nav>
           </React.Fragment>
         );
-
-
       } else {
         return (
           <React.Fragment>
-            <AppSidebarToggler className="d-lg-none" display="md" mobile/>
-            <h1 className="utracker_header"><span style={{fontSize: '40px'}}>Utracker</span>TRANSPORT MANAGEMENT SYSTEM
+            <AppSidebarToggler className="d-lg-none" display="md" mobile />
+            <h1 className="utracker_header">
+              <span style={{ fontSize: "40px" }}>Utracker</span>TRANSPORT
+              MANAGEMENT SYSTEM
             </h1>
 
-            <AppSidebarToggler className="d-md-down-none" display="lg"/>
+            <AppSidebarToggler className="d-md-down-none" display="lg" />
 
             <Nav className="d-md-down-none" navbar></Nav>
             <Nav className="ml-auto" navbar>
@@ -207,43 +285,53 @@ class DefaultHeader extends Component {
 
               <UncontrolledDropdown nav direction="down">
                 <DropdownToggle nav>
-                  <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
+                  <img
+                    src={"../../assets/img/avatars/6.jpg"}
+                    className="img-avatar"
+                    alt="admin@bootstrapmaster.com"
+                  />
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
+                  <DropdownItem header tag="div" className="text-center">
+                    <strong>Settings</strong>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-user"></i><Link to='/profile'> View Profile</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-user"></i>
+                    <Link to="/profile"> View Profile</Link>
+                  </DropdownItem>
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/profile-edit'> Edit Profile</Link>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/profile-edit"> Edit Profile</Link>
                   </DropdownItem>
 
                   {/*<DropdownItem ><i className="fa fa-wrench"></i><Link to='/setting'>Setting</Link></DropdownItem>*/}
 
-                  <DropdownItem><i className="fa fa-wrench"></i><Link to='/logout'>Logout</Link></DropdownItem>
+                  <DropdownItem>
+                    <i className="fa fa-wrench"></i>
+                    <Link to="/logout">Logout</Link>
+                  </DropdownItem>
 
-
-                  <DropdownItem divider/>
+                  <DropdownItem divider />
 
                   {/*<DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
                 </DropdownMenu>
               </UncontrolledDropdown>
-
-
             </Nav>
-
           </React.Fragment>
         );
       }
-
-
     } else if (this.state.isLoggedIn == false) {
       return (
         <React.Fragment>
-          <AppSidebarToggler className="d-lg-none" display="md" mobile/>
-          <h1 className="utracker_header"><span style={{fontSize: '40px'}}>Utracker</span>TRANSPORT MANAGEMENT SYSTEM
+          <AppSidebarToggler className="d-lg-none" display="md" mobile />
+          <h1 className="utracker_header">
+            <span style={{ fontSize: "40px" }}>Utracker</span>TRANSPORT
+            MANAGEMENT SYSTEM
           </h1>
 
-          <AppSidebarToggler className="d-md-down-none" display="lg"/>
+          <AppSidebarToggler className="d-md-down-none" display="lg" />
 
           <Nav className="d-md-down-none" navbar></Nav>
           <Nav className="ml-auto" navbar>
@@ -252,16 +340,28 @@ class DefaultHeader extends Component {
             </NavItem>
 
             <NavItem className="d-md-down-none">
-              <NavLink to="/login" className="nav-link">Login<i className=""></i></NavLink>
+              <NavLink
+                to="/login"
+                className="nav-link"
+                style={{
+                  fontWeight: "bold",
+                  marginRight: "30px",
+                }}
+              >
+                <Button
+                  block
+                  color="success"
+                  className="btn-pill addUserB "
+                  style={{ fontWeight: "bold", width: "75px" }}
+                >
+                  Login
+                </Button>
+              </NavLink>
             </NavItem>
           </Nav>
-
         </React.Fragment>
       );
-
     }
-
-
   }
 }
 

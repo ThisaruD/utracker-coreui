@@ -52,7 +52,7 @@ class PreviousPaths extends Component {
 
     if (user == undefined) {
       this.setState({
-        isLoggedIn: true,
+        isLoggedIn: false,
       });
     } else {
       axios
@@ -276,6 +276,7 @@ class PreviousPaths extends Component {
                               name="time1"
                               id="time1"
                               placeholder="HH:MM"
+                              maxlength='5'
                               value={this.state.from_time}
                               onChange={(e) => {
                                 this.setState({from_time: e.target.value});
@@ -317,6 +318,7 @@ class PreviousPaths extends Component {
                               type="text"
                               name="time2"
                               id="time2"
+                              maxlength='5'
                               placeholder="HH:MM"
                               value={this.state.to_time}
                               onChange={(e) => {

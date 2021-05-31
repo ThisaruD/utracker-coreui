@@ -12,59 +12,57 @@ const TransportManagerUserDetails = (props) => {
   const [email, setEmail] = useState('');
   const [nic, setNic] = useState('');
   const [contactNo, setContactNo] = useState('');
-  const [users,setUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dataLoad, setDataLoad] = useState(false);
 
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    axios.get('http://localhost:8000/api/getusersdetails',{
-      params:{
-        companies_company_id:localStorage.getItem('companies_company_id'),
-        user_role_id:'3'
+    axios.get('http://localhost:8000/api/getusersdetails', {
+      params: {
+        companies_company_id: localStorage.getItem('companies_company_id'),
+        user_role_id: '3'
       }
     })
-      .then((res)=>{
+      .then((res) => {
         console.log(res.data);
         setUsers(res.data.user_details);
         setLoading(false);
         setDataLoad(true);
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
       })
 
-  },[dataLoad,loading]);
+  }, [dataLoad, loading]);
 
 
-  const userDeleteFunc =(id)=>{
+  const userDeleteFunc = (id) => {
 
-
-    axios.delete('http://localhost:8000/api/deleteuserdetails/'+id)
-      .then((res)=>{
-        alert(res.data.message);
-      })
-      .then(()=>{
-        window.location.reload();
-      })
-      .catch((err)=>{
-        alert(err);
-      })
+    if (window.confirm('Are you sure to remove this user from your company')) {
+      axios.delete('http://localhost:8000/api/deleteuserdetails/' + id)
+        .then((res) => {
+          alert(res.data.message);
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch((err) => {
+          alert(err);
+        })
+    }
   }
 
   const headerStyle = {
-    backgroundColor:  ' #4d94ff',
-
+    backgroundColor: ' #4d94ff',
   };
-
-
 
 
   return (
     <div>
       <h1 style={headerStyle}>Manage Your Users Here</h1>
-      {loading &&<Loader/>}
+      {loading && <Loader/>}
       {dataLoad &&
 
       <Card>

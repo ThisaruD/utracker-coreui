@@ -17,6 +17,7 @@ import {
 
 import axios from "axios";
 import BackToLogin from "../../Required Sample Pages/BackToLogin";
+import Message from "../../Required Sample Pages/Message";
 
 const AddVehicle = (props) => {
   const [vehicle_number, setVehicle_number] = useState("");
@@ -35,6 +36,7 @@ const AddVehicle = (props) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState(null);
+  const [userRoleId,setUserRoleId]= useState('');
   const [errors, setErrors] = useState({});
 
   // const user = JSON.parse(localStorage.getItem('user'));
@@ -50,6 +52,7 @@ const AddVehicle = (props) => {
     } else {
       setCompanies_company_id(localStorage.getItem("companies_company_id"));
       setUser_id(localStorage.getItem("user_id"));
+      setUserRoleId(localStorage.getItem('user_role_id'));
     }
   });
 
@@ -183,6 +186,8 @@ const AddVehicle = (props) => {
     return formIsValid;
   };
 
+
+
   const submitFunc = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -227,7 +232,7 @@ const AddVehicle = (props) => {
         })
         .catch((err) => {
           //handling error part
-          console.log(err);
+          alert(err);
         });
     }
   };
@@ -247,296 +252,332 @@ const AddVehicle = (props) => {
   };
 
   if (isLoggedIn === true) {
-    return (
-      <div>
-        <Card>
-          <CardHeader>
-            <strong>Add Vehicles</strong>
-          </CardHeader>
-          <CardBody>
-            <Form
-              action=""
-              encType="multipart/form-data"
-              className="form-horizontal"
-            >
-              <br />
-              <FormGroup row>
-                <Col>
-                  <p style={{ color: "#ed4289", fontSize: "16px" }}>
-                    You can add new vehicles to the system here !!!
-                  </p>
-                  <br />
-                  {/* <p className="form-control-static">All field required</p> */}
-                </Col>
-              </FormGroup>
 
-              <FormGroup row>
-                <Col md="3">
-                  <Label htmlFor="text-input">
-                    <b>Vehicle Number</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="vehicle-number"
-                    name="vehicle-number"
-                    placeholder="Vehicle Number"
-                    value={vehicle_number}
-                    onChange={(e) => setVehicle_number(e.target.value)}
-                  />
-                  <FormText color="muted">Please enter vehicle number</FormText>
-                  <div style={{ color: "red" }}>{errors.vehicleNumber}</div>
-                </Col>
-              </FormGroup>
+    if(userRoleId==='1'){
+      return (
+        <div>
+          <Message variant='danger'>You Don't Have Permission</Message>
+        </div>
+      );
+    }else {
 
-              <br />
 
-              <FormGroup row>
-                <Col md="3">
-                  <Label htmlFor="text-input">
-                    <b>Type</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="select"
-                    name="type"
-                    id="type"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                  >
-                    <option value="0">Please select type</option>
-                    <option value="Van">Van</option>
-                    <option value="Car">Car</option>
-                    <option value="Bus">Bus</option>
-                    <option value="Truck">Truck</option>
-                  </Input>
-                  <div style={{ color: "red" }}>{errors.type}</div>
-
-                  {/* <Col md="6"></Col> */}
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    <b>Driver Name</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="driver-name"
-                    name="driver-name"
-                    placeholder="Driver Name"
-                    value={driver_name}
-                    onChange={(e) => setDriver_name(e.target.value)}
-                  />
-                  <FormText className="help-block">
-                    Please enter driver name
-                  </FormText>
-                  <div style={{ color: "red" }}>{errors.driver_name}</div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    <b>Driver Contact Number</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="driver-contact-number"
-                    name="driver-contact-number"
-                    placeholder="Driver Contact Number"
-                    // autoComplete="text"
-                    value={driver_contact_number}
-                    onChange={(e) => setDriver_contact_number(e.target.value)}
-                  />
-                  <FormText className="help-block">
-                    Please enter driver contact number
-                  </FormText>
-                  <div style={{ color: "red" }}>
-                    {errors.driver_contact_number}
-                  </div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    <b>Owner Name</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="owner-name"
-                    name="owner-name"
-                    placeholder="Owner Name"
-                    value={owner_name}
-                    onChange={(e) => setOwner_name(e.target.value)}
-                  />
-                  <FormText className="help-block">
-                    Please enter owner name
-                  </FormText>
-                  <div style={{ color: "red" }}>{errors.owner_name}</div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    <b>Owner Contact Number</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="owner-contact-number"
-                    name="owner-contact-number"
-                    placeholder="Owner Contact Number"
-                    value={owner_contact_number}
-                    onChange={(e) => setOwner_contact_number(e.target.value)}
-                  />
-                  <FormText className="help-block">
-                    Please enter owner contact number
-                  </FormText>
-                  <div style={{ color: "red" }}>
-                    {errors.owner_contact_number}
-                  </div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label>
-                    <b>Unit per Km</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="select"
-                    name="unit-per-km"
-                    id="unit-per-km"
-                    value={unit_per_1km}
-                    onChange={(e) => setUnit_per_1km(e.target.value)}
-                  >
-                    <option value="0">Please select</option>
-                    <option value="100">Rs:100</option>
-                    <option value="200">Rs:200</option>
-                    <option value="300">Rs:300</option>
-                  </Input>
-                  <div style={{ color: "red" }}>{errors.unit_per_1km}</div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label htmlFor="text-input">
-                    <b>Device Serial Number</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="text"
-                    id="device-serial-number"
-                    name="device-serial-number"
-                    placeholder="Device Serial Number"
-                    value={serial_number}
-                    onChange={(e) => setSerial_number(e.target.value)}
-                  />
-                  <FormText color="muted">
-                    Please enter GPS device serial number
-                  </FormText>
-                  <div style={{ color: "red" }}>{errors.serial_number}</div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <FormGroup row>
-                <Col md="3">
-                  <Label htmlFor="text-input">
-                    <b>Device Status</b>
-                  </Label>
-                </Col>
-                <Col xs="12" md="6">
-                  <Input
-                    required
-                    type="select"
-                    id="device-status"
-                    name="device-status"
-                    placeholder="device-status"
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value)}
-                  >
-                    <option value="0">Please select</option>
-                    <option value="ON">ON</option>
-                    <option value="OFF">OFF</option>
-                  </Input>
-                  <FormText color="muted">
-                    Please enter GPS device status
-                  </FormText>
-                  <div style={{ color: "red" }}>{errors.status}</div>
-                </Col>
-              </FormGroup>
-
-              <br />
-
-              <Button
-                style={{ margin: "2px" }}
-                type="submit"
-                size="sm"
-                color="primary"
-                onClick={submitFunc}
+      return (
+        <div>
+          <Card>
+            <CardHeader>
+              <strong>Add Vehicles</strong>
+            </CardHeader>
+            <CardBody>
+              <Form
+                action=""
+                encType="multipart/form-data"
+                className="form-horizontal"
               >
-                <i className="fa fa-dot-circle-o" /> Submit
-              </Button>
+                <br/>
+                <FormGroup row>
+                  <Col>
+                    <p style={{color: "#ed4289", fontSize: "16px"}}>
+                      You can add new vehicles to the system here !!!
+                    </p>
+                    <br/>
+                    {/* <p className="form-control-static">All field required</p> */}
+                  </Col>
+                </FormGroup>
 
-              <Button
-                style={{ margin: "2px" }}
-                type="reset"
-                size="sm"
-                color="danger"
-                onClick={resetFunc}
-              >
-                <i className="fa fa-ban" /> Reset
-              </Button>
-            </Form>
-          </CardBody>
-          <CardFooter></CardFooter>
-        </Card>
-      </div>
-    );
+                <FormGroup row>
+                  <Col md="3">
+                    <Label htmlFor="text-input">
+                      <b>Vehicle Number</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="vehicle-number"
+                      name="vehicle-number"
+                      placeholder="Vehicle Number"
+                      value={vehicle_number}
+                      onChange={(e) => setVehicle_number(e.target.value)}
+                    />
+                    <FormText color="muted">Please enter vehicle number</FormText>
+                    <div style={{color: "red"}}>{errors.vehicleNumber}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label htmlFor="text-input">
+                      <b>Type</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="select"
+                      name="type"
+                      id="type"
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}
+                    >
+                      <option value="0">Please select type</option>
+                      <option value="Van">Van</option>
+                      <option value="Car">Car</option>
+                      <option value="Bus">Bus</option>
+                      <option value="Truck">Truck</option>
+                    </Input>
+                    <div style={{color: "red"}}>{errors.type}</div>
+
+                    {/* <Col md="6"></Col> */}
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>
+                      <b>Driver Name</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="driver-name"
+                      name="driver-name"
+                      placeholder="Driver Name"
+                      value={driver_name}
+                      onChange={(e) => setDriver_name(e.target.value)}
+                    />
+                    <FormText className="help-block">
+                      Please enter driver name
+                    </FormText>
+                    <div style={{color: "red"}}>{errors.driver_name}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>
+                      <b>Driver Contact Number</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="driver-contact-number"
+                      name="driver-contact-number"
+                      placeholder="Driver Contact Number"
+                      // autoComplete="text"
+                      value={driver_contact_number}
+                      onChange={(e) => setDriver_contact_number(e.target.value)}
+                    />
+                    <FormText className="help-block">
+                      Please enter driver contact number
+                    </FormText>
+                    <div style={{color: "red"}}>
+                      {errors.driver_contact_number}
+                    </div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>
+                      <b>Owner Name</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="owner-name"
+                      name="owner-name"
+                      placeholder="Owner Name"
+                      value={owner_name}
+                      onChange={(e) => setOwner_name(e.target.value)}
+                    />
+                    <FormText className="help-block">
+                      Please enter owner name
+                    </FormText>
+                    <div style={{color: "red"}}>{errors.owner_name}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>
+                      <b>Owner Contact Number</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="owner-contact-number"
+                      name="owner-contact-number"
+                      placeholder="Owner Contact Number"
+                      value={owner_contact_number}
+                      onChange={(e) => setOwner_contact_number(e.target.value)}
+                    />
+                    <FormText className="help-block">
+                      Please enter owner contact number
+                    </FormText>
+                    <div style={{color: "red"}}>
+                      {errors.owner_contact_number}
+                    </div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label>
+                      <b>Unit per Km</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="select"
+                      name="unit-per-km"
+                      id="unit-per-km"
+                      value={unit_per_1km}
+                      onChange={(e) => setUnit_per_1km(e.target.value)}
+                    >
+                      <option value="0">Please select</option>
+                      <option value="100">Rs:100</option>
+                      <option value="200">Rs:200</option>
+                      <option value="300">Rs:300</option>
+                    </Input>
+                    <div style={{color: "red"}}>{errors.unit_per_1km}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label htmlFor="text-input">
+                      <b>Device Serial Number</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="text"
+                      id="device-serial-number"
+                      name="device-serial-number"
+                      placeholder="Device Serial Number"
+                      value={serial_number}
+                      onChange={(e) => setSerial_number(e.target.value)}
+                    />
+                    <FormText color="muted">
+                      Please enter GPS device serial number
+                    </FormText>
+                    <div style={{color: "red"}}>{errors.serial_number}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <FormGroup row>
+                  <Col md="3">
+                    <Label htmlFor="text-input">
+                      <b>Device Status</b>
+                    </Label>
+                  </Col>
+                  <Col xs="12" md="6">
+                    <Input
+                      required
+                      type="select"
+                      id="device-status"
+                      name="device-status"
+                      placeholder="device-status"
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value)}
+                    >
+                      <option value="0">Please select</option>
+                      <option value="ON">ON</option>
+                      <option value="OFF">OFF</option>
+                    </Input>
+                    <FormText color="muted">
+                      Please enter GPS device status
+                    </FormText>
+                    <div style={{color: "red"}}>{errors.status}</div>
+                  </Col>
+                </FormGroup>
+
+                <br/>
+
+                <Button
+                  style={{margin: "2px"}}
+                  type="submit"
+                  size="sm"
+                  color="primary"
+                  onClick={submitFunc}
+                >
+                  <i className="fa fa-dot-circle-o"/> Submit
+                </Button>
+
+                <Button
+                  style={{margin: "2px"}}
+                  type="reset"
+                  size="sm"
+                  color="danger"
+                  onClick={resetFunc}
+                >
+                  <i className="fa fa-ban"/> Reset
+                </Button>
+              </Form>
+            </CardBody>
+            <CardFooter></CardFooter>
+          </Card>
+        </div>
+      );
+    }
   } else if (isLoggedIn === false) {
     return (
-
-        <BackToLogin/>
-
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login
+                first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block
+                    color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >
+                    Login
+                  </Button>
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
     );
   }
 };

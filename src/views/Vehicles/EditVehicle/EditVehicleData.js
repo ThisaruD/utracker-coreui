@@ -212,26 +212,29 @@ const EditVehicleData = (props) => {
     //const vehicleNumber = props.match.params.id;
     // console.log(vehicleNumber);
 
-    axios
-      .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
-      .then((res) => {
-        console.log(res.data);
-        if (res.data.message == "successfully deleted") {
-          alert("Successfully Removed Vehicle");
+    if (window.confirm('Are you sure to remove this vehicle from your company')) {
+        axios
+          .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
+          .then((res) => {
+            console.log(res.data);
+            if (res.data.message == "successfully deleted") {
+              alert("Successfully Removed Vehicle");
 
-          // setVehicleNumber('');
-          // setType('');
-        } else {
-          alert("operation fail");
-        }
-      })
-      .then(() => {
-        props.history.push("/vehicles/edit-vehicle");
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err);
-      });
+              // setVehicleNumber('');
+              // setType('');
+            } else {
+              alert("operation fail");
+            }
+          })
+          .then(() => {
+            props.history.push("/vehicles/edit-vehicle");
+          })
+          .catch((err) => {
+            console.log(err);
+            alert(err);
+          });
+  }
+
   };
 
 

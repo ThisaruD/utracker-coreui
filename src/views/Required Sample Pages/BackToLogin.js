@@ -4,7 +4,7 @@ import {Button, Card, CardBody, Col, Row} from "reactstrap";
 const BackToLogin = ({props,history}) => {
 
 
-  const backToLogin = () =>{props.history.push('/login');}
+  const backToLogin = (props,history) =>{props.history.push('/login');}
 
 
 
@@ -43,3 +43,10 @@ const BackToLogin = ({props,history}) => {
 };
 
 export default BackToLogin;
+
+// const deleteHandler = (id) => {
+//   if (window.confirm('Are you sure')) {
+//     dispatch(deleteUser(id));
+//   }
+// }
+

@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import BackToLogin from "../../Required Sample Pages/BackToLogin";
+import Message from "../../Required Sample Pages/Message";
 
 export default function EditVehicle(props) {
   const [id, setId] = useState("100");
@@ -21,6 +22,7 @@ export default function EditVehicle(props) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState(null);
+  const [userRoleId,setUserRoleId]= useState('');
 
   const clickHandler = () => {
     props.history.push("/vehicles/details/" + vehicleNumber1);
@@ -58,16 +60,7 @@ export default function EditVehicle(props) {
           console.log(err);
         });
 
-      // fetch('http://localhost:8000/api/allvehiclenumbers/1',{
-      //   method:'GET',
-      //   headers:{"Content-Type":"application/json"},
-      //   // body:JSON.stringify(companyDetails)
-      // }).then((res)=>{
-      //  // console.log(res.data);
-      //   setVehicles(res.data.vehicles);
-      // }).catch((err)=>{
-      //   console.log(err);
-      // })
+      setUserRoleId(localStorage.getItem('user_role_id'));
     }
   }, []);
 
@@ -78,62 +71,100 @@ export default function EditVehicle(props) {
   };
 
   if (isLoggedIn === true) {
-    return (
-      <div className="ViwVehi">
-        <Card
-          style={{
-            height: "200px",
-            width: "85%",
-            margin: "100px",
-          }}
-        >
-          <CardBody style={{ margin: "40px 50px" }}>
-            <FormGroup row>
-              <Col md="3">
-                <Label
-                  htmlFor="select"
-                  style={{ fontSize: "18px", fontWeight: "bold" }}
-                >
-                  Select Vehicle Number :
-                </Label>
-              </Col>
-              <Col xs="12" md="8">
-                <Input
-                  type="select"
-                  name="select"
-                  id="select"
-                  onChange={(e) => setVehicleNumber1(e.target.value)}
-                >
-                  <option value="0">Please select</option>
-                  {vehicles.map((vehicle) => (
-                    <option values={vehicle}> {vehicle}</option>
-                  ))}
-                </Input>
-              </Col>
-            </FormGroup>
 
-            <br />
-            <Row>
-              <Col md="4"></Col>
-              <Col md="4">
-                <Button
-                  block
-                  color="primary"
-                  className="btn-pill"
-                  onClick={clickHandler}
-                >
-                  Edit Vehicle Data
-                </Button>
-              </Col>
-              <Col md="4"></Col>
-            </Row>
+    if(userRoleId==='1'){
+      return (
+        <div>
+          <Message variant='danger'>You Don't Have Permission</Message>
+        </div>
+      );
+    }else {
+
+
+      return (
+        <div className="ViwVehi">
+          <Card
+            style={{
+              height: "200px",
+              width: "85%",
+              margin: "100px",
+            }}
+          >
+            <CardBody style={{margin: "40px 50px"}}>
+              <FormGroup row>
+                <Col md="3">
+                  <Label
+                    htmlFor="select"
+                    style={{fontSize: "18px", fontWeight: "bold"}}
+                  >
+                    Select Vehicle Number :
+                  </Label>
+                </Col>
+                <Col xs="12" md="8">
+                  <Input
+                    type="select"
+                    name="select"
+                    id="select"
+                    onChange={(e) => setVehicleNumber1(e.target.value)}
+                  >
+                    <option value="0">Please select</option>
+                    {vehicles.map((vehicle) => (
+                      <option values={vehicle}> {vehicle}</option>
+                    ))}
+                  </Input>
+                </Col>
+              </FormGroup>
+
+              <br/>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block
+                    color="primary"
+                    className="btn-pill"
+                    onClick={clickHandler}
+                  >
+                    Edit Vehicle Data
+                  </Button>
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </CardBody>
+          </Card>
+        </div>
+      );
+    }
+  } else if (isLoggedIn === false) {
+    return (
+      <div className="access_denied">
+        <Card className="text-white bg-primary ">
+          <CardBody>
+            <div className="clearfix">
+              {/*<h1 className="float-left display-3 mr-4">403</h1>*/}
+              <h4 className="pt-3">Please login First</h4>
+              <p className="text-muted float-left">
+                You don't have permission to access requested page. Please login
+                first
+              </p>
+              <Row>
+                <Col md="4"></Col>
+                <Col md="4">
+                  <Button
+                    block
+                    color="dark"
+                    className="btn-pill"
+                    onClick={backToLogin}
+                  >
+                    Login
+                  </Button>
+                </Col>
+                <Col md="4"></Col>
+              </Row>
+            </div>
           </CardBody>
         </Card>
       </div>
-    );
-  } else if (isLoggedIn === false) {
-    return (
-      <BackToLogin/>
     );
   }
 }

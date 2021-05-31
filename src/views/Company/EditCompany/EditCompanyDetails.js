@@ -9,11 +9,11 @@ const EditCompanyDetails = (props) => {
   const [companyName, setCompanyName] = useState('');
   const [companyLocation, setCompanyLocation] = useState('');
   const [companyAddress, setCompanyAddress] = useState('');
-  const[companyId, setCompanyId] = useState('');
+  const [companyId, setCompanyId] = useState('');
 
 
-  const[userId, setUserId] = useState('');
-  const[isLoggedIn,setIsLoggedIn] = useState(true);
+  const [userId, setUserId] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
 
 
   useEffect(() => {
@@ -21,9 +21,9 @@ const EditCompanyDetails = (props) => {
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
-    if(user==undefined){
+    if (user == undefined) {
       setIsLoggedIn(false);
-    }else {
+    } else {
 
       axios.get('http://localhost:8000/api/getcompanydetails', {params: {company_name: props.match.params.id}}, {
         headers: {
@@ -64,37 +64,33 @@ const EditCompanyDetails = (props) => {
       })
 
 
-
   }
 
 
   const deleteFunc = () => {
-    axios.delete('http://localhost:8000/api/deletecompanydetails/'+companyId)
-      .then((res) => {
-        console.log(res.data);
-        alert(res.data.message);
-        props.history.push('/company/edit-company');
-      })
-      .catch((err) => {
-        console.log(err);
-        alert(err);
-      })
 
+    if (window.confirm('Are you sure to remove this company from the Utracker System')) {
+      axios.delete('http://localhost:8000/api/deletecompanydetails/' + companyId)
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data.message);
+          props.history.push('/company/edit-company');
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err);
+        })
 
-
+    }
   }
 
-  const  goBack = () =>{
+  const goBack = () => {
     props.history.push('/dashboard');
   }
 
 
-
-
-
-
-    if(isLoggedIn===true){
-      return(
+  if (isLoggedIn === true) {
+    return (
       <div>
         <Card>
           <CardHeader>
@@ -197,17 +193,13 @@ const EditCompanyDetails = (props) => {
         </Card>
       </div>
     );
-    }else{
-      return (
-        <div>
-          <BackToLogin/>
-        </div>
-      )
-    }
-
-
-
-
+  } else {
+    return (
+      <div>
+        <BackToLogin/>
+      </div>
+    )
+  }
 
 
 }

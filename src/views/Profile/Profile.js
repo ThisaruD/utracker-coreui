@@ -94,6 +94,7 @@ const Profile = (props) => {
 
   const goBack = () => { props.history.push('/dashboard'); }
   const backToLogin = () =>{props.history.push('/login');}
+  const editProfileHandler = () =>{props.history.push('/profile-edit')}
 
 
   if(isLoggedIn==true){
@@ -227,7 +228,21 @@ const Profile = (props) => {
                 >
                   Back
                 </Button>
+
+
+
+                <Button
+                  type="submit"
+                  size="sm"
+                  color="secondary"
+                  className="profBut"
+                  onClick={editProfileHandler}
+                >
+                  Edit Profile
+                </Button>
               </FormGroup>
+
+
             </Form>
           </CardBody>
         </Card>

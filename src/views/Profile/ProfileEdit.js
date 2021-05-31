@@ -24,10 +24,15 @@ const ProfileEdit = (props) => {
   const [password, setPassword] = useState("");
   const [rePassword, setRepassword] = useState("");
 
+
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState("");
 
   const [errors, setErrors] = useState({});
+
+  //for user profile delete
+  const [message,setMessage] = useState('');
+  const [userDelete,setUserDelete] = useState(false);
 
 
   useEffect(() => {
@@ -79,7 +84,7 @@ const ProfileEdit = (props) => {
       errors["nic"] = "*Please enter valid NIC number";
     }
 
-    if(contact_no != undefined){
+    if (contact_no != undefined) {
       var pattern = new RegExp(/^(?:0|94|\+94)?(?:(11|21|23|24|25|26|27|31|32|33|34|35|36|37|38|41|45|47|51|52|54|55|57|63|65|66|67|81|912)(0|2|3|4|5|7|9)|7(0|1|2|5|6|7|8)\d)\d{6}$/);
     }
 
@@ -87,7 +92,6 @@ const ProfileEdit = (props) => {
       isValid = false;
       errors["contact_no"] = "*Please enter valid mobile number";
     }
-
 
 
     setErrors(errors);
@@ -98,7 +102,7 @@ const ProfileEdit = (props) => {
 
   const submitFunc = (e) => {
 
-    if(validate()){
+    if (validate()) {
       if (password == rePassword) {
         e.preventDefault();
         const profileDetails = {
@@ -132,27 +136,33 @@ const ProfileEdit = (props) => {
 
   const deleteFunc = () => {
 
-    const user = localStorage.getItem('user_id');
+    if (window.confirm('Are you sure to remove your account from the Utracker System')) {
+      const user = localStorage.getItem('user_id');
 
-    if (!(password.length >= 8 && rePassword.length >= 8)) {
-      alert('Password should contain at-least 8 characters ')
-    } else if (!(password == rePassword)) {
-      alert('Password mismatch')
-    } else {
-      axios.delete('http://localhost:8000/api/deleteuserdetails/' + user)
-        .then((res) => {
-          alert(res.data.message);
-        })
-        .then(() => {
-          window.location.reload();
-          localStorage.clear();
-          props.history.push('/dashboard');
-          window.location.reload();
-        })
-        .catch((err) => {
-          alert(err);
-        })
+      if (!(password.length >= 8 && rePassword.length >= 8)) {
+        alert('Password should contain at-least 8 characters ')
+      } else if (!(password == rePassword)) {
+        alert('Password mismatch')
+      } else {
+        axios.delete('http://localhost:8000/api/deleteuserdetails/' + user)
+          .then((res) => {
+            alert(res.data.message);
+            setMessage(res.data.message);
+          })
+          .then(()=>{
+
+             window.location.reload();
+              localStorage.clear();
+              props.history.push('/dashboard');
+              window.location.reload();
+            }
+          )
+          .catch((err) => {
+            alert(err);
+          })
+      }
     }
+
   }
 
 
@@ -162,6 +172,7 @@ const ProfileEdit = (props) => {
 
 
   if (isLoggedIn === true) {
+
     return (
       <div>
         <Card className="userProfile">
@@ -329,6 +340,7 @@ const ProfileEdit = (props) => {
                 >
                   Save Details
                 </Button>
+
                 <Button
                   color="danger"
                   // type="submit"
@@ -337,6 +349,7 @@ const ProfileEdit = (props) => {
                   className="userProfile_button"
                   onClick={deleteFunc}
                 >Delete Profile</Button>
+
               </FormGroup>
 
 

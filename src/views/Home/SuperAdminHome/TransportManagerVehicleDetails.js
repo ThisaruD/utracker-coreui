@@ -48,34 +48,31 @@ setDataLoad(true);
 
  const vehicleDeleteFunc = (id) =>{
 
+  if (window.confirm('Are you sure to remove this vehicle from your company')) {
+    axios.delete("http://localhost:8000/api/deletevehicledetails/" + id)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.message == "successfully deleted") {
+          alert("successfully removed vehicle");
 
-   axios.delete("http://localhost:8000/api/deletevehicledetails/" + id)
-     .then((res) => {
-       console.log(res.data);
-       if (res.data.message == "successfully deleted") {
-         alert("successfully removed vehicle");
-
-         // setVehicleNumber('');
-         // setType('');
-       } else {
-         alert("operation fail");
-       }
-     })
-     .then(() => {
-       window.location.reload();
-     })
-     .catch((err) => {
-       console.log(err);
-       alert(err);
-     });
-
-
-
+          // setVehicleNumber('');
+          // setType('');
+        } else {
+          alert("operation fail");
+        }
+      })
+      .then(() => {
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
   }
+ }
 
   const headerStyle = {
     backgroundColor:  ' #4d94ff',
-
   };
 
 

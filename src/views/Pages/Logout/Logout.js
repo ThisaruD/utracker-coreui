@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Button,
   Card,
@@ -7,65 +7,45 @@ import {
   Col,
   Form,
   Container,
-  Row
+  Row,
 } from "reactstrap";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
+const Logout = (props) => {
+  const clickHandler = () => {
+    localStorage.clear();
+    props.history.push("/dashboard");
+    window.location.reload();
+  };
 
+  return (
+    <div>
+      <Card style={{ width: "50%", marginTop: "10%", marginLeft: "25.5%" }}>
+        <CardBody>
+          <Form>
+            <h1>Logout</h1>
+            <br />
+            <p className="text-muted">
+              Do you really want to logout from U-tracker system ?
+            </p>
 
-
-      const Logout = (props) =>{
-
-
-         const clickHandler = () =>{
-           localStorage.clear();
-           props.history.push('/dashboard');
-           window.location.reload();
-
-         }
-
-
-
-  return(
-    <div className="app flex-row align-items-center">
-      <Container>
-        <Row className="justify-content-center">
-          <Col md="8">
-            <CardGroup>
-              <Card className="p-4">
-                <CardBody>
-                  <Form>
-                    <h1>Logout</h1>
-                    <br />
-                    <p className="text-muted">
-                      Do you really want to logout from U-tracker system
-                    </p>
-
-                    <Row>
-                      <Col xs="6">
-                        <Link to="ResetPassword">
-                          <Button
-                            color="primary"
-                            className="px-4"
-                            onClick={clickHandler}
-                          >
-                            Logout
-                          </Button>
-                        </Link>
-                      </Col>
-                    </Row>
-
-                  </Form>
-                </CardBody>
-              </Card>
-            </CardGroup>
-          </Col>
-        </Row>
-      </Container>
+            <Row>
+              <Col xs="6">
+                <Link to="ResetPassword">
+                  <Button
+                    color="primary"
+                    className="px-4"
+                    onClick={clickHandler}
+                  >
+                    Logout
+                  </Button>
+                </Link>
+              </Col>
+            </Row>
+          </Form>
+        </CardBody>
+      </Card>
     </div>
   );
-
-
-
-}
+};
 export default Logout;

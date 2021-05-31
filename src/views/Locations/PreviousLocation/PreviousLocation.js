@@ -11,6 +11,8 @@ class PreviousLocation extends Component {
     super(props);
     this.submitFunc = this.submitFunc.bind(this);
     this.validate = this.validate.bind(this);
+    this.refreshPage = this.refreshPage.bind(this);
+
     this.state = {
       date: "",
       time: "",
@@ -59,14 +61,17 @@ class PreviousLocation extends Component {
   }
 
 
-  backToLogin() {
+  backToLogin = ()=> {
     this.props.history.push('/login');
   }
 
-  refreshPage() {
+  refreshPage=()=> {
     window.location.reload();
   }
 
+  backHandler = ()=>{
+    this.props.history.push('/dashboard');
+  }
 
   //regular expression function for time
   validate() {
@@ -173,6 +178,7 @@ class PreviousLocation extends Component {
                     </Map>
                     : <h6>
                       <center>Map Showing here</center>
+                      <center>Please select vehicle number and time for get location</center>
                     </h6>}
                 </div>
               </Col>
@@ -242,11 +248,12 @@ class PreviousLocation extends Component {
                             <Input
                               type="text"
                               min="0:00"
+                              maxlength='5'
                               value={this.state.time}
                               onChange={(e) => this.setState({time: e.target.value})}
 
                             />
-                            <FormText color="muted">Please enter time in correct format(HH:MM)</FormText>
+                            <FormText color="muted">Please enter time in correct format(HH:MM/24h format)</FormText>
                             <div style={{color: "red"}}>{this.state.errors.time}</div>
                           </FormGroup>
                         </Col>
@@ -272,6 +279,16 @@ class PreviousLocation extends Component {
                             onClick={this.submitFunc}
                           >Get Location
                           </Button>
+
+                          <Button
+                            className="PrevPath"
+                            size="sm"
+                            color="secondary"
+                            onClick={this.backHandler}
+                          >Back
+                          </Button>
+
+
                         </Row>
                       </Col>
                     </Form>
