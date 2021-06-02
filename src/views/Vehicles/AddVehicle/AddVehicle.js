@@ -26,7 +26,7 @@ const AddVehicle = (props) => {
   const [driver_contact_number, setDriver_contact_number] = useState("");
   const [owner_name, setOwner_name] = useState("");
   const [owner_contact_number, setOwner_contact_number] = useState("");
-  const [unit_per_1km, setUnit_per_1km] = useState("");
+  // const [unit_per_1km, setUnit_per_1km] = useState("");
   const [serial_number, setSerial_number] = useState("");
   const [status, setStatus] = useState("");
 
@@ -36,7 +36,7 @@ const AddVehicle = (props) => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userId, setUserId] = useState(null);
-  const [userRoleId,setUserRoleId]= useState('');
+  const [userRoleId, setUserRoleId] = useState("");
   const [errors, setErrors] = useState({});
 
   // const user = JSON.parse(localStorage.getItem('user'));
@@ -52,7 +52,7 @@ const AddVehicle = (props) => {
     } else {
       setCompanies_company_id(localStorage.getItem("companies_company_id"));
       setUser_id(localStorage.getItem("user_id"));
-      setUserRoleId(localStorage.getItem('user_role_id'));
+      setUserRoleId(localStorage.getItem("user_role_id"));
     }
   });
 
@@ -151,11 +151,11 @@ const AddVehicle = (props) => {
     }
 
     // //unit_per_1km
-    if (!unit_per_1km) {
-      formIsValid = false;
+    // if (!unit_per_1km) {
+    //   formIsValid = false;
 
-      errors["unit_per_1km"] = "*Please Select Rate";
-    }
+    //   errors["unit_per_1km"] = "*Please Select Rate";
+    // }
 
     // serial_number
     if (!serial_number) {
@@ -186,8 +186,6 @@ const AddVehicle = (props) => {
     return formIsValid;
   };
 
-
-
   const submitFunc = (e) => {
     e.preventDefault();
     if (validate()) {
@@ -198,7 +196,7 @@ const AddVehicle = (props) => {
         driver_contact_number,
         owner_name,
         owner_contact_number,
-        unit_per_1km,
+        // unit_per_1km,
         serial_number,
         status,
         companies_company_id,
@@ -226,7 +224,7 @@ const AddVehicle = (props) => {
           setDriver_name("");
           setOwner_contact_number("");
           setDriver_contact_number("");
-          setUnit_per_1km("");
+          // setUnit_per_1km("");
           setSerial_number("");
           setStatus("");
         })
@@ -242,7 +240,7 @@ const AddVehicle = (props) => {
     setType("");
     setDriver_name("");
     setDriver_contact_number("");
-    setUnit_per_1km("");
+    // setUnit_per_1km("");
     setSerial_number("");
     setStatus("");
   };
@@ -252,16 +250,13 @@ const AddVehicle = (props) => {
   };
 
   if (isLoggedIn === true) {
-
-    if(userRoleId==='1'){
+    if (userRoleId === "1") {
       return (
         <div>
-          <Message variant='danger'>You Don't Have Permission</Message>
+          <Message variant="danger">You Don't Have Permission</Message>
         </div>
       );
-    }else {
-
-
+    } else {
       return (
         <div>
           <Card>
@@ -274,13 +269,13 @@ const AddVehicle = (props) => {
                 encType="multipart/form-data"
                 className="form-horizontal"
               >
-                <br/>
+                <br />
                 <FormGroup row>
                   <Col>
-                    <p style={{color: "#ed4289", fontSize: "16px"}}>
+                    <p style={{ color: "#ed4289", fontSize: "16px" }}>
                       You can add new vehicles to the system here !!!
                     </p>
-                    <br/>
+                    <br />
                     {/* <p className="form-control-static">All field required</p> */}
                   </Col>
                 </FormGroup>
@@ -301,12 +296,14 @@ const AddVehicle = (props) => {
                       value={vehicle_number}
                       onChange={(e) => setVehicle_number(e.target.value)}
                     />
-                    <FormText color="muted">Please enter vehicle number</FormText>
-                    <div style={{color: "red"}}>{errors.vehicleNumber}</div>
+                    <FormText color="muted">
+                      Please enter vehicle number
+                    </FormText>
+                    <div style={{ color: "red" }}>{errors.vehicleNumber}</div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -329,13 +326,13 @@ const AddVehicle = (props) => {
                       <option value="Bus">Bus</option>
                       <option value="Truck">Truck</option>
                     </Input>
-                    <div style={{color: "red"}}>{errors.type}</div>
+                    <div style={{ color: "red" }}>{errors.type}</div>
 
                     {/* <Col md="6"></Col> */}
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -356,11 +353,11 @@ const AddVehicle = (props) => {
                     <FormText className="help-block">
                       Please enter driver name
                     </FormText>
-                    <div style={{color: "red"}}>{errors.driver_name}</div>
+                    <div style={{ color: "red" }}>{errors.driver_name}</div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -382,13 +379,13 @@ const AddVehicle = (props) => {
                     <FormText className="help-block">
                       Please enter driver contact number
                     </FormText>
-                    <div style={{color: "red"}}>
+                    <div style={{ color: "red" }}>
                       {errors.driver_contact_number}
                     </div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -409,11 +406,11 @@ const AddVehicle = (props) => {
                     <FormText className="help-block">
                       Please enter owner name
                     </FormText>
-                    <div style={{color: "red"}}>{errors.owner_name}</div>
+                    <div style={{ color: "red" }}>{errors.owner_name}</div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -434,15 +431,15 @@ const AddVehicle = (props) => {
                     <FormText className="help-block">
                       Please enter owner contact number
                     </FormText>
-                    <div style={{color: "red"}}>
+                    <div style={{ color: "red" }}>
                       {errors.owner_contact_number}
                     </div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
-                <FormGroup row>
+                {/* <FormGroup row>
                   <Col md="3">
                     <Label>
                       <b>Unit per Km</b>
@@ -466,7 +463,7 @@ const AddVehicle = (props) => {
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br/> */}
 
                 <FormGroup row>
                   <Col md="3">
@@ -487,11 +484,11 @@ const AddVehicle = (props) => {
                     <FormText color="muted">
                       Please enter GPS device serial number
                     </FormText>
-                    <div style={{color: "red"}}>{errors.serial_number}</div>
+                    <div style={{ color: "red" }}>{errors.serial_number}</div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <FormGroup row>
                   <Col md="3">
@@ -516,30 +513,30 @@ const AddVehicle = (props) => {
                     <FormText color="muted">
                       Please enter GPS device status
                     </FormText>
-                    <div style={{color: "red"}}>{errors.status}</div>
+                    <div style={{ color: "red" }}>{errors.status}</div>
                   </Col>
                 </FormGroup>
 
-                <br/>
+                <br />
 
                 <Button
-                  style={{margin: "2px"}}
+                  style={{ margin: "2px" }}
                   type="submit"
                   size="sm"
                   color="primary"
                   onClick={submitFunc}
                 >
-                  <i className="fa fa-dot-circle-o"/> Submit
+                  <i className="fa fa-dot-circle-o" /> Submit
                 </Button>
 
                 <Button
-                  style={{margin: "2px"}}
+                  style={{ margin: "2px" }}
                   type="reset"
                   size="sm"
                   color="danger"
                   onClick={resetFunc}
                 >
-                  <i className="fa fa-ban"/> Reset
+                  <i className="fa fa-ban" /> Reset
                 </Button>
               </Form>
             </CardBody>

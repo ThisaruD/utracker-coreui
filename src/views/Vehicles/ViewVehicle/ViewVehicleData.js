@@ -29,11 +29,10 @@ const ViewVehicleData = (props) => {
 
   const [date, setDate] = useState("");
 
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
-
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
@@ -43,7 +42,7 @@ const ViewVehicleData = (props) => {
       //vehicle numbers pass
       axios
         .get("http://localhost:8000/api/getvehicledetails", {
-          params: {vehicle_number: props.match.params.id},
+          params: { vehicle_number: props.match.params.id },
         })
         .then((res) => {
           // setVehicle_number();
@@ -71,7 +70,7 @@ const ViewVehicleData = (props) => {
     props.history.push("/vehicles/view-vehicle");
   };
 
-  if(isLoggedIn===true){
+  if (isLoggedIn === true) {
     return (
       <div>
         <Card>
@@ -204,7 +203,7 @@ const ViewVehicleData = (props) => {
 
               <br />
 
-              <FormGroup row>
+              {/* <FormGroup row>
                 <Col md="3">
                   <Label>Unit per Km (Rs:)</Label>
                 </Col>
@@ -220,7 +219,7 @@ const ViewVehicleData = (props) => {
                 </Col>
               </FormGroup>
 
-              <br />
+              <br /> */}
 
               <FormGroup row>
                 <Col md="3">
@@ -274,14 +273,13 @@ const ViewVehicleData = (props) => {
         </Card>
       </div>
     );
-  }else{
+  } else {
     return (
       <div>
-        <BackToLogin/>
+        <BackToLogin />
       </div>
     );
   }
-
 };
 
 export default ViewVehicleData;

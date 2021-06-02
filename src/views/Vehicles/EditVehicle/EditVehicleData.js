@@ -19,7 +19,7 @@ import BackToLogin from "../../Required Sample Pages/BackToLogin";
 const EditVehicleData = (props) => {
   const [vehicle_number, setVehicle_number] = useState("");
   const [type, setType] = useState("");
-  const [unit_per_1km, setUnit_per_1km] = useState("");
+  // const [unit_per_1km, setUnit_per_1km] = useState("");
   const [driver_name, setDriver_name] = useState("");
   const [driver_contact_number, setDriver_contact_number] = useState("");
   const [owner_name, setOwner_name] = useState("");
@@ -30,11 +30,10 @@ const EditVehicleData = (props) => {
 
   const [errors, setErrors] = useState({});
 
-  const [userId, setUserId] = useState('');
+  const [userId, setUserId] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   useEffect(() => {
-
     const user = localStorage.getItem("user_id");
     setUserId(user);
 
@@ -44,13 +43,13 @@ const EditVehicleData = (props) => {
       //vehicle numbers pass
       axios
         .get("http://localhost:8000/api/getvehicledetails", {
-          params: {vehicle_number: props.match.params.id},
+          params: { vehicle_number: props.match.params.id },
         })
         .then((res) => {
           setVehicleId(res.data.vehicle_id);
           setVehicle_number(res.data.vehicle_num);
           setType(res.data.type1);
-          setUnit_per_1km(res.data.unit_per_1km);
+          // setUnit_per_1km(res.data.unit_per_1km);
           setDriver_name(res.data.driver_name);
           setDriver_contact_number(res.data.driver_contact_no);
           setOwner_name(res.data.owner_name);
@@ -137,11 +136,11 @@ const EditVehicleData = (props) => {
       }
 
       //unit_per_1km
-      if (!unit_per_1km) {
-        formIsValid = false;
+      // if (!unit_per_1km) {
+      //   formIsValid = false;
 
-        errors["unit_per_1km"] = "*Please Select Rate";
-      }
+      //   errors["unit_per_1km"] = "*Please Select Rate";
+      // }
 
       //serial_number;
       if (!serial_number) {
@@ -180,7 +179,7 @@ const EditVehicleData = (props) => {
       const obj = {
         vehicle_number,
         type,
-        unit_per_1km,
+        // unit_per_1km,
         driver_name,
         driver_contact_no,
         owner_name,
@@ -212,38 +211,38 @@ const EditVehicleData = (props) => {
     //const vehicleNumber = props.match.params.id;
     // console.log(vehicleNumber);
 
-    if (window.confirm('Are you sure to remove this vehicle from your company')) {
-        axios
-          .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
-          .then((res) => {
-            console.log(res.data);
-            if (res.data.message == "successfully deleted") {
-              alert("Successfully Removed Vehicle");
+    if (
+      window.confirm("Are you sure to remove this vehicle from your company ?")
+    ) {
+      axios
+        .delete("http://localhost:8000/api/deletevehicledetails/" + vehicleId)
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.message == "successfully deleted") {
+            alert("Successfully Removed Vehicle");
 
-              // setVehicleNumber('');
-              // setType('');
-            } else {
-              alert("operation fail");
-            }
-          })
-          .then(() => {
-            props.history.push("/vehicles/edit-vehicle");
-          })
-          .catch((err) => {
-            console.log(err);
-            alert(err);
-          });
-  }
-
+            // setVehicleNumber('');
+            // setType('');
+          } else {
+            alert("operation fail");
+          }
+        })
+        .then(() => {
+          props.history.push("/vehicles/edit-vehicle");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err);
+        });
+    }
   };
 
-
-  if(isLoggedIn===true) {
+  if (isLoggedIn === true) {
     return (
       <div>
         <Card>
           <CardHeader>
-            <strong style={{fontSize: "16px"}}>Vehicle Details</strong>
+            <strong style={{ fontSize: "16px" }}>Vehicle Details</strong>
             <h2>{props.match.params.id}</h2>
           </CardHeader>
           <CardBody>
@@ -283,7 +282,7 @@ const EditVehicleData = (props) => {
                   <FormText className="help-block"></FormText>
                 </Col>
               </FormGroup>
-              <br/>
+              <br />
 
               <FormGroup row>
                 <Col md="3">
@@ -301,11 +300,11 @@ const EditVehicleData = (props) => {
                     onChange={(e) => setDriver_name(e.target.value)}
                   />
                   <FormText className="help-block">Enter driver name</FormText>
-                  <div style={{color: "red"}}>{errors.driver_name}</div>
+                  <div style={{ color: "red" }}>{errors.driver_name}</div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
               <FormGroup row>
                 <Col md="3">
@@ -326,13 +325,13 @@ const EditVehicleData = (props) => {
                   <FormText className="help-block">
                     Enter driver contact number
                   </FormText>
-                  <div style={{color: "red"}}>
+                  <div style={{ color: "red" }}>
                     {errors.driver_contact_number}
                   </div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
               <FormGroup row>
                 <Col md="3">
@@ -350,11 +349,11 @@ const EditVehicleData = (props) => {
                     onChange={(e) => setOwner_name(e.target.value)}
                   />
                   <FormText className="help-block">Enter owner name</FormText>
-                  <div style={{color: "red"}}>{errors.owner_name}</div>
+                  <div style={{ color: "red" }}>{errors.owner_name}</div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
               <FormGroup row>
                 <Col md="3">
@@ -374,15 +373,15 @@ const EditVehicleData = (props) => {
                   <FormText className="help-block">
                     Enter owner contact number
                   </FormText>
-                  <div style={{color: "red"}}>
+                  <div style={{ color: "red" }}>
                     {errors.owner_contact_number}
                   </div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
-              <FormGroup row>
+              {/* <FormGroup row>
                 <Col md="3">
                   <Label>
                     <b>Unit per Km</b>
@@ -403,11 +402,11 @@ const EditVehicleData = (props) => {
                     <option value="200">Rs:200</option>
                     <option value="300">Rs:300</option>
                   </Input>
-                  <div style={{color: "red"}}>{errors.unit_per_1km}</div>
+                  <div style={{ color: "red" }}>{errors.unit_per_1km}</div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br /> */}
 
               <FormGroup row>
                 <Col md="3">
@@ -427,11 +426,11 @@ const EditVehicleData = (props) => {
                   <FormText color="muted">
                     Enter GPS device serial number
                   </FormText>
-                  <div style={{color: "red"}}>{errors.serial_number}</div>
+                  <div style={{ color: "red" }}>{errors.serial_number}</div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
               <FormGroup row>
                 <Col md="3">
@@ -455,38 +454,38 @@ const EditVehicleData = (props) => {
                     <option value="OFF">OFF</option>
                   </Input>
                   <FormText color="muted">Enter GPS device status</FormText>
-                  <div style={{color: "red"}}>{errors.status}</div>
+                  <div style={{ color: "red" }}>{errors.status}</div>
                 </Col>
               </FormGroup>
 
-              <br/>
+              <br />
 
               <div>
                 <Button
-                  style={{margin: "2px"}}
+                  style={{ margin: "2px" }}
                   type="submit"
                   size="sm"
                   color="primary"
                   onClick={submitFunc}
                 >
-                  <i className="fa fa-dot-circle-o"/> Submit
+                  <i className="fa fa-dot-circle-o" /> Submit
                 </Button>
 
                 <Button
-                  style={{margin: "2px"}}
+                  style={{ margin: "2px" }}
                   onClick={vehicleDeleteFunc}
                   size="sm"
                   color="danger"
                 >
-                  <i className="fa fa-ban"/> Delete Vehicle
+                  <i className="fa fa-ban" /> Delete Vehicle
                 </Button>
                 <Button
-                  style={{margin: "2px"}}
+                  style={{ margin: "2px" }}
                   onClick={goBack}
                   size="sm"
                   color="primary"
                 >
-                  <i className="fa fa-dot-circle-o"/> Back
+                  <i className="fa fa-dot-circle-o" /> Back
                 </Button>
               </div>
             </Form>
@@ -495,14 +494,13 @@ const EditVehicleData = (props) => {
         </Card>
       </div>
     );
+  } else {
+    return (
+      <div>
+        <BackToLogin />
+      </div>
+    );
   }
-    else{
-      return (
-        <div>
-          <BackToLogin/>
-        </div>
-      );
-    }
 };
 
 export default EditVehicleData;
