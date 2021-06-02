@@ -96,7 +96,7 @@ class DefaultHeader extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  <Button block color="success" className="btn-pill addUserB">
+                  <Button block color="success" className="btn-pill">
                     Add User
                   </Button>
                 </NavLink>
@@ -152,7 +152,7 @@ class DefaultHeader extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  <Button block color="danger" className="btn-pill addUserB">
+                  <Button block color="danger" className="btn-pill">
                     logout
                   </Button>
                 </NavLink>
@@ -248,7 +248,7 @@ class DefaultHeader extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  <Button block color="danger" className="btn-pill addUserB">
+                  <Button block color="danger" className="btn-pill">
                     logout
                   </Button>
                 </NavLink>

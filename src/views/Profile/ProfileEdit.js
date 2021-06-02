@@ -146,17 +146,17 @@ const ProfileEdit = (props) => {
       } else {
         axios.delete('http://localhost:8000/api/deleteuserdetails/' + user)
           .then((res) => {
-            alert(res.data.message);
-            setMessage(res.data.message);
-          })
-          .then(()=>{
 
-             window.location.reload();
+            if(res.data.operation==='Fail'){
+              alert(res.data.message);
+            }else if(res.data.operation==='Success'){
+              window.location.reload();
               localStorage.clear();
               props.history.push('/dashboard');
               window.location.reload();
             }
-          )
+
+          })
           .catch((err) => {
             alert(err);
           })

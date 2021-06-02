@@ -286,30 +286,59 @@ const SuperAdminHome = (props) => {
     );
     } else
       {
-        return <div>
-          <h1>Welcome To Staff Member Dashboard</h1>
-          <Col xs="12" sm="6" md="4">
-            <Card className="text-white bg-info">
-              <CardHeader align="center">
-                <h2 style={{fontSize: "18px"}}>
-                  Your Company Current Vehicles Count
-                </h2>
-              </CardHeader>
-              <CardBody>
-                <h2 align="center">{staffMemberVehicleCount}</h2>
-                <br/>
-                <Button
-                  block
-                  color="primary"
-                  className="btn-pill"
-      onClick={()=>{props.history.push('/staff-member-vehicle-details')}}
-                >
-                  More
-                </Button>
-              </CardBody>
-            </Card>
-          </Col>
-        </div>
+        return (
+          <div>
+            <h1 style={{}}>Welcome To Staff Member Dashboard</h1>
+            <br />
+            <Col xs="12" sm="6" md="4">
+              <Card className="text-white bg-info STMD">
+                <CardHeader align="center">
+                  <h2 style={{ fontSize: "18px" }}>
+                    Your Company Current Vehicles Count
+                  </h2>
+                </CardHeader>
+                <CardBody>
+                  <h2 align="center">{staffMemberVehicleCount}</h2>
+                  <br />
+                  <Button
+                    block
+                    color="primary"
+                    className="btn-pill"
+                    onClick={() => {
+                      props.history.push("/staff-member-vehicle-details");
+                    }}
+                  >
+                    More
+                  </Button>
+                </CardBody>
+              </Card>
+            </Col>
+            <br />
+            <div>
+              <Carousel activeIndex={index} onSelect={handleSelect}>
+                <Carousel.Item>
+                  <img
+                    className="d-block w-100"
+                    src="https://rtvworldnetshipping.com/wp-content/uploads/2015/04/road.jpg"
+                    alt="Second slide"
+                  />
+                  <Carousel.Caption>
+                    <h3>Add More Vehicles</h3>
+                    <p>You can add vehicle here...</p>
+                    <Button
+                      block
+                      color="primary"
+                      className="btn-pill"
+                      onClick={addVehicle}
+                    >
+                      Add Vehicle
+                    </Button>
+                  </Carousel.Caption>
+                </Carousel.Item>
+              </Carousel>
+            </div>
+          </div>
+        );
       }
 
 

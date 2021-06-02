@@ -11,7 +11,7 @@ class PreviousLocation extends Component {
     super(props);
     this.submitFunc = this.submitFunc.bind(this);
     this.validate = this.validate.bind(this);
-    this.refreshPage = this.refreshPage.bind(this);
+    // this.refreshPage = this.refreshPage.bind(this);
 
     this.state = {
       date: "",
@@ -65,11 +65,11 @@ class PreviousLocation extends Component {
     this.props.history.push('/login');
   }
 
-  refreshPage=()=> {
+  refreshPage(){
     window.location.reload();
   }
 
-  backHandler = ()=>{
+  backHandler(){
     this.props.history.push('/dashboard');
   }
 

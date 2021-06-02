@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Row, Table,Badge} from "reactstrap";
 import Loader from "../../Required Sample Pages/Loader";
 
 
@@ -47,7 +47,7 @@ const SuperAdminVehicleDetails = (props) => {
             <tr>
               <th>Vehicle Number</th>
               <th>Type</th>
-              <th>Unit Per Km</th>
+              <th>Company Name <Badge color={'warning'}>Belongs To</Badge></th>
               <th>Added At</th>
             </tr>
             </thead>
@@ -56,7 +56,7 @@ const SuperAdminVehicleDetails = (props) => {
               <tr>
                 <td>{vehicle.vehicle_number}</td>
                 <td>{vehicle.type}</td>
-                <td>{vehicle.unit_per_1km}</td>
+                <td>{vehicle.company_name}</td>
                 <td>{vehicle.created_at}</td>
               </tr>
             ))}
