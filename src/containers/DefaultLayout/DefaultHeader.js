@@ -81,8 +81,8 @@ class DefaultHeader extends Component {
                 }}
               >
                 {"        Welcome   " +
-                localStorage.getItem("first_name") +
-                " !!!"}
+                  localStorage.getItem("first_name") +
+                  " !!!"}
               </NavItem>
 
               <NavItem className="d-md-down-none">
@@ -96,8 +96,25 @@ class DefaultHeader extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  <Button block color="success" className="btn-pill">
+                  <Button block color="success" className="btn-pill addUserB">
                     Add User
+                  </Button>
+                </NavLink>
+              </NavItem>
+
+              <NavItem className="d-md-down-none">
+                <NavLink
+                  to="/logout"
+                  className="nav-link"
+                  style={{
+                    color: "black",
+                    marginRight: "18px",
+                    marginLeft: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Button block color="danger" className="btn-pill ">
+                    Logout
                   </Button>
                 </NavLink>
               </NavItem>
@@ -108,7 +125,7 @@ class DefaultHeader extends Component {
                     src={"../../assets/img/avatars/6.jpg"}
                     className="img-avatar"
                     alt="admin@bootstrapmaster.com"
-                    style={{ marginRight: "18px" }}
+                    style={{ marginRight: "18px", marginLeft: "5px" }}
                   />
                 </DropdownToggle>
                 <DropdownMenu right>
@@ -138,27 +155,6 @@ class DefaultHeader extends Component {
                   {/*<DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
                 </DropdownMenu>
               </UncontrolledDropdown>
-
-
-
-              <NavItem className="d-md-down-none">
-                <NavLink
-                  to="/logout"
-                  className="nav-link"
-                  style={{
-                    color: "black",
-                    marginRight: "18px",
-                    marginLeft: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <Button block color="danger" className="btn-pill">
-                    logout
-                  </Button>
-                </NavLink>
-              </NavItem>
-
-
             </Nav>
           </React.Fragment>
         );
@@ -195,8 +191,25 @@ class DefaultHeader extends Component {
                 }}
               >
                 {"        Welcome   " +
-                localStorage.getItem("first_name") +
-                " !!!"}
+                  localStorage.getItem("first_name") +
+                  " !!!"}
+              </NavItem>
+
+              <NavItem className="d-md-down-none">
+                <NavLink
+                  to="/logout"
+                  className="nav-link"
+                  style={{
+                    color: "black",
+                    marginRight: "18px",
+                    marginLeft: "5px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  <Button block color="danger" className="btn-pill">
+                    Logout
+                  </Button>
+                </NavLink>
               </NavItem>
 
               <UncontrolledDropdown nav direction="down">
@@ -205,7 +218,7 @@ class DefaultHeader extends Component {
                     src={"../../assets/img/avatars/6.jpg"}
                     className="img-avatar"
                     alt="admin@bootstrapmaster.com"
-                    style={{ marginRight: "18px" }}
+                    style={{ marginRight: "18px", marginLeft: "5px" }}
                   />
                 </DropdownToggle>
                 <DropdownMenu right>
@@ -235,26 +248,6 @@ class DefaultHeader extends Component {
                   {/*<DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>*/}
                 </DropdownMenu>
               </UncontrolledDropdown>
-
-
-              <NavItem className="d-md-down-none">
-                <NavLink
-                  to="/logout"
-                  className="nav-link"
-                  style={{
-                    color: "black",
-                    marginRight: "18px",
-                    marginLeft: "5px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  <Button block color="danger" className="btn-pill">
-                    logout
-                  </Button>
-                </NavLink>
-              </NavItem>
-
-
             </Nav>
           </React.Fragment>
         );
@@ -351,7 +344,7 @@ class DefaultHeader extends Component {
                 <Button
                   block
                   color="success"
-                  className="btn-pill addUserB "
+                  className="btn-pill loginB "
                   style={{ fontWeight: "bold", width: "75px" }}
                 >
                   Login

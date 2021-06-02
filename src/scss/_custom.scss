@@ -140,14 +140,24 @@
   font-weight: bold;
 }
 
+//sidebar
 .sidebar {
   .nav-item {
     margin: 6.5px;
   }
 }
 
+//Staff member - vehicle count card
+.STMD {
+  margin-left: 115%;
+}
 
 //add-user button - DefaultHeader
 .addUserB {
   background-color: #658f27;
+}
+
+.loginB {
+  background-color: #658f27;
+  border-width: 4px;
 }

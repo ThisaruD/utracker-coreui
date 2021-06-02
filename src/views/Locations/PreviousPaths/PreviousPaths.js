@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import Map from "./Map";
-import {convertNeSwToNwSe} from "google-map-react";
+import { convertNeSwToNwSe } from "google-map-react";
 import Message from "../../Required Sample Pages/Message";
 
 class PreviousPaths extends Component {
@@ -25,16 +25,16 @@ class PreviousPaths extends Component {
 
     this.state = {
       vehicle_number: "",
-      from_date: "2021-03-15",
+      from_date: "",
       from_time: "",
-      to_date: "2021-03-15",
+      to_date: "",
       to_time: "",
       user_id: "2",
       vehicles: [],
       path: [],
       isLoggedIn: true,
       errors: {},
-      userRoleId:''
+      userRoleId: "",
     };
   }
 
@@ -47,7 +47,7 @@ class PreviousPaths extends Component {
     let user = localStorage.getItem("user_id");
 
     this.setState({
-      userRoleId:localStorage.getItem('user_role_id')
+      userRoleId: localStorage.getItem("user_role_id"),
     });
 
     if (user == undefined) {
@@ -58,7 +58,7 @@ class PreviousPaths extends Component {
       axios
         .get(
           "http://localhost:8000/api/allvehiclenumbers/" +
-          localStorage.getItem("user_id"),
+            localStorage.getItem("user_id"),
           {
             headers: {
               "Content-type": "application/json",
@@ -70,7 +70,7 @@ class PreviousPaths extends Component {
           //handle response data
           console.log(res);
           //setVehicles(res.data.vehicles);
-          this.setState({vehicles: res.data.vehicles});
+          this.setState({ vehicles: res.data.vehicles });
         })
         .catch((err) => {
           //handle error
@@ -114,7 +114,7 @@ class PreviousPaths extends Component {
 
               tempPath.push(coordinates);
             }
-            this.setState({path: tempPath});
+            this.setState({ path: tempPath });
           }
         })
         .catch((err) => {
@@ -185,16 +185,15 @@ class PreviousPaths extends Component {
 
   render() {
     if (this.state.isLoggedIn == true) {
-
-      if(this.state.userRoleId==1){
+      if (this.state.userRoleId == 1) {
         return (
           <div>
-            <Message variant='danger'>You Don't Have Permission For Location Tab</Message>
+            <Message variant="danger">
+              You Don't Have Permission For Location Tab
+            </Message>
           </div>
         );
-      }else {
-
-
+      } else {
         return (
           <div>
             {/* <h1>This is previous paths tab</h1> */}
@@ -206,7 +205,7 @@ class PreviousPaths extends Component {
                     <strong>Enter Details</strong>
                     {/* <small> For vehicles previous path </small> */}
                   </CardHeader>
-                  <br/>
+                  <br />
                   <CardBody>
                     <Form onSubmit={this.submitFunc}>
                       <Row>
@@ -239,14 +238,14 @@ class PreviousPaths extends Component {
                                   </option>
                                 ))}{" "}
                               </Input>
-                              <div style={{color: "red"}}>
+                              <div style={{ color: "red" }}>
                                 {this.state.errors.vehicle_number}
                               </div>
                             </Col>
                           </FormGroup>
                         </Col>
                       </Row>
-                      <br/>
+                      <br />
                       <Row>
                         <p className="PrevPath_02">
                           <b>From</b>
@@ -263,7 +262,7 @@ class PreviousPaths extends Component {
                               id="date1"
                               value={this.state.from_date}
                               onChange={(e) => {
-                                this.setState({from_date: e.target.value});
+                                this.setState({ from_date: e.target.value });
                               }}
                             />
                           </FormGroup>
@@ -276,20 +275,20 @@ class PreviousPaths extends Component {
                               name="time1"
                               id="time1"
                               placeholder="HH:MM"
-                              maxlength='5'
+                              maxlength="5"
                               value={this.state.from_time}
                               onChange={(e) => {
-                                this.setState({from_time: e.target.value});
+                                this.setState({ from_time: e.target.value });
                               }}
                             />
-                            <div style={{color: "red"}}>
+                            <div style={{ color: "red" }}>
                               {this.state.errors.from_time}
                             </div>
                           </FormGroup>
                         </Col>
                         <Col xs="4"></Col>
                       </Row>
-                      <br/>
+                      <br />
                       <Row>
                         <p className="PrevPath_02">
                           <b>To</b>
@@ -306,7 +305,7 @@ class PreviousPaths extends Component {
                               id="date2"
                               value={this.state.to_date}
                               onChange={(e) => {
-                                this.setState({to_date: e.target.value});
+                                this.setState({ to_date: e.target.value });
                               }}
                             />
                           </FormGroup>
@@ -318,20 +317,20 @@ class PreviousPaths extends Component {
                               type="text"
                               name="time2"
                               id="time2"
-                              maxlength='5'
+                              maxlength="5"
                               placeholder="HH:MM"
                               value={this.state.to_time}
                               onChange={(e) => {
-                                this.setState({to_time: e.target.value});
+                                this.setState({ to_time: e.target.value });
                               }}
                             />
-                            <div style={{color: "red"}}>
+                            <div style={{ color: "red" }}>
                               {this.state.errors.to_time}
                             </div>
                           </FormGroup>
                         </Col>
                         <Col xs="4"></Col>
-                        <br/>
+                        <br />
                       </Row>
                       <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
                         <div className="PrevPath_03">
@@ -361,7 +360,7 @@ class PreviousPaths extends Component {
               </Col>
             </Row>
             <div>
-              <Map pathCoordinates={this.state.path}/>
+              <Map pathCoordinates={this.state.path} />
             </div>
           </div>
         );
